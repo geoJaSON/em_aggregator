@@ -1,0 +1,61 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 11,
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -95.5,
+      28.8
+     ],
+     [
+      -94.9,
+      29.2
+     ],
+     [
+      -94.4,
+      29.5
+     ],
+     [
+      -93.8,
+      29.7
+     ]
+    ]
+   },
+   "properties": {
+    "stormname": "Demo",
+    "stormtype": "HU",
+    "advisnum": "18",
+    "binnumber": "AT9",
+    "tcww": "HWR"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 12,
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -96.4,
+      28.3
+     ],
+     [
+      -95.5,
+      28.8
+     ]
+    ]
+   },
+   "properties": {
+    "stormname": "Demo",
+    "stormtype": "HU",
+    "advisnum": "18",
+    "binnumber": "AT9",
+    "tcww": "TWR"
+   }
+  }
+ ]
+}

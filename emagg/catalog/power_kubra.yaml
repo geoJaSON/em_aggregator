@@ -1,0 +1,582 @@
+# Utility outage maps hosted on KUBRA Storm Center. Instance/view IDs come from open-source outage
+# scrapers (evidence below); 'high' confidence = the same ID pair appears in 2+ independent projects.
+# County-level reports are pulled by default; set outage_points: true (per entry, or via your own
+# sources: override) to also pull individual outage locations for your area — many more requests.
+
+- id: kubra_ga_power_ga
+  type: kubra
+  name: "Georgia Power"
+  states: [GA]
+  instance_id: 7b38c047-7950-444b-a25c-9b3e5ab986eb
+  view_id: 67b44af5-3847-4ca3-9f4e-9190aac343d6
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_natgrid_ny
+  type: kubra
+  name: "National Grid (NY)"
+  states: [NY]
+  instance_id: 9cb2e5b7-d321-4575-a552-4ae7078cbc31
+  view_id: 1b69b604-7588-4753-8591-9f135a962a2f
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_natgrid_ma
+  type: kubra
+  name: "National Grid (MA)"
+  states: [MA]
+  instance_id: 9cb2e5b7-d321-4575-a552-4ae7078cbc31
+  view_id: ec79df5b-2c54-4fb9-a86a-b20775678236
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_versant_me
+  type: kubra
+  name: "Versant Power"
+  states: [ME]
+  instance_id: 6abd095a-98f2-40a2-bb75-d51133d0c2c8
+  view_id: 05bfafbb-0ad1-4ff1-8287-d32fd1ed7fce
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_firstenergy_oh
+  type: kubra
+  name: "First Energy (OH)"
+  states: [OH]
+  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
+  view_id: db9c3f02-0a06-4672-a357-0f676eb75bfa
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_firstenergy_nj
+  type: kubra
+  name: "First Energy (NJ)"
+  states: [NJ]
+  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
+  view_id: fcd7c23d-de37-4471-8ca3-37c3260f94fa
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_firstenergy_pa
+  type: kubra
+  name: "First Energy (PA)"
+  states: [PA]
+  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
+  view_id: 8587e451-e258-4692-b5e8-28010506d51a
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_firstenergy_md
+  type: kubra
+  name: "First Energy (MD)"
+  states: [MD]
+  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
+  view_id: 8587e451-e258-4692-b5e8-28010506d51a
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_firstenergy_wv
+  type: kubra
+  name: "First Energy (WV)"
+  states: [WV]
+  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
+  view_id: 8587e451-e258-4692-b5e8-28010506d51a
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_avista_nw
+  type: kubra
+  name: "Avista Corporation"
+  states: [WA, ID, MT]
+  instance_id: b9478e86-d9d9-45b2-9579-b2639f77f3fe
+  view_id: 00763684-dd19-4651-b33f-51aa17a491a6
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_pec_pa
+  type: kubra
+  name: "Philadelphia Electric Co."
+  states: [PA]
+  instance_id: 39e6d9f3-fdea-4539-848f-b8631945da6f
+  view_id: 789577bd-d2c6-42b8-af4b-b51ae6f52b6c
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_appapower_va_wv_tn
+  type: kubra
+  name: "Appalachian Power Co."
+  states: [VA, WV, TN]
+  instance_id: 6674f49e-0236-4ed8-a40a-b31747557ab7
+  view_id: 8cfe790f-59f3-4ce3-a73f-a9642227411f
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_oncor_tx
+  type: kubra
+  name: "Oncor"
+  states: [TX]
+  instance_id: 560abba3-7881-4741-b538-ca416b58ba1e
+  view_id: ca124b24-9a06-4b19-aeb3-1841a9c962e1
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/TexasTechUtil/tx-utility-map (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_bge_md
+  type: kubra
+  name: "Baltimore Gas and Electric"
+  states: [MD]
+  instance_id: 3db5fd35-4a88-465f-8985-8db3eb760b61
+  view_id: e7b67c05-848e-404f-aeb0-08d96c45d0bd
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_ku_ky
+  type: kubra
+  name: "Kentucky Utilities and LGE"
+  states: [KY]
+  instance_id: 877fd1e9-4162-473f-b782-d8a53a85326b
+  view_id: a6cee9e4-312b-4b77-9913-2ae371eb860d
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_dominion_nc_va
+  type: kubra
+  name: "Dominion Energy (NC/VA)"
+  states: [NC, VA]
+  instance_id: 9c691bb6-767e-4532-b00e-286ac9adc223
+  view_id: 38b5394c-8bca-4dfd-ac59-b321615446bd
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_dominion_sc
+  type: kubra
+  name: "Dominion Energy (SC)"
+  states: [SC]
+  instance_id: ba976967-dc3e-4d05-8206-50d0260b22c3
+  view_id: 5b77d88d-a054-4008-a168-0e13468a4d6d
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_alabamapower_al
+  type: kubra
+  name: "Alabama Power"
+  states: [AL]
+  instance_id: 7636a60f-7b81-4fb0-a30d-ed79a8e271e7
+  view_id: c3471c92-6e1b-494b-a884-391139a2cc18
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_ameren_il
+  type: kubra
+  name: "Ameren (IL)"
+  states: [IL]
+  instance_id: 92e209c0-35c3-4ec2-9ce9-30d87a55706f
+  view_id: 9b7c2416-cb0c-4845-99c7-7b31041038a2
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_ameren_mo
+  type: kubra
+  name: "Ameren (MO)"
+  states: [MO]
+  instance_id: 92e209c0-35c3-4ec2-9ce9-30d87a55706f
+  view_id: 9b7c2416-cb0c-4845-99c7-7b31041038a2
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_delmarva_md_de
+  type: kubra
+  name: "Delmarva Power"
+  states: [MD, DE]
+  instance_id: b3e5379d-7d75-4ea0-a978-b42bab577210
+  view_id: 53f06375-21b5-402f-bffe-9c6c81de478c
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_cps_tx
+  type: kubra
+  name: "CPS Energy"
+  states: [TX]
+  instance_id: 912c6202-c3f4-491c-a8c1-726157725e92
+  view_id: 812092c0-153f-4a7f-8c58-e1af1cb740b7
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/TexasTechUtil/tx-utility-map (2026)"
+
+- id: kubra_oge_ok_ar
+  type: kubra
+  name: "OG&E Energy Corporation"
+  states: [OK, AR]
+  instance_id: dc85f79f-59f9-4e9e-9557-b3a9bee7e0ce
+  view_id: 8fe9d356-96bc-41f1-b353-6720eb408936
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_kp_ky
+  type: kubra
+  name: "Kentucky Power"
+  states: [KY]
+  instance_id: 23dcd38e-2573-4e20-a463-959b11cae011
+  view_id: 60f31606-5702-4a1e-a74c-08d866b7a6fa
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_chgec_ny
+  type: kubra
+  name: "Central Hudson Gas and Electric Corp"
+  states: [NY]
+  instance_id: d19170d4-3357-4f67-bc30-e88f85fc85c8
+  view_id: 7e22d4b2-8c3d-4625-adc1-ffcdd2944de0
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_cec_il
+  type: kubra
+  name: "Commonwealth Edison Co."
+  states: [IL]
+  instance_id: 0f46457f-e3ee-473c-8040-d7da9e776ccb
+  view_id: 2e108172-d24f-4c2b-ad49-23a3b1589688
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_pseg_ny
+  type: kubra
+  name: "PSEG Long Island"
+  states: [NY]
+  instance_id: 48006d55-45bb-40a4-99a6-1289326f0d0d
+  view_id: fb50e444-70e5-4b69-b868-28463b5dbd19
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_pseag_nj
+  type: kubra
+  name: "Public Service Electric and Gas"
+  states: [NJ]
+  instance_id: 79d82478-c10a-4956-a045-89de3cda618c
+  view_id: bdb7f5be-1c1a-46fa-862e-ebdf21851d2e
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_dte_mi
+  type: kubra
+  name: "DTE Energy"
+  states: [MI]
+  instance_id: 4fbb3ad3-e01d-4d71-9575-d453769c1171
+  view_id: 8ed2824a-bd92-474e-a7c4-848b812b7f9b
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_sepc_la_ar_tx
+  type: kubra
+  name: "Southwestern Electric Power Co"
+  states: [LA, AR, TX]
+  instance_id: 9632df6e-a385-400a-b822-b68d268e8e7c
+  view_id: e51304d0-7052-458d-a5ac-0e1980cca976
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_evergy_ks_mo
+  type: kubra
+  name: "Evergy"
+  states: [KS, MO]
+  instance_id: b1493825-4ee3-4706-a986-99a763a733db
+  view_id: c1062d22-2919-487c-9000-e21b72b62278
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_aep_oh
+  type: kubra
+  name: "American Electric Power Ohio"
+  states: [OH]
+  instance_id: 9c0735d8-b721-4dce-b80b-558e98ce1083
+  view_id: 9b2feb80-69f8-4035-925e-f2acbcf1728e
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_aep_tx
+  type: kubra
+  name: "American Electric Power Texas"
+  states: [TX]
+  instance_id: 3ff6812b-90d8-40cd-97a6-76633226f27b
+  view_id: 6022fe09-5259-4763-892f-5f57463fa6a5
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/TexasTechUtil/tx-utility-map (2026)"
+
+- id: kubra_pepco_md_dc
+  type: kubra
+  name: "Pepco"
+  states: [MD, DC]
+  instance_id: bac68083-1c42-44ee-bb3c-6d1c1c026f52
+  view_id: 8300abbf-e4dc-4d99-8453-821fd49e2e32
+  outage_points: false
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+
+- id: kubra_pnm_nm
+  type: kubra
+  name: "Public Service Co. of New Mexico"
+  states: [NM]
+  instance_id: b6fe87bc-3c82-4afe-b7f0-7eee93a32dfa
+  view_id: 92a8c818-17ed-401d-89be-73e5ae60ee5b
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_imp_in_mi
+  type: kubra
+  name: "Indiana Michigan Power"
+  states: [IN, MI]
+  instance_id: e07a4ffb-83dd-4251-8dad-3fe5a26979b6
+  view_id: 1b319a36-d1cf-443d-9ecf-6267acae0c3a
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_ae_tx
+  type: kubra
+  name: "Austin Energy"
+  states: [TX]
+  instance_id: dd9c446f-f6b8-43f9-8f80-83f5245c60a1
+  view_id: 76446308-a901-4fa3-849c-3dd569933a51
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/TexasTechUtil/tx-utility-map (2026)"
+
+- id: kubra_psc_ok
+  type: kubra
+  name: "Public Service Co. of Oklahoma"
+  states: [OK]
+  instance_id: 4bb3b3bc-e1c4-448b-b806-e4fc85c3b640
+  view_id: e2356e43-c76f-4772-bf85-31240a2cc504
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+
+- id: kubra_ace_nj
+  type: kubra
+  name: "Atlantic City Electric"
+  states: [NJ]
+  instance_id: 4b4c1b8f-d2fe-4d2a-877d-a704f764db98
+  view_id: addc2ec9-6104-4ea0-9da5-ff5ba896437e
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_jea_fl
+  type: kubra
+  name: "JEA"
+  states: [FL]
+  instance_id: 2bb4315d-ff9d-4937-a231-57b8a9df189c
+  view_id: 40a074f2-b303-42b7-b717-ed7d9d2ad9e2
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/alecbibat/gsoc-monitor (2026); github.com/codebooker/floridamap (2026)"
+
+- id: kubra_pec_tx
+  type: kubra
+  name: "Pedernales Electric Coop"
+  states: [TX]
+  instance_id: bac8eaf4-d343-4760-9a76-9c7beb6456a0
+  view_id: a6e670a6-58f1-40e9-9e67-64f7ac846cef
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/TexasTechUtil/tx-utility-map (2026)"
+
+- id: kubra_ouc_fl
+  type: kubra
+  name: "Orlando Utilities Commission"
+  states: [FL]
+  instance_id: b26c1223-ffac-4e60-b9de-402fbc33f9e4
+  view_id: 535dc59f-6e00-445d-a855-73c700c6c451
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/codebooker/floridamap (2026)"
+
+- id: kubra_tnmp_tx
+  type: kubra
+  name: "Texas New Mexico Power"
+  states: [TX]
+  instance_id: 6f00c909-0ab9-46c1-94c5-c07435d5baf6
+  view_id: 5bb75bf1-56fa-4d46-ac74-dd9b2106611a
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/TexasTechUtil/tx-utility-map (2026)"
+
+- id: kubra_seco_fl
+  type: kubra
+  name: "SECO Energy"
+  states: [FL]
+  instance_id: c63333d7-dc3c-4fb1-b874-461216e528bf
+  view_id: 0730fe50-c114-4eb0-97a9-3553ab8421cd
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/codebooker/floridamap (2026)"
+
+- id: kubra_csu_co
+  type: kubra
+  name: "Colorado Springs Utilities"
+  states: [CO]
+  instance_id: 7679ce5f-19fa-4ff6-9502-683324ed3f3a
+  view_id: b79da9e4-6406-41b7-8252-ad925d585a2f
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_cobb_ga
+  type: kubra
+  name: "Cobb EMC"
+  states: [GA]
+  instance_id: 57251972-7d71-4039-8075-c9c30a735174
+  view_id: 27d19b00-dc59-445d-acac-480c1d674258
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/alecbibat/gsoc-monitor (2026)"
+
+- id: kubra_sc_sc
+  type: kubra
+  name: "Santee Cooper"
+  states: [SC]
+  instance_id: 3787ae29-c9dd-4ac6-89df-c8b9f93209f0
+  view_id: 06395508-a927-49d0-82a9-4eae2c201c06
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_rec_va
+  type: kubra
+  name: "Rappahannock Electric Coop"
+  states: [VA]
+  instance_id: 3c15ff3f-f850-4a3e-8b49-e5cad018020f
+  view_id: 3813996e-0d1b-4ae5-a99d-143bd984c0c5
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_smec_md
+  type: kubra
+  name: "Southern Maryland Electric Coop"
+  states: [MD]
+  instance_id: 8f8e2a37-51ea-4029-a609-bf8bc3c384b3
+  view_id: c00241ad-5a2f-4236-9be9-e4bc6f518449
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_lle_fl
+  type: kubra
+  name: "Lakeland Electric"
+  states: [FL]
+  instance_id: ea5d4449-04f0-4511-ba9e-c96762eda641
+  view_id: f362d0d7-4493-4d66-bdd5-6b66609744b7
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026); github.com/codebooker/floridamap (2026)"
+
+- id: kubra_fpw_nc
+  type: kubra
+  name: "Fayetteville Public Works"
+  states: [NC]
+  instance_id: 8ad06f1b-2952-4b97-ac39-b26ecc7a7c46
+  view_id: f625cb6b-6541-44d1-bb2f-38d1fcc38ce8
+  outage_points: false
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: kubra_mp_ms
+  type: kubra
+  name: "Mississippi Power"
+  states: [MS]
+  instance_id: 32c5f878-d103-49e1-8a8a-ad0e2bdb4507
+  view_id: 1521bb54-d36b-4d36-a64d-48a454ee39a0
+  outage_points: false
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"

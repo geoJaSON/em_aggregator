@@ -9,6 +9,7 @@ import time
 from typing import Any
 
 from emagg.config import AreaConfig, SourceConfig
+from emagg import regions
 from emagg.geo import bbox_of, bboxes_intersect
 from emagg.models import Event, utcnow
 from emagg.sources import REGISTRY, Source, SourceContext
@@ -60,7 +61,26 @@ def build_sources(configs: list[SourceConfig], ctx: SourceContext) -> tuple[list
     return sources, problems
 
 
+def attribute(event: Event, source_states: list[str]) -> None:
+    """Fill in states / county FIPS from the geometry when the feed did not say."""
+    event.states = regions.valid_states(event.states)
+    geom = event.geometry
+    if geom and geom.get("type") == "Point" and (not event.states or not event.fips):
+        lon, lat = geom["coordinates"][:2]
+        state, county = regions.locate(lon, lat)
+        if state and not event.states:
+            event.states = [state]
+        if county and not event.fips and state in event.states:
+            event.fips = county["fips"]
+    elif geom and not event.states:
+        event.states = regions.states_for_geometry(geom)
+    if not event.states and geom is None and source_states:
+        event.states = list(source_states)
+
+
 def in_area(event: Event, area: AreaConfig) -> bool:
+    if area.states and event.states:
+        return bool(set(event.states) & set(area.states))
     if not area.bbox or event.geometry is None:
         return True
     bb = bbox_of(event.geometry)
@@ -82,6 +102,8 @@ class Scheduler:
         started = time.monotonic()
         try:
             events = await asyncio.wait_for(src.fetch(), timeout=min(max(60, src.interval), 300))
+            for e in events:
+                attribute(e, src.cfg.states)
             if not src.ignore_area:
                 events = [e for e in events if in_area(e, self.area)]
             changes = self.store.replace_source_events(src.id, events)

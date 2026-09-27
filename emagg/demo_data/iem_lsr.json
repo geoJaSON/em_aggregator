@@ -1,0 +1,150 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.29,
+     28.946
+    ]
+   },
+   "properties": {
+    "wfo": "HGX",
+    "type": "1",
+    "magf": 6.5,
+    "magnitude": "6.5",
+    "unit": "FT",
+    "qualifier": "E",
+    "county": "Brazoria",
+    "typetext": "STORM SURGE",
+    "state": "TX",
+    "st": "TX",
+    "city": "Surfside Beach",
+    "source": "EMERGENCY MNGR",
+    "remark": "DEMO: Surge flooding over Bluewater Hwy.",
+    "valid": "{{now-35m}}",
+    "lon": -95.29,
+    "lat": 28.946,
+    "product_id": "DEMO-LSRHGX"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.21,
+     29.69
+    ]
+   },
+   "properties": {
+    "wfo": "HGX",
+    "type": "D",
+    "magf": null,
+    "magnitude": "",
+    "unit": "",
+    "qualifier": "E",
+    "county": "Harris",
+    "typetext": "TSTM WND DMG",
+    "state": "TX",
+    "st": "TX",
+    "city": "Pasadena",
+    "source": "PUBLIC",
+    "remark": "DEMO: Trees and power lines down on Red Bluff Rd.",
+    "valid": "{{now-20m}}",
+    "lon": -95.21,
+    "lat": 29.69,
+    "product_id": "DEMO-LSRHGX"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.44,
+     29.74
+    ]
+   },
+   "properties": {
+    "wfo": "HGX",
+    "type": "F",
+    "magf": null,
+    "magnitude": "",
+    "unit": "",
+    "qualifier": "E",
+    "county": "Harris",
+    "typetext": "FLASH FLOOD",
+    "state": "TX",
+    "st": "TX",
+    "city": "Houston",
+    "source": "LAW ENFORCEMENT",
+    "remark": "DEMO: Multiple vehicles stalled in high water at underpass.",
+    "valid": "{{now-15m}}",
+    "lon": -95.44,
+    "lat": 29.74,
+    "product_id": "DEMO-LSRHGX"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.02,
+     29.54
+    ]
+   },
+   "properties": {
+    "wfo": "HGX",
+    "type": "G",
+    "magf": 82,
+    "magnitude": "82",
+    "unit": "MPH",
+    "qualifier": "E",
+    "county": "Galveston",
+    "typetext": "TSTM WND GST",
+    "state": "TX",
+    "st": "TX",
+    "city": "Kemah",
+    "source": "MESONET",
+    "remark": "DEMO: Measured gust at marina.",
+    "valid": "{{now-50m}}",
+    "lon": -95.02,
+    "lat": 29.54,
+    "product_id": "DEMO-LSRHGX"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.5,
+     29.9
+    ]
+   },
+   "properties": {
+    "wfo": "HGX",
+    "type": "S",
+    "magf": 1,
+    "magnitude": "1",
+    "unit": "INCH",
+    "qualifier": "E",
+    "county": "Harris",
+    "typetext": "SNOW",
+    "state": "TX",
+    "st": "TX",
+    "city": "Nowhere",
+    "source": "PUBLIC",
+    "remark": "unmapped type",
+    "valid": "{{now-2h}}",
+    "lon": -95.5,
+    "lat": 29.9,
+    "product_id": "DEMO-LSRHGX"
+   }
+  }
+ ]
+}

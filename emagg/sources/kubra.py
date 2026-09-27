@@ -45,11 +45,13 @@ def customers_severity(customers: int | None) -> Severity:
 
 def parse_summary(summary: dict[str, Any], utility: str, customers_served: int | None = None, link: str | None = None) -> Event:
     sfd = summary.get("summaryFileData") or {}
-    totals = (sfd.get("totals") or [{}])[0]
-    out = to_int(totals.get("total_cust_a")) or 0
-    served = customers_served or to_int(totals.get("total_cust_s"))
-    outages = to_int(totals.get("total_outages"))
-    pct = (out / served * 100.0) if served else num(totals.get("total_percent_cust_a"))
+    totals = sfd.get("totals") or [{}]
+    # Multi-state views carry one totals entry per state; the utility figure is their sum.
+    out = sum(to_int(t.get("total_cust_a")) or 0 for t in totals)
+    served = customers_served or (sum(to_int(t.get("total_cust_s")) or 0 for t in totals) or None)
+    outage_counts = [to_int(t.get("total_outages")) for t in totals]
+    outages = sum(n for n in outage_counts if n is not None) if any(n is not None for n in outage_counts) else None
+    pct = (out / served * 100.0) if served else num(totals[0].get("total_percent_cust_a"))
     if pct is not None:
         if pct >= 20:
             sev = Severity.extreme
@@ -83,6 +85,80 @@ def parse_summary(summary: dict[str, Any], utility: str, customers_served: int |
             "outages": outages,
         },
     )
+
+
+def county_severity(pct: float | None, customers: int) -> Severity:
+    if pct is None:
+        return customers_severity(customers)
+    if pct >= 50:
+        return Severity.extreme
+    if pct >= 20:
+        return Severity.severe
+    if pct >= 5:
+        return Severity.moderate
+    return Severity.minor
+
+
+def county_outage_event(
+    utility: str, state: str, county: dict[str, Any], out: int, served: int | None, etr: Any = None,
+    updated: Any = None, link: str | None = None,
+) -> Event:
+    """One county's outages for one utility, drawn as the county outline."""
+    from emagg.regions import county_geometry
+
+    pct = out / served * 100 if served else None
+    name = county["name"]
+    return Event(
+        id=f"county-{county['fips']}",
+        category=Category.power,
+        title=f"{utility}: {out:,} out in {name}, {state}" + (f" ({pct:.0f}%)" if pct is not None else ""),
+        severity=county_severity(pct, out),
+        area=f"{name}, {state}",
+        geometry=county_geometry(county),
+        updated_at=parse_time(updated),
+        url=link,
+        states=[state],
+        fips=county["fips"],
+        metrics={
+            "kind": "county_outage",
+            "utility": utility,
+            "customers_out": out,
+            "customers_served": served,
+            "percent_out": round(pct, 2) if pct is not None else None,
+            "etr": clean_text(etr) if etr and "NULL" not in str(etr) and "EXP" not in str(etr) else None,
+        },
+    )
+
+
+def parse_county_report(
+    report: dict[str, Any], utility: str, states: list[str], link: str | None = None
+) -> list[Event]:
+    """Kubra area report (file_data.areas[], possibly nested state -> county -> ...) to county events."""
+    from emagg.regions import find_county, state_code_for_name
+
+    events: dict[str, Event] = {}
+
+    def walk(areas: list[dict[str, Any]], state: str | None) -> None:
+        for a in areas or []:
+            key = str(a.get("key") or a.get("areaType") or "").lower()
+            name = clean_text(a.get("name")) or ""
+            if key == "state":
+                walk(a.get("areas") or [], state_code_for_name(name) or (name.upper() if len(name) == 2 else state))
+                continue
+            if key == "county":
+                out = to_int(a.get("cust_a")) or 0
+                candidates = [state] if state else states
+                county = next((c for st in candidates if st and (c := find_county(st, name))), None)
+                if county and out > 0:
+                    st = county["state"]
+                    ev = county_outage_event(utility, st, county, out, to_int(a.get("cust_s")), a.get("etr"), link=link)
+                    events[ev.id] = ev
+                continue
+            walk(a.get("areas") or [], state)
+
+    fd = report.get("file_data") or {}
+    walk(fd.get("areas") if isinstance(fd, dict) else fd, states[0] if len(states) == 1 else None)
+    return list(events.values())
 
 
 def _text(v: Any) -> str | None:
@@ -170,30 +246,55 @@ class KubraOutages(Source):
         path = data.get("interval_generation_data")
         if not path:
             raise SourceError("unexpected currentState response (no interval_generation_data)")
-        summary = await self.get_json(f"{BASE}/{path}/public/summary-1/data.json")
-        events = [
-            parse_summary(summary, self.name, to_int(self.options.get("customers_served")), self.options.get("link"))
-        ]
-        if self.options.get("outage_points", True) and events[0].metrics.get("customers_out"):
-            events.extend(await self._outage_points(state))
+        layout = await self._layout(state)
+        link = self.options.get("link")
+        summary = await self.get_json(f"{BASE}/{path}/{layout['summary']}")
+        events = [parse_summary(summary, self.name, to_int(self.options.get("customers_served")), link)]
+        if not events[0].metrics.get("customers_out"):
+            return events
+        if self.options.get("county_reports", True):
+            for source in layout["county_reports"]:
+                try:
+                    report = await self.get_json(f"{BASE}/{path}/{source}")
+                except SourceError:
+                    continue  # a missing report must not hide the utility total
+                events.extend(parse_county_report(report, self.name, self.cfg.states, link))
+        if self.options.get("outage_points", True) and layout.get("cluster_layer"):
+            events.extend(await self._outage_points(state, layout["cluster_layer"]))
         return events
 
-    async def _outage_points(self, state: dict[str, Any]) -> list[Event]:
-        store = self.ctx.store
+    async def _layout(self, state: dict[str, Any]) -> dict[str, Any]:
+        """File layout from the Storm Center configuration (cached per deployment): summary file, cluster
+        layer id, and county-level area reports. Falls back to the common defaults."""
         deployment = state.get("stormcenterDeploymentId")
-        cluster_path = (state.get("data") or {}).get("cluster_interval_generation_data")
-        if not deployment or not cluster_path:
-            return []
+        key = f"kubra:layout:{self.options['instance_id']}:{self.options['view_id']}:{deployment}"
+        cached = self.ctx.store.kv_get(key)
+        if cached:
+            return cached
+        layout: dict[str, Any] = {"summary": "public/summary-1/data.json", "cluster_layer": None, "county_reports": []}
+        if deployment:
+            try:
+                cfg = (await self.get_json(f"{self._api}/configuration/{deployment}", params={"preview": "false"})).get("config") or {}
+            except SourceError:
+                cfg = {}
+            summary_src = (((cfg.get("summary") or {}).get("data") or {}).get("interval_generation_data") or {})
+            if isinstance(summary_src, dict) and summary_src.get("source"):
+                layout["summary"] = summary_src["source"]
+            layers = (((cfg.get("layers") or {}).get("data") or {}).get("interval_generation_data")) or []
+            layout["cluster_layer"] = next(
+                (lyr.get("id") for lyr in layers if str(lyr.get("type", "")).startswith("CLUSTER_LAYER")), None
+            )
+            reports = (((cfg.get("reports") or {}).get("data") or {}).get("interval_generation_data")) or []
+            layout["county_reports"] = [
+                r["source"] for r in reports if r.get("source") and "county" in str(r.get("areaType", "")).lower()
+            ]
+            self.ctx.store.kv_set(key, layout)
+        return layout
 
-        layer_key = f"kubra:layer:{self.options['instance_id']}:{deployment}"
-        layer_id = store.kv_get(layer_key)
-        if not layer_id:
-            cfg = await self.get_json(f"{self._api}/configuration/{deployment}", params={"preview": "false"})
-            layers = (((cfg.get("config") or {}).get("layers") or {}).get("data") or {}).get("interval_generation_data") or []
-            layer_id = next((l.get("id") for l in layers if str(l.get("type", "")).startswith("CLUSTER_LAYER")), None)
-            if not layer_id:
-                raise SourceError("no cluster layer in Storm Center configuration")
-            store.kv_set(layer_key, layer_id)
+    async def _outage_points(self, state: dict[str, Any], layer_id: str) -> list[Event]:
+        cluster_path = (state.get("data") or {}).get("cluster_interval_generation_data")
+        if not cluster_path:
+            return []
 
         bbox = await self._service_area_bbox(state)
         if bbox is None:

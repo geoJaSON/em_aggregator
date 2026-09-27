@@ -26,7 +26,7 @@ emagg = "emagg.cli:main"
 include = ["emagg*"]
 
 [tool.setuptools.package-data]
-emagg = ["web/*", "web/vendor/leaflet/*", "web/vendor/leaflet/images/*", "demo_data/*"]
+emagg = ["web/*", "web/vendor/leaflet/*", "web/vendor/markercluster/*", "web/vendor/leaflet/images/*", "demo_data/*", "data/*", "catalog/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

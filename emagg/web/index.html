@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EM Aggregator</title>
   <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/vendor/markercluster/MarkerCluster.css">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -17,6 +18,7 @@
       </div>
     </div>
     <div class="topbar-right">
+      <select id="state-filter" aria-label="Show one state"><option value="">All states</option></select>
       <span id="live" class="live" title="Live update connection"><span class="dot"></span><span class="label">Connecting…</span></span>
       <span id="updated" class="muted small"></span>
       <button id="report-btn" class="btn primary" type="button">+ Field report</button>
@@ -33,6 +35,7 @@
       <nav class="tabs" role="tablist">
         <button role="tab" class="tab active" data-tab="events" aria-selected="true">Events <span id="events-count" class="count"></span></button>
         <button role="tab" class="tab" data-tab="changes" aria-selected="false">Changes <span id="changes-count" class="count"></span></button>
+        <button role="tab" class="tab" data-tab="states" aria-selected="false">States</button>
         <button role="tab" class="tab" data-tab="sources" aria-selected="false">Sources <span id="sources-alert" class="count warn" hidden></span></button>
       </nav>
 
@@ -48,6 +51,7 @@
           </select>
         </div>
         <ul id="event-list" class="event-list"></ul>
+        <button id="list-more" class="btn more" type="button" hidden></button>
       </section>
 
       <section id="tab-changes" class="tab-body" hidden>
@@ -61,6 +65,11 @@
           </select>
         </div>
         <ul id="changes-list" class="changes-list"></ul>
+      </section>
+
+      <section id="tab-states" class="tab-body" hidden>
+        <p class="small muted">Active events by state (multi-state events count in each). Click a state to focus on it.</p>
+        <table id="state-table" class="state-table"></table>
       </section>
 
       <section id="tab-sources" class="tab-body" hidden>
@@ -92,6 +101,8 @@
           <option value="roads">Roads (blocked / closed)</option>
           <option value="power">Power</option>
           <option value="flood">Flooding</option>
+          <option value="transport">Transport (airport / port / rail)</option>
+          <option value="shelter">Shelter</option>
           <option value="fire">Fire</option>
           <option value="weather">Weather</option>
           <option value="other">Other</option>
@@ -128,6 +139,7 @@
   </dialog>
 
   <script src="/static/vendor/leaflet/leaflet.js"></script>
+  <script src="/static/vendor/markercluster/leaflet.markercluster.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

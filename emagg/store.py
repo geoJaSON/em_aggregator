@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS events (
     prev_severity TEXT,
     severity_changed_at TEXT,
     baseline INTEGER NOT NULL DEFAULT 0,
+    states TEXT,
+    fips TEXT,
     PRIMARY KEY (source, id)
 );
 CREATE INDEX IF NOT EXISTS events_ended ON events (ended_at);
@@ -101,7 +103,16 @@ class Store:
             if path != ":memory:":
                 self._conn.execute("PRAGMA journal_mode=WAL")
             self._conn.executescript(SCHEMA)
+            self._migrate()
             self._conn.commit()
+
+    def _migrate(self) -> None:
+        """Add columns introduced after a database was first created."""
+        have = {r["name"] for r in self._conn.execute("PRAGMA table_info(events)")}
+        for col in ("states", "fips"):
+            if col not in have:
+                self._conn.execute(f"ALTER TABLE events ADD COLUMN {col} TEXT")
+        self._conn.execute("CREATE INDEX IF NOT EXISTS events_states ON events (states)")
 
     def close(self) -> None:
         with self._lock:
@@ -218,6 +229,8 @@ class Store:
             "prev_severity": prev_severity,
             "severity_changed_at": severity_changed_at,
             "baseline": baseline,
+            "states": "," + ",".join(ev.states) + "," if ev.states else None,
+            "fips": ev.fips,
         }
         if keep_severity_change:
             # Content changed but severity did not: preserve the last recorded severity transition.
@@ -276,11 +289,13 @@ class Store:
         sources: Iterable[str] | None = None,
         min_severity: Severity | None = None,
         since: datetime | None = None,
+        states: Iterable[str] | None = None,
         now: datetime | None = None,
         limit: int | None = None,
     ) -> list[dict[str, Any]]:
         now = now or utcnow()
         where, args = [], []
+        _state_filter(states, where, args)
         if status == "active":
             where.append(ACTIVE_SQL)
             args.append(ts(now))
@@ -311,7 +326,9 @@ class Store:
             rows = self._conn.execute(sql, args).fetchall()
         return [_row(r, now) for r in rows]
 
-    def timeline(self, since: datetime, now: datetime | None = None, limit: int = 200) -> list[dict[str, Any]]:
+    def timeline(
+        self, since: datetime, now: datetime | None = None, limit: int = 200, states: Iterable[str] | None = None
+    ) -> list[dict[str, Any]]:
         """What changed since ``since``: new events, severity changes, and things that cleared or expired.
 
         Events loaded on a source's very first successful poll are "baseline" and not reported as new.
@@ -324,11 +341,14 @@ class Store:
             ("ended", "ended_at", "ended_at >= ?", (s,)),
             ("expired", "expires_at", "ended_at IS NULL AND expires_at >= ? AND expires_at <= ?", (s, n)),
         ]
+        extra, extra_args = [], []
+        _state_filter(states, extra, extra_args)
+        state_sql = f" AND {extra[0]}" if extra else ""
         out = []
         with self._lock:
             for change, col, cond, args in queries:
-                sql = f"SELECT * FROM events WHERE {cond} ORDER BY {col} DESC LIMIT ?"
-                for r in self._conn.execute(sql, (*args, int(limit))).fetchall():
+                sql = f"SELECT * FROM events WHERE {cond}{state_sql} ORDER BY {col} DESC LIMIT ?"
+                for r in self._conn.execute(sql, (*args, *extra_args, int(limit))).fetchall():
                     d = _row(r, now)
                     if change == "severity":
                         prev = Severity(r["prev_severity"]).rank
@@ -397,6 +417,13 @@ class Store:
             self._conn.commit()
 
 
+def _state_filter(states: Iterable[str] | None, where: list[str], args: list[Any]) -> None:
+    codes = [s.upper() for s in states or [] if s]
+    if codes:
+        where.append("(" + " OR ".join("states LIKE ?" for _ in codes) + ")")
+        args.extend(f"%,{c},%" for c in codes)
+
+
 def _row(r: sqlite3.Row, now: datetime) -> dict[str, Any]:
     now_s = ts(now)
     active = r["ended_at"] is None and (r["expires_at"] is None or r["expires_at"] > now_s)
@@ -424,5 +451,7 @@ def _row(r: sqlite3.Row, now: datetime) -> dict[str, Any]:
         "prev_severity": r["prev_severity"],
         "severity_changed_at": r["severity_changed_at"],
         "baseline": bool(r["baseline"]),
+        "states": [s for s in (r["states"] or "").split(",") if s],
+        "fips": r["fips"],
         "active": active,
     }

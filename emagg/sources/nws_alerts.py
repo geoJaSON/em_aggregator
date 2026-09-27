@@ -60,6 +60,8 @@ def parse_alerts(payload: dict[str, Any], exclude_events: list[str] | None = Non
             continue
         severity = SEVERITY_MAP.get(str(p.get("severity", "")).lower(), Severity.info)
         parts = [clean_text(p.get("headline")), clean_text(p.get("description")), clean_text(p.get("instruction"))]
+        ugc = (p.get("geocode") or {}).get("UGC") or []
+        states = sorted({code[:2] for code in ugc if isinstance(code, str) and len(code) >= 2})
         supersedes = [
             (ref.get("identifier") or ref.get("@id", "")).rsplit("/", 1)[-1] for ref in p.get("references") or []
         ]
@@ -76,6 +78,7 @@ def parse_alerts(payload: dict[str, Any], exclude_events: list[str] | None = Non
                 updated_at=parse_time(p.get("sent")),
                 expires_at=parse_time(p.get("ends") or p.get("expires")),
                 url=f.get("id") if str(f.get("id", "")).startswith("http") else None,
+                states=states,
                 metrics={
                     "event": name,
                     "nws_severity": p.get("severity"),
@@ -97,12 +100,14 @@ class NWSAlerts(Source):
     default_name = "NWS alerts"
     category = Category.weather
     default_interval = 60
+    # Zone outlines fetched per poll for alerts issued by zone; the cache fills over a few polls nationally.
+    DEFAULT_ZONE_BUDGET = 120
 
     ZONE_TTL = timedelta(days=30)
 
     async def fetch(self) -> list[Event]:
         params = {"status": "actual"}
-        states = self.options.get("states") or self.ctx.area.states
+        states = self.cfg.states or self.ctx.area.states
         if states:
             params["area"] = ",".join(states)
         payload = await self.get_json(API, params=params, headers={"Accept": "application/geo+json"})
@@ -126,8 +131,8 @@ class NWSAlerts(Source):
                 for z in e.metrics.get("affected_zones", []):
                     if z not in needed and store.kv_get("nwszone:" + z, self.ZONE_TTL) is None:
                         needed.append(z)
-        budget = int(self.options.get("max_zone_fetch", 60))
-        sem = asyncio.Semaphore(4)
+        budget = int(self.options.get("max_zone_fetch", self.DEFAULT_ZONE_BUDGET))
+        sem = asyncio.Semaphore(6)
 
         async def load(url: str) -> None:
             async with sem:

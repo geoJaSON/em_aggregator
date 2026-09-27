@@ -77,6 +77,44 @@ async def _poll(args: argparse.Namespace) -> int:
     return 1 if failed else 0
 
 
+def catalog_rows(state: str | None = None) -> list[dict[str, str]]:
+    import re
+
+    from emagg import catalog
+
+    rows = []
+    for e in catalog.load_entries():
+        states = e.get("states") or []
+        if state and states and state.upper() not in states:
+            continue
+        cls = REGISTRY.get(e["type"])
+        meta = e.get("meta") or {}
+        keys = sorted(set(re.findall(r"\$\{([A-Z0-9_]+)", str({k: v for k, v in e.items() if k != "meta"}))))
+        rows.append({
+            "id": e["id"],
+            "name": e.get("name") or (cls.default_name if cls else e["type"]),
+            "category": e.get("category") or (cls.category.value if cls else "other"),
+            "states": ", ".join(states) or "national",
+            "type": e["type"],
+            "confidence": meta.get("confidence", ""),
+            "access": ("env " + ", ".join(keys)) if keys else ("off by default" if e.get("enabled") is False else "open"),
+        })
+    return rows
+
+
+def cmd_catalog(args: argparse.Namespace) -> None:
+    rows = catalog_rows(args.state)
+    if args.markdown:
+        print("| Feed | Category | States | Adapter | Confidence | Access |")
+        print("|---|---|---|---|---|---|")
+        for r in sorted(rows, key=lambda r: (r["category"], r["states"], r["name"])):
+            print(f"| {r['name']} (`{r['id']}`) | {r['category']} | {r['states']} | {r['type']} | {r['confidence']} | {r['access']} |")
+        return
+    for r in rows:
+        print(f"{r['id']:<28} {r['category']:<9} {r['states'][:18]:<18} {r['type']:<18} {r['confidence']:<7} {r['access']}")
+    print(f"\n{len(rows)} catalog feeds")
+
+
 def cmd_sources(_: argparse.Namespace) -> None:
     for name, cls in sorted(REGISTRY.items()):
         req = f"  requires: {', '.join(cls.required_options)}" if cls.required_options else ""
@@ -106,6 +144,11 @@ def main(argv: list[str] | None = None) -> None:
 
     srcs = sub.add_parser("sources", help="list available source types")
     srcs.set_defaults(func=cmd_sources)
+
+    cat = sub.add_parser("catalog", help="list the built-in catalog of known feeds")
+    cat.add_argument("--state", help="only feeds covering this state (plus national feeds)")
+    cat.add_argument("--markdown", action="store_true")
+    cat.set_defaults(func=cmd_catalog)
 
     args = parser.parse_args(argv)
     logging.basicConfig(

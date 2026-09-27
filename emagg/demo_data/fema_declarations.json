@@ -1,0 +1,79 @@
+{
+ "metadata": {
+  "count": 4
+ },
+ "DisasterDeclarationsSummaries": [
+  {
+   "femaDeclarationString": "EM-3999-TX",
+   "disasterNumber": 3999,
+   "state": "TX",
+   "declarationType": "EM",
+   "declarationDate": "{{now-1d}}",
+   "incidentType": "Hurricane",
+   "declarationTitle": "HURRICANE DEMO",
+   "ihProgramDeclared": false,
+   "iaProgramDeclared": false,
+   "paProgramDeclared": true,
+   "hmProgramDeclared": false,
+   "incidentBeginDate": "{{now-2d}}",
+   "incidentEndDate": null,
+   "fipsStateCode": "48",
+   "fipsCountyCode": "201",
+   "designatedArea": "Harris (County)"
+  },
+  {
+   "femaDeclarationString": "EM-3999-TX",
+   "disasterNumber": 3999,
+   "state": "TX",
+   "declarationType": "EM",
+   "declarationDate": "{{now-1d}}",
+   "incidentType": "Hurricane",
+   "declarationTitle": "HURRICANE DEMO",
+   "ihProgramDeclared": false,
+   "iaProgramDeclared": false,
+   "paProgramDeclared": true,
+   "hmProgramDeclared": false,
+   "incidentBeginDate": "{{now-2d}}",
+   "incidentEndDate": null,
+   "fipsStateCode": "48",
+   "fipsCountyCode": "167",
+   "designatedArea": "Galveston (County)"
+  },
+  {
+   "femaDeclarationString": "EM-3999-TX",
+   "disasterNumber": 3999,
+   "state": "TX",
+   "declarationType": "EM",
+   "declarationDate": "{{now-1d}}",
+   "incidentType": "Hurricane",
+   "declarationTitle": "HURRICANE DEMO",
+   "ihProgramDeclared": false,
+   "iaProgramDeclared": false,
+   "paProgramDeclared": true,
+   "hmProgramDeclared": false,
+   "incidentBeginDate": "{{now-2d}}",
+   "incidentEndDate": null,
+   "fipsStateCode": "48",
+   "fipsCountyCode": "039",
+   "designatedArea": "Brazoria (County)"
+  },
+  {
+   "femaDeclarationString": "EM-3999-TX",
+   "disasterNumber": 3999,
+   "state": "TX",
+   "declarationType": "EM",
+   "declarationDate": "{{now-1d}}",
+   "incidentType": "Hurricane",
+   "declarationTitle": "HURRICANE DEMO",
+   "ihProgramDeclared": false,
+   "iaProgramDeclared": false,
+   "paProgramDeclared": true,
+   "hmProgramDeclared": false,
+   "incidentBeginDate": "{{now-2d}}",
+   "incidentEndDate": null,
+   "fipsStateCode": "48",
+   "fipsCountyCode": "071",
+   "designatedArea": "Chambers (County)"
+  }
+ ]
+}

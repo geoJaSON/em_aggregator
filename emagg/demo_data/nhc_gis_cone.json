@@ -1,0 +1,57 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 1,
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -94.7,
+       29.0
+      ],
+      [
+       -95.6,
+       29.6
+      ],
+      [
+       -96.4,
+       31.2
+      ],
+      [
+       -96.2,
+       33.0
+      ],
+      [
+       -94.6,
+       33.4
+      ],
+      [
+       -93.4,
+       31.4
+      ],
+      [
+       -93.6,
+       29.9
+      ],
+      [
+       -94.7,
+       29.0
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "stormname": "Demo",
+    "stormtype": "HU",
+    "basin": "AL",
+    "advisnum": "18",
+    "advdate": "DEMO advisory",
+    "binnumber": "AT9",
+    "stormnum": 99
+   }
+  }
+ ]
+}

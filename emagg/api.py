@@ -14,6 +14,7 @@ from typing import Any
 
 import httpx
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -22,10 +23,10 @@ from emagg import __version__
 from emagg.config import Config
 from emagg.geo import point
 from emagg.models import SEVERITY_ORDER, Category, Event, Severity, utcnow
-from emagg.scheduler import Notifier, Scheduler, build_sources
+from emagg.scheduler import Notifier, Scheduler, attribute, build_sources
 from emagg.sources import REGISTRY, SourceContext
 from emagg.store import Store, ts
-from emagg.summary import LABELS, build_summary
+from emagg.summary import LABELS, build_state_rollup, build_summary
 
 log = logging.getLogger("emagg.api")
 WEB = Path(__file__).parent / "web"
@@ -78,6 +79,8 @@ def create_app(
             await http.aclose()
 
     app = FastAPI(title=config.app.title, version=__version__, lifespan=lifespan)
+    # National event sets with county/zone outlines run to megabytes; they compress ~5-10x. (SSE is excluded.)
+    app.add_middleware(GZipMiddleware, minimum_size=2048)
     app.state.store = store
     app.state.notifier = notifier
     app.state.runtime = state
@@ -107,7 +110,12 @@ def create_app(
             "title": config.app.title,
             "version": __version__,
             "demo": demo,
-            "area": {"name": config.area.name, "bbox": config.area.bbox, "states": config.area.states},
+            "area": {
+                "name": config.area.name,
+                "preset": config.area.preset,
+                "bbox": config.area.bbox,
+                "states": config.area.states,
+            },
             "categories": [{"id": c.value, "label": LABELS[c]} for c in Category],
             "severities": [s.value for s in SEVERITY_ORDER],
             "write_token_required": bool(config.app.write_token),
@@ -119,6 +127,7 @@ def create_app(
         category: list[Category] | None = Query(None),
         source: list[str] | None = Query(None),
         min_severity: Severity | None = None,
+        state: list[str] | None = Query(None, description="two-letter state codes"),
         limit: int = Query(5000, ge=1, le=20000),
     ) -> dict[str, Any]:
         rows = store.query_events(
@@ -126,6 +135,7 @@ def create_app(
             categories=[c.value for c in category] if category else None,
             sources=source,
             min_severity=min_severity,
+            states=state,
             limit=limit,
         )
         return {
@@ -142,12 +152,21 @@ def create_app(
         return _feature(row)
 
     @app.get("/api/summary")
-    async def get_summary() -> dict[str, Any]:
-        return build_summary(store.query_events(status="active"))
+    async def get_summary(state: list[str] | None = Query(None)) -> dict[str, Any]:
+        return build_summary(store.query_events(status="active", states=state))
+
+    @app.get("/api/states")
+    async def get_states() -> dict[str, Any]:
+        """Active events rolled up by state: counts by severity and category, customers without power."""
+        return {"states": build_state_rollup(store.query_events(status="active"))}
 
     @app.get("/api/timeline")
-    async def get_timeline(hours: float = Query(6, gt=0, le=168), limit: int = Query(200, ge=1, le=1000)):
-        rows = store.timeline(utcnow() - timedelta(hours=hours), limit=limit)
+    async def get_timeline(
+        hours: float = Query(6, gt=0, le=168),
+        limit: int = Query(200, ge=1, le=1000),
+        state: list[str] | None = Query(None),
+    ):
+        rows = store.timeline(utcnow() - timedelta(hours=hours), limit=limit, states=state)
         return {"items": [{k: v for k, v in r.items() if k != "geometry"} for r in rows]}
 
     @app.get("/api/sources")
@@ -171,6 +190,9 @@ def create_app(
                     "note": cls.note if cls else None,
                 }
             )
+            info["states"] = cfg.states
+            info["meta"] = {k: v for k, v in cfg.meta.items() if k in ("confidence", "notes", "signup", "evidence", "evidence_year")}
+            info["catalog"] = bool(cfg.meta.get("catalog_file"))
             st = statuses.get(cfg.id, {})
             info.update({k: st.get(k) for k in ("last_attempt", "last_success", "last_error", "last_error_at", "consecutive_failures", "event_count", "duration_ms")})
             if not cfg.enabled:
@@ -196,6 +218,9 @@ def create_app(
                 "category": "other",
                 "interval": None,
                 "note": "entered by operators",
+                "states": [],
+                "meta": {},
+                "catalog": False,
                 "health": "ok",
                 "event_count": len(reports),
             }
@@ -231,6 +256,7 @@ def create_app(
             expires_at=now + timedelta(hours=report.expires_hours),
             metrics={"kind": "field_report", "reporter": report.reporter},
         )
+        attribute(event, [])
         store.add_event(event, now)
         notifier.publish({"type": "source", "source": FIELD_REPORTS, "ok": True, "new": 1, "at": ts(now)})
         return _feature(store.get_event(FIELD_REPORTS, event.id))

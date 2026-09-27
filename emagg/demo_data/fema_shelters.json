@@ -1,0 +1,92 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 1,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.4101,
+     29.6847
+    ]
+   },
+   "properties": {
+    "objectid": 1,
+    "shelter_id": 900001,
+    "shelter_name": "NRG Center (DEMO)",
+    "address": "DEMO",
+    "city": "Houston",
+    "state": "TX",
+    "zip": "",
+    "shelter_status": "OPEN",
+    "evacuation_capacity": 5000,
+    "post_impact_capacity": null,
+    "total_population": 1830,
+    "org_name": "American Red Cross (DEMO)",
+    "pet_accommodations_code": "COHABIT",
+    "wheelchair_accessible": "YES",
+    "latitude": 29.6847,
+    "longitude": -95.4101
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.4605,
+     30.3119
+    ]
+   },
+   "properties": {
+    "objectid": 2,
+    "shelter_id": 900002,
+    "shelter_name": "Conroe High School (DEMO)",
+    "address": "DEMO",
+    "city": "Conroe",
+    "state": "TX",
+    "zip": "",
+    "shelter_status": "OPEN",
+    "evacuation_capacity": 600,
+    "post_impact_capacity": null,
+    "total_population": 212,
+    "org_name": "American Red Cross (DEMO)",
+    "pet_accommodations_code": "COHABIT",
+    "wheelchair_accessible": "YES",
+    "latitude": 30.3119,
+    "longitude": -95.4605
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.7771,
+     29.7902
+    ]
+   },
+   "properties": {
+    "objectid": 3,
+    "shelter_id": 900003,
+    "shelter_name": "Katy ISD Legacy Stadium (DEMO)",
+    "address": "DEMO",
+    "city": "Katy",
+    "state": "TX",
+    "zip": "",
+    "shelter_status": "OPEN",
+    "evacuation_capacity": 400,
+    "post_impact_capacity": null,
+    "total_population": 95,
+    "org_name": "American Red Cross (DEMO)",
+    "pet_accommodations_code": "COHABIT",
+    "wheelchair_accessible": "YES",
+    "latitude": 29.7902,
+    "longitude": -95.7771
+   }
+  }
+ ]
+}

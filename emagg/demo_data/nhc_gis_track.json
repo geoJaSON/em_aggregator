@@ -1,0 +1,38 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 1,
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -94.7,
+      29.0
+     ],
+     [
+      -95.2,
+      30.1
+     ],
+     [
+      -95.4,
+      31.4
+     ],
+     [
+      -95.1,
+      33.0
+     ]
+    ]
+   },
+   "properties": {
+    "stormname": "Demo",
+    "stormtype": "HU",
+    "basin": "AL",
+    "advisnum": "18",
+    "binnumber": "AT9",
+    "stormnum": 99
+   }
+  }
+ ]
+}

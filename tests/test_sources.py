@@ -256,3 +256,37 @@ def test_field_mapping_thresholds():
     mapping = FieldMapping({"severity": {"field": "OUT", "thresholds": [[100, "moderate"], [1000, "severe"]], "default": "minor"}})
     sev = lambda n: mapping.to_event({"properties": {"OUT": n}}, 0).severity  # noqa: E731
     assert (sev(5), sev(150), sev(5000)) == (Severity.minor, Severity.moderate, Severity.severe)
+
+
+def test_511_legacy_dates_and_corrupt_polyline():
+    from emagg.geo import encode_polyline
+
+    good = encode_polyline([(35.0, -80.0), (35.01, -80.01)])
+    bad = encode_polyline([(35.0, -80.0), (35.01, -80.01), (35.02, -215.0)])  # decodes out of range
+    items = [
+        {"ID": "a", "Latitude": 35.0, "Longitude": -80.0, "EventType": "closures", "RoadwayName": "US-176",
+         "LastUpdated": "29/07/2026 11:43:34", "MapEncodedPolyline": bad},
+        {"ID": "b", "Latitude": 0, "Longitude": 0, "EventType": "closures"},
+        {"ID": "c", "Latitude": 35.0, "Longitude": -80.0, "EventType": "closures", "EncodedPolyline": good,
+         "StartDate": -62135596800},
+    ]
+    events = {e.id: e for e in parse_511(items)}
+    assert set(events) == {"a", "c"}  # (0,0) dropped
+    assert events["a"].updated_at.isoformat() == "2026-07-29T11:43:34+00:00"
+    assert len(events["a"].geometry["coordinates"]) == 2  # stopped before the corrupt vertex
+    assert events["c"].starts_at is None  # .NET empty date
+
+
+def test_wzdx_impact_from_lanes(now):
+    from emagg.sources.wzdx import impact_from_lanes
+
+    assert impact_from_lanes([{"type": "general", "status": "closed"}, {"type": "general", "status": "closed"},
+                              {"type": "shoulder", "status": "open"}]) == "all-lanes-closed"
+    assert impact_from_lanes([{"type": "general", "status": "closed"}]) == "some-lanes-closed"
+    assert impact_from_lanes([{"type": "general", "status": "open"}]) is None
+    feature = {"type": "Feature", "id": "k1", "geometry": {"type": "LineString", "coordinates": [[-85, 38], [-85.1, 38.1]]},
+               "properties": {"core_details": {"event_type": "work-zone", "road_names": ["I-65"]}, "vehicle_impact": "unknown",
+                              "start_date": "2026-09-01T00:00:00Z", "end_date": "2026-12-01T00:00:00Z",
+                              "lanes": [{"order": 1, "type": "general", "status": "closed"}, {"order": 2, "type": "general", "status": "closed"}]}}
+    (e,) = parse_wzdx({"features": [feature]}, now=now)
+    assert e.title == "Road closed: I-65" and e.severity == Severity.severe

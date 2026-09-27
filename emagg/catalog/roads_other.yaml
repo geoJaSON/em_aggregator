@@ -1,0 +1,123 @@
+# Road incidents and closures beyond WZDx. Evidence = open-source projects using these endpoints (2026).
+
+# --- Public ArcGIS incident layers (no key) --------------------------------------------------------------
+- id: ncdot_incidents
+  type: arcgis
+  name: NCDOT incidents (TIMS)
+  states: [NC]
+  url: https://services.arcgis.com/NuWFvHYDMVmmxMeM/arcgis/rest/services/NCDOT_TIMS_Incidents/FeatureServer/0
+  category: roads
+  id_field: Id
+  title: "{Condition}: {Road}"
+  description: "{Reason}"
+  area: "{Location}"
+  link: "{DriveNCLink}"
+  severity: {field: IsFullClosure, map: {"true": severe, "True": severe}, default: minor}
+  starts_field: StartDateTime
+  updated_field: LastUpdateDateTime
+  metrics: {event_type: EventType, lanes: LanesAffected, detour: Detour, county: CountyName, direction: Direction}
+  interval: 180
+  meta: {confidence: high, evidence: "johngcarlsson-usc/511-scraper live fixture; Irisheagle76/828-weather-direct (2026)"}
+
+- id: fdot_incidents
+  type: arcgis
+  name: FDOT incidents (DIVAS)
+  states: [FL]
+  url: https://gis.fdot.gov/arcgis/rest/services/DIVAS_GetEvent/FeatureServer/0
+  category: roads
+  title: "{eventtypedesc}: {highway}"
+  description: "{descriptionen}"
+  exclude: {status: [Resolved, resolved, RESOLVED]}
+  severity: {field: affectedlanes, contains: {"all lanes": severe, "closed to traffic": severe}, default: minor}
+  metrics: {lanes: affectedlanes, event_type: eventtypesae}
+  interval: 180
+  meta: {confidence: medium, evidence: "nicglazkov/commutescout states.py (in production, 2026)", notes: "Feeds FL511; FDOT is re-bidding FL511 in 2026 so this layer may move"}
+
+# --- DriveTexas (TxDOT) — key issued on application, intended for emergency management -----------------
+- id: drivetexas_conditions
+  type: geojson
+  name: DriveTexas road conditions
+  states: [TX]
+  url: "https://api.drivetexas.org/api/conditions.geojson?key={api_key}"
+  api_key: ${DRIVETEXAS_KEY}
+  category: roads
+  id_field: GLOBALID
+  title: "{condition}: {route_name}"
+  description: "{description}"
+  area: "{roadway}"
+  severity: {field: condition, map: {Closed: severe, Flood: severe, Damage: moderate, Accident: moderate, "Snow/Ice": moderate}, default: minor}
+  starts_field: start_time
+  metrics: {direction: travel_direction, from: from_limit, to: to_limit, detour: detour_flag}
+  meta:
+    confidence: high
+    evidence: "DBMaps/liberty-county-map; kirxkirx/local-weather-awareness (2026)"
+    signup: "https://api.drivetexas.org/"
+    notes: "Key by application (for emergency-management use); keys expire each March 31. Terms: no resale or redistribution."
+
+# --- 511 systems on the IBI/Arcadis platform (v2 API, developer key) ------------------------------------
+- id: la_511
+  type: ibi511
+  name: 511LA
+  states: [LA]
+  base_url: https://511la.org
+  api_key: ${LA511_KEY}
+  meta: {confidence: medium, evidence: "KFergusonUK/StreetWorks-SDK na511 (2026)", signup: "https://511la.org/my511/register", notes: "Free self-service key: register, then request one on the developer page"}
+
+- id: ga_511
+  type: ibi511
+  name: 511GA
+  states: [GA]
+  base_url: https://511ga.org
+  api_key: ${GA511_KEY}
+  meta: {confidence: high, evidence: "KFergusonUK/StreetWorks-SDK na511 (live key, 2026-08)", signup: "https://511ga.org/developers/doc"}
+
+- id: nc_drivenc
+  type: ibi511
+  name: DriveNC
+  states: [NC]
+  base_url: https://www.drivenc.gov
+  api_key: ${DRIVENC_KEY}
+  meta: {confidence: high, evidence: "nicglazkov/commutescout (production); johngcarlsson-usc/511-scraper (2026)", signup: "https://www.drivenc.gov/developers/doc", notes: "Same incidents as the NCDOT TIMS layer (no key needed); use one or the other"}
+
+- id: fl_511
+  type: ibi511
+  name: FL511
+  states: [FL]
+  base_url: https://fl511.com
+  api_key: ${FL511_KEY}
+  meta: {confidence: medium, evidence: "KFergusonUK/StreetWorks-SDK; johngcarlsson-usc/511-scraper (2026)", notes: "Key through an FDOT data agreement (no self-service page found). The FDOT DIVAS layer covers the same incidents without a key."}
+
+- id: ny_511
+  type: ibi511
+  name: 511NY
+  states: [NY]
+  base_url: https://511ny.org
+  api_key: ${NY511_KEY}
+  meta: {confidence: medium, evidence: "real 511NY sample in public repos (2026)", signup: "https://511ny.org/developers/doc"}
+
+- id: nv_511
+  type: ibi511
+  name: NVroads
+  states: [NV]
+  base_url: https://www.nvroads.com
+  api_key: ${NV511_KEY}
+  meta: {confidence: medium, evidence: "ArMac05/nevada-511-pipeline official doc copy (2026)", signup: "https://www.nvroads.com/developers/doc"}
+
+# --- Alabama: ALGO Traffic (ALDOT) — undocumented, off by default ------------------------------------
+- id: al_algo_traffic
+  type: json
+  name: ALGO Traffic (Alabama)
+  states: [AL]
+  enabled: false
+  url: https://api.algotraffic.com/v4.0/TrafficEvents
+  lat: startLocation_latitude
+  lon: startLocation_longitude
+  category: roads
+  id_field: id
+  title: "{title}: {startLocation_displayRouteDesignator}"
+  description: "{description}"
+  area: "{startLocation_city}, {startLocation_county} County"
+  severity: minor
+  filter: {active: [true]}
+  metrics: {type: type, severity_text: severity}
+  meta: {confidence: low, evidence: "sree181/Nexus-latest algoTraffic.ts (2026)", notes: "Undocumented API with no stated terms of use; enable at your discretion (catalog.enable)"}

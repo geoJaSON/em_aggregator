@@ -3,10 +3,13 @@
 const SEV = ["info", "minor", "moderate", "severe", "extreme"];
 const GLYPH = {
   weather: "⛈️", flood: "🌊", power: "⚡", comms: "📶", roads: "🚧",
-  fire: "🔥", seismic: "〰️", tropical: "🌀", other: "📍",
+  fire: "🔥", seismic: "〰️", tropical: "🌀", transport: "✈️", shelter: "🏠", other: "📍",
 };
 const CHANGE_LABEL = { new: "New", escalated: "Escalated", deescalated: "Eased", ended: "Cleared", expired: "Expired" };
 const RECENT_MS = 60 * 60 * 1000;
+const LIST_PAGE = 300;
+const CONTEXT_KINDS = new Set(["fema_declaration", "nhc_cone", "outlook"]);
+const CAT_ORDER = ["weather", "flood", "tropical", "power", "comms", "roads", "transport", "fire", "seismic", "shelter", "other"];
 
 const $ = (sel) => document.querySelector(sel);
 const state = {
@@ -15,6 +18,9 @@ const state = {
   summary: null,
   sources: [],
   timeline: [],
+  stateRollup: [],
+  stateFilter: load("stateFilter", ""),
+  listLimit: LIST_PAGE,
   hidden: new Set(load("hidden", [])),
   minSev: Number(load("minSev", 0)),
   search: "",
@@ -24,7 +30,6 @@ const state = {
   tab: "events",
   placing: false,
   pendingLatLng: null,
-  fittedToData: false,
 };
 
 // --- helpers ---------------------------------------------------------------------------------------
@@ -134,7 +139,25 @@ L.control.layers(baseLayers, null, { position: "topright" }).addTo(map);
 L.control.scale({ imperial: true, metric: true }).addTo(map);
 map.on("baselayerchange", (e) => save("base", e.name));
 
-const categoryLayers = {};
+// Areas and lines draw directly; every point goes into one cluster group so a national view stays readable.
+const shapesLayer = L.layerGroup().addTo(map);
+const pointsLayer = L.markerClusterGroup({
+  disableClusteringAtZoom: 11,
+  maxClusterRadius: 45,
+  showCoverageOnHover: false,
+  chunkedLoading: true,
+  iconCreateFunction(cluster) {
+    let max = 0;
+    for (const m of cluster.getAllChildMarkers()) max = Math.max(max, m.options.sevRank || 0);
+    const n = cluster.getChildCount();
+    const size = n < 10 ? 30 : n < 100 ? 36 : 44;
+    return L.divIcon({
+      className: "",
+      html: `<div class="cluster" data-sev="${SEV[max]}" style="width:${size}px;height:${size}px"><span>${n}</span></div>`,
+      iconSize: [size, size],
+    });
+  },
+}).addTo(map);
 const layerByUid = new Map();
 
 function makeLayer(f) {
@@ -145,11 +168,13 @@ function makeLayer(f) {
   if (g.type === "Point") {
     const [lon, lat] = g.coordinates;
     if (kind === "outage" || kind === "outage_cluster") {
-      const n = p.metrics.customers_out || 1;
-      return L.circleMarker([lat, lon], {
-        radius: Math.min(24, 4 + Math.sqrt(n) / 5),
-        color, weight: 1.5, fillColor: color, fillOpacity: 0.45,
-      }).bindTooltip(esc(p.title));
+      const d = Math.round(Math.min(44, 10 + Math.sqrt(p.metrics.customers_out || 1) / 2.5));
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="outage-dot" data-sev="${esc(p.severity)}" style="width:${d}px;height:${d}px"></div>`,
+        iconSize: [d, d],
+      });
+      return L.marker([lat, lon], { icon, sevRank: p.severity_rank }).bindTooltip(esc(p.title));
     }
     const icon = L.divIcon({
       className: "",
@@ -158,14 +183,18 @@ function makeLayer(f) {
       iconAnchor: [14, 14],
       popupAnchor: [0, -12],
     });
-    return L.marker([lat, lon], { icon, title: p.title, riseOnHover: true, zIndexOffset: p.severity_rank * 100 });
+    return L.marker([lat, lon], { icon, title: p.title, riseOnHover: true, zIndexOffset: p.severity_rank * 100, sevRank: p.severity_rank });
   }
   const isArea = g.type.includes("Polygon");
+  // Context areas (declarations, forecast cones, outlooks) are outlined, not filled, so hazards stay readable.
+  const context = CONTEXT_KINDS.has(kind);
   return L.geoJSON(f, {
     pane: isArea ? "areas" : "lines",
-    style: isArea
-      ? { color, weight: 1.5, fillColor: color, fillOpacity: p.severity_rank >= 3 ? 0.18 : 0.1 }
-      : { color, weight: 5, opacity: 0.85, lineCap: "round" },
+    style: !isArea
+      ? { color, weight: 5, opacity: 0.85, lineCap: "round" }
+      : context
+        ? { color, weight: 2, dashArray: "6 5", fillColor: color, fillOpacity: 0.04 }
+        : { color, weight: 1.5, fillColor: color, fillOpacity: p.severity_rank >= 3 ? 0.18 : 0.1 },
   }).bindTooltip(esc(p.title), { sticky: true });
 }
 
@@ -216,8 +245,10 @@ function visible(f) {
 
 function renderMap() {
   const reopen = state.openUid;
-  for (const g of Object.values(categoryLayers)) g.clearLayers();
+  shapesLayer.clearLayers();
+  pointsLayer.clearLayers();
   layerByUid.clear();
+  const points = [];
   const feats = state.features
     .filter((f) => f.geometry && visible(f))
     .sort((a, b) => a.properties.severity_rank - b.properties.severity_rank); // most severe drawn last (on top)
@@ -229,15 +260,15 @@ function renderMap() {
     layer.on("popupopen", () => { state.openUid = p.uid; });
     layer.on("popupclose", () => { if (state.openUid === p.uid) state.openUid = null; });
     layer.on("click", () => { state.selected = p.uid; renderList(); });
-    if (!categoryLayers[p.category]) categoryLayers[p.category] = L.layerGroup().addTo(map);
-    categoryLayers[p.category].addLayer(layer);
+    if (layer.getLatLng) points.push(layer); else shapesLayer.addLayer(layer);
     layerByUid.set(p.uid, layer);
   }
+  pointsLayer.addLayers(points);
   if (reopen && layerByUid.has(reopen)) openLayerPopup(layerByUid.get(reopen));
 }
 
 function openLayerPopup(layer) {
-  if (layer.getLatLng) layer.openPopup();
+  if (layer.getLatLng) pointsLayer.zoomToShowLayer(layer, () => layer.openPopup());
   else layer.openPopup(layer.getBounds().getCenter());
 }
 
@@ -282,7 +313,11 @@ function renderList() {
     list.innerHTML = `<li class="empty-state">${state.features.length ? "No events match the current filters." : "No active events."}</li>`;
     return;
   }
-  list.innerHTML = feats.map(itemHtml).join("");
+  list.innerHTML = feats.slice(0, state.listLimit).map(itemHtml).join("");
+  const more = $("#list-more");
+  const rest = feats.length - state.listLimit;
+  more.hidden = rest <= 0;
+  if (rest > 0) more.textContent = `Show ${Math.min(rest, LIST_PAGE)} more (${rest} not shown)`;
 }
 
 function renderChanges() {
@@ -306,7 +341,15 @@ function renderSources() {
   const badge = $("#sources-alert");
   badge.hidden = !bad;
   badge.textContent = bad;
-  $("#source-list").innerHTML = state.sources.map((s) => {
+  const order = (s) => {
+    const i = CAT_ORDER.indexOf(s.category);
+    return i < 0 ? 99 : i;
+  };
+  const sorted = [...state.sources].sort((a, b) => order(a) - order(b) || a.name.localeCompare(b.name));
+  let lastCat = null;
+  $("#source-list").innerHTML = sorted.map((s) => {
+    const header = s.category !== lastCat ? `<li class="source-group">${GLYPH[s.category] || ""} ${esc(catLabel(s.category))}</li>` : "";
+    lastCat = s.category;
     const meta = [];
     if (s.last_success) meta.push(`updated ${ago(s.last_success)}`);
     if (s.event_count != null) meta.push(`${s.event_count} events`);
@@ -315,17 +358,63 @@ function renderSources() {
     const err = s.health === "failing" || s.health === "not_configured"
       ? `<div class="s-error${s.health === "not_configured" ? " info" : ""}">${esc(s.last_error || "")}</div>` : "";
     const stale = s.health === "stale" ? '<div class="s-error">No successful update for over 3 polling intervals.</div>' : "";
-    return `<li class="source">
+    const m = s.meta || {};
+    const signup = s.health === "not_configured" && safeUrl(m.signup)
+      ? `<div class="s-meta"><a href="${esc(safeUrl(m.signup))}" target="_blank" rel="noopener noreferrer">Get a free key ↗</a></div>` : "";
+    const notes = m.notes ? `<div class="s-meta">${esc(m.notes)}</div>` : "";
+    const where = s.states && s.states.length ? ` · ${esc(s.states.join(", "))}` : "";
+    const conf = m.confidence && m.confidence !== "high"
+      ? ` <span class="note" title="How well this feed's endpoint has been verified">${esc(m.confidence)} confidence</span>` : "";
+    return `${header}<li class="source">
       <div class="s-head"><span class="health ${esc(s.health)}" title="${esc(s.health.replace("_", " "))}"></span>
-        <span class="s-name">${esc(s.name)} ${s.note ? `<span class="note">${esc(s.note)}</span>` : ""}</span>
+        <span class="s-name">${esc(s.name)} ${s.note ? `<span class="note">${esc(s.note)}</span>` : ""}${conf}</span>
         ${canRefresh ? `<button class="btn small" data-refresh="${esc(s.id)}">Refresh</button>` : ""}</div>
-      <div class="s-meta">${esc(catLabel(s.category))} · ${esc(s.type)}${meta.length ? " · " + esc(meta.join(" · ")) : ""}</div>
-      ${err}${stale}
+      <div class="s-meta">${esc(s.type)}${where}${meta.length ? " · " + esc(meta.join(" · ")) : ""}</div>
+      ${notes}${err}${stale}${signup}
     </li>`;
   }).join("");
 }
 
+function renderStates() {
+  const rows = state.stateRollup;
+  const sel = $("#state-filter");
+  const current = state.stateFilter;
+  const known = rows.filter((r) => r.state !== "??");
+  const opts = ['<option value="">All states</option>'].concat(
+    known.map((r) => `<option value="${esc(r.state)}">${esc(r.name)} (${r.count})</option>`));
+  if (current && !known.some((r) => r.state === current)) opts.push(`<option value="${esc(current)}">${esc(current)} (0)</option>`);
+  sel.innerHTML = opts.join("");
+  sel.value = current;
+  if (!rows.length) {
+    $("#state-table").innerHTML = '<tr><td class="empty-state">No active events.</td></tr>';
+    return;
+  }
+  const dot = (sev, n) => (n ? `<span class="sev-count" data-sev="${sev}">${n}</span>` : '<span class="muted">·</span>');
+  $("#state-table").innerHTML = `<thead><tr><th>State</th><th title="Extreme">Ext</th><th title="Severe">Sev</th><th title="Moderate">Mod</th><th>All</th><th>Power out</th></tr></thead><tbody>` +
+    rows.map((r) => `<tr data-state="${esc(r.state)}" class="${r.state === current ? "selected" : ""}${r.state === "??" ? " unassigned" : ""}" tabindex="0">
+      <td>${esc(r.name)}</td><td>${dot("extreme", r.by_severity.extreme)}</td><td>${dot("severe", r.by_severity.severe)}</td>
+      <td>${dot("moderate", r.by_severity.moderate)}</td><td>${r.count}</td>
+      <td>${r.customers_out ? r.customers_out.toLocaleString() : '<span class="muted">·</span>'}</td></tr>`).join("") + "</tbody>";
+}
+
+function setStateFilter(code) {
+  state.stateFilter = code || "";
+  save("stateFilter", state.stateFilter);
+  state.listLimit = LIST_PAGE;
+  const row = state.stateRollup.find((r) => r.state === code);
+  if (row && row.bbox) map.fitBounds([[row.bbox[1], row.bbox[0]], [row.bbox[3], row.bbox[2]]], { padding: [10, 10] });
+  else if (!code) fitArea();
+  refresh();
+}
+
+function fitArea() {
+  const bb = state.config.area.bbox;
+  if (bb) map.fitBounds([[bb[1], bb[0]], [bb[3], bb[2]]]);
+  else map.setView([37.5, -96], 4);
+}
+
 function renderAll() {
+  renderStates();
   renderTiles();
   renderMap();
   renderList();
@@ -337,8 +426,7 @@ function selectEvent(uid, fromList) {
   state.selected = uid;
   const layer = layerByUid.get(uid);
   if (layer && fromList) {
-    if (layer.getLatLng) map.setView(layer.getLatLng(), Math.max(map.getZoom(), 11));
-    else map.fitBounds(layer.getBounds(), { maxZoom: 11, padding: [30, 30] });
+    if (!layer.getLatLng) map.fitBounds(layer.getBounds(), { maxZoom: 11, padding: [30, 30] });
     openLayerPopup(layer);
     state.expanded = null;
   } else if (!layer) {
@@ -352,22 +440,20 @@ function selectEvent(uid, fromList) {
 async function refresh() {
   try {
     const hours = $("#changes-hours").value;
-    const [events, summary, sources, timeline] = await Promise.all([
-      api("/api/events"),
-      api("/api/summary"),
+    const st = state.stateFilter ? `state=${encodeURIComponent(state.stateFilter)}` : "";
+    const [events, summary, sources, timeline, rollup] = await Promise.all([
+      api(`/api/events?${st}`),
+      api(`/api/summary?${st}`),
       api("/api/sources"),
-      api(`/api/timeline?hours=${hours}`),
+      api(`/api/timeline?hours=${hours}&${st}`),
+      api("/api/states"),
     ]);
     state.features = events.features;
     state.summary = summary;
     state.sources = sources.sources;
     state.timeline = timeline.items;
+    state.stateRollup = rollup.states;
     renderAll();
-    if (!state.fittedToData && !state.config.area.bbox && state.features.some((f) => f.geometry)) {
-      const b = L.geoJSON({ type: "FeatureCollection", features: state.features.filter((f) => f.geometry) }).getBounds();
-      if (b.isValid()) map.fitBounds(b, { padding: [20, 20], maxZoom: 9 });
-      state.fittedToData = true;
-    }
     $("#updated").textContent = `Updated ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
   } catch (err) {
     $("#updated").textContent = `Update failed (${err.message}) — retrying`;
@@ -520,6 +606,7 @@ $("#source-list").addEventListener("click", async (e) => {
 
 $("#search").addEventListener("input", (e) => {
   state.search = e.target.value.trim().toLowerCase();
+  state.listLimit = LIST_PAGE;
   renderMap();
   renderList();
 });
@@ -534,6 +621,17 @@ minSevSelect.addEventListener("change", (e) => {
 });
 
 $("#changes-hours").addEventListener("change", refresh);
+$("#state-filter").addEventListener("change", (e) => setStateFilter(e.target.value));
+$("#state-table").addEventListener("click", (e) => {
+  const row = e.target.closest("tr[data-state]");
+  if (!row || row.dataset.state === "??") return;
+  setStateFilter(row.dataset.state === state.stateFilter ? "" : row.dataset.state);
+  switchTab("events");
+});
+$("#list-more").addEventListener("click", () => {
+  state.listLimit += LIST_PAGE;
+  renderList();
+});
 
 function switchTab(name) {
   state.tab = name;
@@ -542,7 +640,7 @@ function switchTab(name) {
     t.classList.toggle("active", on);
     t.setAttribute("aria-selected", on);
   });
-  for (const id of ["events", "changes", "sources"]) $(`#tab-${id}`).hidden = id !== name;
+  for (const id of ["events", "changes", "states", "sources"]) $(`#tab-${id}`).hidden = id !== name;
 }
 document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => switchTab(t.dataset.tab)));
 
@@ -554,9 +652,10 @@ document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () 
   $("#app-title").textContent = state.config.title;
   $("#area-name").textContent = state.config.area.name;
   $("#demo-banner").hidden = !state.config.demo;
-  const bb = state.config.area.bbox;
-  if (bb) map.fitBounds([[bb[1], bb[0]], [bb[3], bb[2]]]);
+  fitArea();
   await refresh();
+  const saved = state.stateRollup.find((r) => r.state === state.stateFilter);
+  if (saved && saved.bbox) map.fitBounds([[saved.bbox[1], saved.bbox[0]], [saved.bbox[3], saved.bbox[2]]], { padding: [10, 10] });
   connectStream();
   setInterval(refresh, 60000); // safety net in case the live stream drops silently
   setInterval(() => { renderList(); renderSources(); }, 30000); // keep relative times fresh

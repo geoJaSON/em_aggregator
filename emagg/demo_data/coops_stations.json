@@ -1,0 +1,51 @@
+{
+ "count": 4,
+ "units": "english",
+ "stations": [
+  {
+   "id": "8771450",
+   "name": "Galveston Pier 21",
+   "lat": 29.31,
+   "lng": -94.7933,
+   "state": "TX",
+   "tidal": true,
+   "greatlakes": false
+  },
+  {
+   "id": "8771341",
+   "name": "Galveston Bay Entrance, North Jetty",
+   "lat": 29.3573,
+   "lng": -94.7248,
+   "state": "TX",
+   "tidal": true,
+   "greatlakes": false
+  },
+  {
+   "id": "8770613",
+   "name": "Morgans Point, Barbours Cut",
+   "lat": 29.6817,
+   "lng": -94.985,
+   "state": "TX",
+   "tidal": true,
+   "greatlakes": false
+  },
+  {
+   "id": "8772447",
+   "name": "Freeport",
+   "lat": 28.9433,
+   "lng": -95.3025,
+   "state": "TX",
+   "tidal": true,
+   "greatlakes": false
+  },
+  {
+   "id": "9410170",
+   "name": "San Diego (outside area)",
+   "lat": 32.7142,
+   "lng": -117.1736,
+   "state": "CA",
+   "tidal": true,
+   "greatlakes": false
+  }
+ ]
+}

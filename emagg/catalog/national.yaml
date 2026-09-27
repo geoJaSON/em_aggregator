@@ -1,0 +1,92 @@
+# National feeds: free, no key, cover every state.
+
+- id: nws_alerts
+  type: nws_alerts
+  meta: {confidence: high, notes: "api.weather.gov active alerts; zone-based alerts drawn from zone outlines"}
+
+- id: river_gauges
+  type: nwps_gauges
+  meta: {confidence: high, notes: "NOAA National Water Prediction Service gauges at/above action stage"}
+
+- id: earthquakes
+  type: usgs_earthquakes
+  meta: {confidence: high}
+
+- id: wildfires
+  type: nifc_wildfires
+  meta: {confidence: high, notes: "NIFC WFIGS current incident locations (IRWIN)"}
+
+- id: tropical
+  type: nhc_storms
+  meta: {confidence: high}
+
+- id: nhc_cones
+  type: nhc_gis
+  meta: {confidence: high, evidence: "SysAdminDoc/HurricaneMap, kerryhatcher/rustywx, jaiamin/aster (2026)", notes: "Forecast cones, tracks and coastal watch/warning segments for all active storms"}
+
+- id: coastal_water_levels
+  type: coops_water_levels
+  meta: {confidence: high, evidence: "GClunies/noaa_coops recorded API responses (2026); NOAA-CO-OPS threshold code", notes: "Tide gauges at or near NWS coastal flood thresholds (storm surge)"}
+
+- id: storm_reports
+  type: iem_lsr
+  meta: {confidence: high, evidence: "akrherz/iem lsr.py — the service's own code (2026)", notes: "NWS Local Storm Reports: damage, flooding, surge, downed trees/wires"}
+
+- id: public_alerts
+  type: ipaws
+  meta: {confidence: high, evidence: "KR8MER/eas-station IPAWS integration (2026)", notes: "Non-NWS public alerts: evacuation orders, shelter-in-place, civil emergencies, 911 outages"}
+
+- id: internet_outages
+  type: ioda
+  meta: {confidence: high, evidence: "InetIntel/ioda-api server source (2026)", notes: "State-level internet connectivity drops (proxy for widespread comms loss)"}
+
+- id: airports
+  type: faa_nas
+  meta: {confidence: high, evidence: "fishcharlie/AirportStatusBot, cruzdariel/nasstat (2026)"}
+
+- id: fema_declarations
+  type: fema_declarations
+  meta: {confidence: high, evidence: "OpenFEMA v2 API; bartytime4life/Kansas-Frontier-Matrix connector (2026)"}
+
+- id: fema_open_shelters
+  type: arcgis
+  name: Open shelters (FEMA NSS)
+  url: https://gis.fema.gov/arcgis/rest/services/NSS/OpenShelters/FeatureServer/0
+  where: "shelter_status = 'OPEN'"
+  category: shelter
+  id_field: shelter_id
+  title: "Shelter open: {shelter_name}"
+  area: "{city}, {state}"
+  severity: info
+  metrics: {population: total_population, capacity: evacuation_capacity, pets: pet_accommodations_code, wheelchair: wheelchair_accessible, operator: org_name}
+  interval: 900
+  meta: {confidence: high, evidence: "abe238/shelters-pp-cli (live-checked 2026-06); joeblau/terrasight (2026)"}
+
+- id: spc_day1_outlook
+  type: geojson
+  name: Severe weather outlook (SPC Day 1)
+  url: https://www.spc.noaa.gov/products/outlook/day1otlk_cat.nolyr.geojson
+  category: weather
+  id_field: LABEL
+  title: "SPC Day 1 outlook: {LABEL2}"
+  severity: {field: LABEL, map: {MRGL: minor, SLGT: moderate, ENH: severe, MDT: severe, HIGH: extreme}, default: info}
+  filter: {LABEL: [MRGL, SLGT, ENH, MDT, HIGH]}
+  starts_field: VALID
+  expires_field: EXPIRE
+  constants: {kind: outlook}
+  simplify: 0.01
+  interval: 900
+  meta: {confidence: high, evidence: "Unidata/metpy-mondays saved output; several 2026 repos"}
+
+- id: wpc_excessive_rain_day1
+  type: arcgis
+  name: Excessive rainfall outlook (WPC Day 1)
+  url: https://mapservices.weather.noaa.gov/vector/rest/services/hazards/wpc_precip_hazards/MapServer/0
+  category: flood
+  title: "Excessive rainfall risk (Day 1): {outlook}"
+  severity: {field: dn, map: {"1": minor, "2": moderate, "3": severe, "4": extreme}, default: minor}
+  metrics: {valid: valid_time}
+  constants: {kind: outlook}
+  simplify: 0.01
+  interval: 900
+  meta: {confidence: high, evidence: "NOAA-GSL/wizard-graphics URLdata.js; SysAdminDoc/StormScope (2026)"}

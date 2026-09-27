@@ -25,6 +25,18 @@ IMPACT_LABEL = {
 }
 
 
+def impact_from_lanes(lanes: list[dict[str, Any]] | None) -> str | None:
+    """Some feeds (e.g. Kentucky) leave vehicle_impact 'unknown' and describe lanes instead. Conservative: a full
+    closure only when 2+ travel lanes are listed and all are closed (feeds often list just the affected lane)."""
+    travel = [lane for lane in lanes or [] if "shoulder" not in str(lane.get("type", "")) and "ramp" not in str(lane.get("type", ""))]
+    closed = [lane for lane in travel if str(lane.get("status", "")).lower() == "closed"]
+    if not closed:
+        return None
+    if len(travel) >= 2 and len(closed) == len(travel):
+        return "all-lanes-closed"
+    return "some-lanes-closed"
+
+
 def parse_wzdx(payload: dict[str, Any], closures_only: bool = True, now: datetime | None = None) -> list[Event]:
     now = now or utcnow()
     events = []
@@ -32,6 +44,8 @@ def parse_wzdx(payload: dict[str, Any], closures_only: bool = True, now: datetim
         props = f.get("properties") or {}
         core = props.get("core_details") or props
         impact = str(props.get("vehicle_impact") or "unknown").lower()
+        if impact == "unknown":
+            impact = impact_from_lanes(props.get("lanes")) or impact
         if closures_only and impact != "all-lanes-closed":
             continue
         start, end = parse_time(props.get("start_date")), parse_time(props.get("end_date"))
@@ -78,5 +92,5 @@ class WZDxFeed(Source):
     required_options = ("url",)
 
     async def fetch(self) -> list[Event]:
-        payload = await self.get_json(self.options["url"], headers=self.options.get("headers") or {})
+        payload = await self.get_json(self.option_url(), headers=self.options.get("headers") or {})
         return parse_wzdx(payload, closures_only=self.options.get("closures_only", True))

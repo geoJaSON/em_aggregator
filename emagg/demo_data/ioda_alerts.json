@@ -1,0 +1,12 @@
+{"type": "outages.alerts", "metadata": {"requestTime": "{{now}}"}, "error": null, "data": [
+ {"datasource": "bgp", "entity": {"code": "4435", "name": "Texas", "type": "region", "attrs": {"country_code": "US", "country_name": "United States"}},
+  "time": "{{s:now-40m}}", "level": "critical", "condition": "< 99% of median", "value": 21830, "historyValue": 23610, "method": "median"},
+ {"datasource": "ping-slash24", "entity": {"code": "4435", "name": "Texas", "type": "region", "attrs": {"country_code": "US", "country_name": "United States"}},
+  "time": "{{s:now-30m}}", "level": "critical", "condition": "< 80% of median", "value": 51200, "historyValue": 66020, "method": "median"},
+ {"datasource": "bgp", "entity": {"code": "4437", "name": "Florida", "type": "region", "attrs": {"country_code": "US", "country_name": "United States"}},
+  "time": "{{s:now-80m}}", "level": "critical", "condition": "< 99% of median", "value": 100, "historyValue": 110, "method": "median"},
+ {"datasource": "bgp", "entity": {"code": "4437", "name": "Florida", "type": "region", "attrs": {"country_code": "US", "country_name": "United States"}},
+  "time": "{{s:now-20m}}", "level": "normal", "condition": "normal", "value": 109, "historyValue": 110, "method": "median"},
+ {"datasource": "bgp", "entity": {"code": "GE", "name": "Georgia", "type": "country", "attrs": {}},
+  "time": "{{s:now-10m}}", "level": "critical", "condition": "< 99% of median", "value": 5, "historyValue": 10, "method": "median"}
+]}

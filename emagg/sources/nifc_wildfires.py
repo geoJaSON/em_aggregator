@@ -64,6 +64,7 @@ def parse_fires(features: list[dict[str, Any]]) -> list[Event]:
                 starts_at=parse_time(p.get("FireDiscoveryDateTime")),
                 updated_at=parse_time(p.get("ModifiedOnDateTime_dt") or p.get("ModifiedOnDateTime")),
                 url=None,
+                states=[state] if state else [],
                 metrics={
                     "acres": acres,
                     "percent_contained": contained,

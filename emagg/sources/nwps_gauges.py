@@ -86,6 +86,7 @@ def parse_gauges(payload: Any, min_category: str = "action", include_forecast: b
                 geometry=point(lon, lat),
                 updated_at=parse_time(obs.get("validTime")),
                 url=f"https://water.noaa.gov/gauges/{lid.lower()}",
+                states=[state] if state else [],
                 metrics={
                     "kind": "river_gauge",
                     "lid": lid,

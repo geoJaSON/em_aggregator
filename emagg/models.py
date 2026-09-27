@@ -15,9 +15,11 @@ class Category(str, Enum):
     power = "power"
     comms = "comms"
     roads = "roads"
+    transport = "transport"
     fire = "fire"
     seismic = "seismic"
     tropical = "tropical"
+    shelter = "shelter"
     other = "other"
 
 
@@ -59,6 +61,10 @@ class Event(BaseModel):
     updated_at: datetime | None = None
     expires_at: datetime | None = None
     url: str | None = None
+    # Two-letter state codes the event touches, and county FIPS for point events. Filled from the feed when it
+    # says so, otherwise derived from the geometry (see emagg.regions).
+    states: list[str] = Field(default_factory=list)
+    fips: str | None = None
     metrics: dict[str, Any] = Field(default_factory=dict)
     # IDs (within the same source) of earlier versions this event replaces, e.g. an NWS alert update.
     # Lets the store keep the original first-seen time instead of treating each update as brand new.

@@ -58,10 +58,17 @@ class Source:
             self.category = Category(self.options["category"])
 
     def config_error(self) -> str | None:
-        missing = [k for k in self.required_options if not self.options.get(k)]
+        needed = list(self.required_options) + list(self.options.get("requires") or [])
+        if "{api_key}" in str(self.options.get("url", "")) and "api_key" not in needed:
+            needed.append("api_key")
+        missing = [k for k in needed if not self.options.get(k)]
         if missing:
             return "not configured: set " + ", ".join(missing)
         return None
+
+    def option_url(self, key: str = "url") -> str:
+        """A URL option with ``{api_key}`` filled from the api_key option (usually an env var)."""
+        return str(self.options[key]).replace("{api_key}", str(self.options.get("api_key") or ""))
 
     async def fetch(self) -> list[Event]:
         raise NotImplementedError

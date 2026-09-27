@@ -1,0 +1,50 @@
+<AIRPORT_STATUS_INFORMATION>
+  <Update_Time>DEMO</Update_Time>
+  <Dtd_File>http://www.fly.faa.gov/AirportStatus.dtd</Dtd_File>
+  <Delay_type>
+    <Name>Airport Closures</Name>
+    <Airport_Closure_List>
+      <Airport>
+        <ARPT>GLS</ARPT>
+        <Reason>!GLS DEMO AD AP CLSD DUE TO HURRICANE</Reason>
+        <Start>Sep 27 at 06:00 UTC.</Start>
+        <Reopen>Sep 29 at 12:00 UTC.</Reopen>
+      </Airport>
+    </Airport_Closure_List>
+  </Delay_type>
+  <Delay_type>
+    <Name>Ground Stop Programs</Name>
+    <Ground_Stop_List>
+      <Program>
+        <ARPT>HOU</ARPT>
+        <Reason>weather / wind</Reason>
+        <End_Time>3:30 pm CDT</End_Time>
+      </Program>
+    </Ground_Stop_List>
+  </Delay_type>
+  <Delay_type>
+    <Name>Ground Delay Programs</Name>
+    <Ground_Delay_List>
+      <Ground_Delay>
+        <ARPT>IAH</ARPT>
+        <Reason>weather / thunderstorms</Reason>
+        <Avg>1 hour and 24 minutes</Avg>
+        <Max>3 hours and 5 minutes</Max>
+      </Ground_Delay>
+    </Ground_Delay_List>
+  </Delay_type>
+  <Delay_type>
+    <Name>General Arrival/Departure Delay Info</Name>
+    <Arrival_Departure_Delay_List>
+      <Delay>
+        <ARPT>MSY</ARPT>
+        <Reason>WX:Wind</Reason>
+        <Arrival_Departure Type="Departure">
+          <Min>16 minutes</Min>
+          <Max>30 minutes</Max>
+          <Trend>Increasing</Trend>
+        </Arrival_Departure>
+      </Delay>
+    </Arrival_Departure_Delay_List>
+  </Delay_type>
+</AIRPORT_STATUS_INFORMATION>

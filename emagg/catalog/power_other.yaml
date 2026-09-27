@@ -1,0 +1,167 @@
+# Utility outage feeds not on KUBRA. All public, no key. Evidence = open-source projects reading them.
+
+- id: duke_energy
+  type: arcgis
+  name: Duke Energy
+  states: [NC, SC, FL, IN, OH, KY]
+  url: https://services3.arcgis.com/oX5r75R7mapdoI2F/ArcGIS/rest/services/Duke_Energy_Distribution_Outages_Public/FeatureServer/0
+  category: power
+  id_field: OBJECTID
+  title: "{AFFECTED_CUSTOMERS} customers out — {CAUSE}"
+  area: "Duke Energy ({JURISDICTION})"
+  severity: {field: AFFECTED_CUSTOMERS, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: START_TIME
+  updated_field: last_edited_date
+  metrics: {customers_out: AFFECTED_CUSTOMERS, etr: ETR, cause: CAUSE, crew_status: CREW_STATUS, jurisdiction: JURISDICTION}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: Duke Energy}
+  meta:
+    confidence: high
+    evidence: "github.com/codebooker/AmericaMap proxy.py (2026); github.com/SecuritahGuy/openrisk-radar nc.json (2026)"
+    notes: "Duke's public ArcGIS layer (outage points, all jurisdictions)"
+
+- id: fpl_counties
+  type: county_outages
+  name: FPL
+  states: [FL]
+  url: https://www.fplmaps.com/customer/outage/CountyOutages.json
+  records: outages
+  county_field: County Name
+  out_field: Customers Out
+  served_field: Customers Served
+  link: https://www.fplmaps.com/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+
+- id: fpl_points
+  type: json
+  name: FPL outage points
+  states: [FL]
+  url: https://www.fplmaps.com/customer/outage/StormFeedRestoration.json
+  records: outages
+  lat: lat
+  lon: lng
+  category: power
+  id_field: ticketNum
+  title: "{customersAffected} customers out — {Cause}"
+  severity: {field: customersAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: customersAffected, etr: etr, status: status, cause: Cause}
+  constants: {kind: outage, utility: FPL}
+  meta:
+    confidence: high
+    evidence: "github.com/simonw/scrape-florida-outages (working 2026-09)"
+
+- id: entergy_louisiana
+  type: county_outages
+  name: Entergy Louisiana
+  states: [LA]
+  url: https://entergy.datacapable.com/datacapable/v1/entergy/EntergyLouisiana/county
+  headers: {Referer: "https://www.etrviewoutage.com/"}
+  county_field: county
+  out_field: customersAffected
+  served_field: customersServed
+  updated_field: lastUpdatedTime
+  link: https://www.etrviewoutage.com/
+  meta: {confidence: high, evidence: "github.com/mefferso/cwa-outage-viewer (live cache 2026-09-27); github.com/patricktrainer/entergy-outages (2026)"}
+
+- id: entergy_mississippi
+  type: county_outages
+  name: Entergy Mississippi
+  states: [MS]
+  url: https://entergy.datacapable.com/datacapable/v1/entergy/EntergyMississippi/county
+  headers: {Referer: "https://www.etrviewoutage.com/"}
+  county_field: county
+  out_field: customersAffected
+  served_field: customersServed
+  updated_field: lastUpdatedTime
+  link: https://www.etrviewoutage.com/
+  meta: {confidence: high, evidence: "github.com/mefferso/cwa-outage-viewer (2026); github.com/patricktrainer/entergy-outages (2026)"}
+
+- id: entergy_texas
+  type: county_outages
+  name: Entergy Texas
+  states: [TX]
+  url: https://entergy.datacapable.com/datacapable/v1/entergy/EntergyTexas/county
+  headers: {Referer: "https://www.etrviewoutage.com/"}
+  county_field: county
+  out_field: customersAffected
+  served_field: customersServed
+  updated_field: lastUpdatedTime
+  link: https://www.etrviewoutage.com/
+  meta: {confidence: high, evidence: "github.com/mefferso/cwa-outage-viewer (2026); github.com/patricktrainer/entergy-outages (2026)"}
+
+- id: entergy_arkansas
+  type: county_outages
+  name: Entergy Arkansas
+  states: [AR]
+  url: https://entergy.datacapable.com/datacapable/v1/entergy/EntergyArkansas/county
+  headers: {Referer: "https://www.etrviewoutage.com/"}
+  county_field: county
+  out_field: customersAffected
+  served_field: customersServed
+  updated_field: lastUpdatedTime
+  link: https://www.etrviewoutage.com/
+  meta: {confidence: high, evidence: "github.com/mefferso/cwa-outage-viewer (2026); github.com/patricktrainer/entergy-outages (2026)"}
+
+- id: entergy_new_orleans
+  type: county_outages
+  name: Entergy New Orleans
+  states: [LA]
+  enabled: false
+  url: https://entergy.datacapable.com/datacapable/v1/entergy/EntergyNOLA/county
+  headers: {Referer: "https://www.etrviewoutage.com/"}
+  county_field: county
+  out_field: customersAffected
+  served_field: customersServed
+  updated_field: lastUpdatedTime
+  meta: {confidence: low, evidence: "CAIDA/zeusping (2021)", notes: "Only seen in older code; enable via catalog.enable and check with emagg poll"}
+
+- id: centerpoint_tx
+  type: json
+  name: CenterPoint Energy
+  states: [TX]
+  url: https://centerpoint.datacapable.com/datacapable/v2/p/centerpoint/r/texas/map/events
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: CenterPoint Energy}
+  meta: {confidence: high, evidence: "github.com/codebooker/AmericaMap proxy.py (2026); github.com/TexasTechUtil/tx-utility-map (2026)"}
+
+- id: cleco
+  type: json
+  name: Cleco
+  states: [LA]
+  url: https://cleco-prod.azure-api.net/outage/api/1/outage/alloutages/2/1
+  headers: {Referer: "https://myaccount.cleco.com/"}
+  records: data
+  lat: lat
+  lon: lon
+  category: power
+  id_field: incidentId
+  title: "{affectedCount} customers out — {location}"
+  severity: {field: affectedCount, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: affectedCount, status: status}
+  constants: {kind: outage, utility: Cleco}
+  meta: {confidence: high, evidence: "github.com/mefferso/cwa-outage-viewer (live cache 2026-09-27); github.com/codebooker/AmericaMap (2026)"}
+
+- id: odin_counties
+  type: county_outages
+  name: ODIN (ORNL)
+  enabled: false
+  url: https://openenergyhub.ornl.gov/api/explore/v2.1/catalog/datasets/odin-real-time-outages-county/exports/json
+  fips_field: communitydescriptor
+  out_field: metersaffected
+  utility_field: name
+  meta:
+    confidence: medium
+    evidence: "github.com/bradleybond512/crystal-ball api/grid-outages.js (2026)"
+    notes: "National county-level outages from utilities participating in ORNL's ODIN. Off by default: it can repeat utilities already configured (e.g. CenterPoint) and double-count in state totals."

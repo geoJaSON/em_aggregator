@@ -1,0 +1,38 @@
+{
+ "8771450": {
+  "nos_minor": 4.9,
+  "nos_moderate": 5.9,
+  "nos_major": 7.1,
+  "nws_minor": 4.8,
+  "nws_moderate": 5.8,
+  "nws_major": 7.0,
+  "action": null
+ },
+ "8771341": {
+  "nos_minor": 4.6,
+  "nos_moderate": 5.6,
+  "nos_major": 6.7,
+  "nws_minor": null,
+  "nws_moderate": null,
+  "nws_major": null,
+  "action": null
+ },
+ "8770613": {
+  "nos_minor": 4.4,
+  "nos_moderate": 5.3,
+  "nos_major": 6.5,
+  "nws_minor": 4.4,
+  "nws_moderate": 5.3,
+  "nws_major": 6.5,
+  "action": null
+ },
+ "8772447": {
+  "nos_minor": null,
+  "nos_moderate": null,
+  "nos_major": null,
+  "nws_minor": null,
+  "nws_moderate": null,
+  "nws_major": null,
+  "action": null
+ }
+}

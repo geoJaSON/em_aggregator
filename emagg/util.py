@@ -13,6 +13,13 @@ def parse_time(value: Any) -> datetime | None:
         return None
     if isinstance(value, datetime):
         return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    if isinstance(value, str) and len(value.strip()) in (12, 14) and value.strip().isdigit() and value.strip()[:2] in ("19", "20"):
+        # Compact UTC stamps like 202609271200 (SPC, IEM) are dates, not epoch milliseconds.
+        try:
+            fmt = "%Y%m%d%H%M%S" if len(value.strip()) == 14 else "%Y%m%d%H%M"
+            return datetime.strptime(value.strip(), fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            return None
     if isinstance(value, (int, float)) or (isinstance(value, str) and value.strip().lstrip("-").isdigit()):
         try:
             n = float(value)

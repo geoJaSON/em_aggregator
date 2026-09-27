@@ -15,7 +15,11 @@
     "areaDesc": "Harris; Galveston",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXZ213",
+      "TXZ438",
+      "GMZ335"
+     ]
     },
     "affectedZones": [
      "https://api.weather.gov/zones/county/TXC201",
@@ -54,7 +58,9 @@
     "areaDesc": "Galveston",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXZ438"
+     ]
     },
     "affectedZones": [
      "https://api.weather.gov/zones/county/TXC167"
@@ -118,7 +124,9 @@
     "areaDesc": "Harris, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC201"
+     ]
     },
     "affectedZones": [],
     "references": [],
@@ -180,7 +188,9 @@
     "areaDesc": "Harris, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC201"
+     ]
     },
     "affectedZones": [],
     "references": [
@@ -249,7 +259,10 @@
     "areaDesc": "Brazoria, TX; Fort Bend, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC039",
+      "TXC157"
+     ]
     },
     "affectedZones": [],
     "references": [],
@@ -311,7 +324,10 @@
     "areaDesc": "Harris, TX; Chambers, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC201",
+      "TXC071"
+     ]
     },
     "affectedZones": [],
     "references": [],
@@ -373,7 +389,9 @@
     "areaDesc": "Montgomery, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC339"
+     ]
     },
     "affectedZones": [],
     "references": [],
@@ -409,7 +427,9 @@
     "areaDesc": "Montgomery, TX",
     "geocode": {
      "SAME": [],
-     "UGC": []
+     "UGC": [
+      "TXC339"
+     ]
     },
     "affectedZones": [],
     "references": [

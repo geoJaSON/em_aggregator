@@ -138,7 +138,7 @@ class WazeFeed(Source):
     required_options = ("url",)
 
     async def fetch(self) -> list[Event]:
-        payload = await self.get_json(self.options["url"])
+        payload = await self.get_json(self.option_url())
         return parse_waze(
             payload,
             types=self.options.get("types"),

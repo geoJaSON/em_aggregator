@@ -28,6 +28,37 @@ from emagg.sources.base import Source, SourceError, register
 from emagg.util import clean_text, num, parse_time, render_template
 
 
+def _coerce(value: Any) -> Any:
+    """Numeric strings like "1,234" become numbers so metrics sum and sort properly."""
+    if isinstance(value, str) and value.strip():
+        text = value.strip()
+        if len(text) > 1 and text.startswith("0") and not text.startswith("0."):
+            return value  # codes like FIPS "007" keep their leading zeros
+        n = num(text)
+        if n is not None and text.replace(",", "").replace(".", "", 1).lstrip("-").isdigit():
+            return int(n) if n.is_integer() else n
+    return value
+
+
+def flatten(record: dict[str, Any], prefix: str = "") -> dict[str, Any]:
+    """{"a": {"b": 1}} -> {"a_b": 1}, so nested JSON fields work in templates and field options."""
+    out: dict[str, Any] = {}
+    for k, v in record.items():
+        key = f"{prefix}{k}"
+        if isinstance(v, dict):
+            out.update(flatten(v, key + "_"))
+        else:
+            out[key] = v
+    return out
+
+
+def dig(data: Any, path: str | None) -> Any:
+    """Follow a dotted path ("data.items") into parsed JSON; empty path returns the data itself."""
+    for part in [p for p in (path or "").split(".") if p]:
+        data = data.get(part) if isinstance(data, dict) else None
+    return data
+
+
 class FieldMapping:
     def __init__(self, options: dict[str, Any], default_category: Category = Category.other):
         self.category = Category(options.get("category", default_category.value))
@@ -42,7 +73,11 @@ class FieldMapping:
         self.expires_field = options.get("expires_field")
         metrics = options.get("metrics") or []
         self.metrics = metrics if isinstance(metrics, dict) else {m: m for m in metrics}
+        # Fixed metrics added to every event, e.g. {kind: outage, utility: Duke Energy} so power points roll up.
+        self.constants = dict(options.get("constants") or {})
         self.filter = options.get("filter") or {}
+        self.exclude = options.get("exclude") or {}  # {field: [values]} records to drop
+        self.time_metrics = list(options.get("time_metrics") or [])  # metrics holding timestamps (epoch/ISO)
         self.simplify = float(options.get("simplify", 0.0005))
 
     def _severity(self, props: dict[str, Any]) -> Severity:
@@ -54,6 +89,11 @@ class FieldMapping:
             mapped = rule["map"].get(str(value))
             if mapped:
                 return Severity(mapped)
+        if "contains" in rule and value is not None:
+            text = str(value).lower()
+            for needle, sev in rule["contains"].items():
+                if str(needle).lower() in text:
+                    return Severity(sev)
         if "thresholds" in rule:
             n = num(value)
             if n is not None:
@@ -66,6 +106,9 @@ class FieldMapping:
         for key, wanted in self.filter.items():
             allowed = wanted if isinstance(wanted, list) else [wanted]
             if props.get(key) not in allowed:
+                return False
+        for key, unwanted in self.exclude.items():
+            if props.get(key) in (unwanted if isinstance(unwanted, list) else [unwanted]):
                 return False
         return True
 
@@ -87,8 +130,15 @@ class FieldMapping:
             updated_at=parse_time(props.get(self.updated_field)) if self.updated_field else None,
             expires_at=parse_time(props.get(self.expires_field)) if self.expires_field else None,
             url=clean_text(render_template(self.url, props)) if self.url else None,
-            metrics={name: props.get(field) for name, field in self.metrics.items()},
+            metrics=self._metrics(props),
         )
+
+    def _metrics(self, props: dict[str, Any]) -> dict[str, Any]:
+        out = {**self.constants, **{name: _coerce(props.get(field)) for name, field in self.metrics.items()}}
+        for name in self.time_metrics:
+            t = parse_time(out.get(name))
+            out[name] = t.isoformat() if t else None
+        return out
 
 
 async def query_arcgis(
@@ -146,7 +196,7 @@ class GeoJSONFeed(Source):
 
     async def fetch(self) -> list[Event]:
         headers = self.options.get("headers") or {}
-        payload = await self.get_json(self.options["url"], headers=headers)
+        payload = await self.get_json(self.option_url(), headers=headers)
         features = payload.get("features", []) if isinstance(payload, dict) else []
         mapping = FieldMapping(self.options)
         return [e for i, f in enumerate(features) if (e := mapping.to_event(f, i))]
@@ -163,9 +213,74 @@ class ArcGISLayer(Source):
     async def fetch(self) -> list[Event]:
         features = await query_arcgis(
             self,
-            self.options["url"],
+            self.option_url(),
             where=self.options.get("where", "1=1"),
             area=None if self.ignore_area else self.ctx.area,
         )
         mapping = FieldMapping(self.options)
         return [e for i, f in enumerate(features) if (e := mapping.to_event(f, i))]
+
+
+@register
+class JSONRecords(Source):
+    """Any JSON API that returns a list of records with coordinates (utility outage lists, incident feeds).
+
+    Example (FPL outage points)::
+
+        - id: fpl_points
+          type: json
+          url: https://www.fplmaps.com/customer/outage/StormFeedRestoration.json
+          records: outages            # dotted path to the list ("" = top level)
+          lat: lat
+          lon: lng                    # nested fields are flattened with "_", e.g. startLocation_latitude
+          category: power
+          id_field: ticketNum
+          title: "{customersAffected} customers out — {Cause}"
+          severity: {field: customersAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+          metrics: {customers_out: customersAffected, etr: etr}
+          constants: {kind: outage, utility: FPL}
+    """
+
+    type = "json"
+    default_name = "JSON feed"
+    category = Category.other
+    default_interval = 300
+    required_options = ("url", "lat", "lon")
+
+    async def fetch(self) -> list[Event]:
+        method = str(self.options.get("method", "GET")).upper()
+        kwargs: dict[str, Any] = {"headers": self.options.get("headers") or {}}
+        if self.options.get("params"):
+            kwargs["params"] = self.options["params"]
+        if method == "POST":
+            kwargs["json"] = self.options.get("body") or {}
+            resp = await self.ctx.http.post(self.option_url(), **kwargs)
+            if resp.status_code >= 400:
+                raise SourceError(f"HTTP {resp.status_code} from {self.option_url().split('?')[0]}")
+            payload = resp.json()
+        else:
+            payload = await self.get_json(self.option_url(), **kwargs)
+        records = dig(payload, self.options.get("records"))
+        if not isinstance(records, list):
+            raise SourceError(f"no list at '{self.options.get('records') or '(top level)'}' in response")
+        return parse_json_records(records, self.options)
+
+
+def parse_json_records(records: list[Any], options: dict[str, Any]) -> list[Event]:
+    mapping = FieldMapping(options)
+    lat_key, lon_key = options["lat"], options["lon"]
+    events = []
+    for i, rec in enumerate(records):
+        if not isinstance(rec, dict):
+            continue
+        props = flatten(rec)
+        lat, lon = num(props.get(lat_key)), num(props.get(lon_key))
+        if lat is None or lon is None or (lat == 0 and lon == 0) or not (-90 <= lat <= 90 and -180 <= lon <= 180):
+            geometry = None
+        else:
+            geometry = {"type": "Point", "coordinates": [round(lon, 6), round(lat, 6)]}
+        feature = {"id": props.get("id"), "properties": props, "geometry": geometry}
+        ev = mapping.to_event(feature, i)
+        if ev is not None and (geometry is not None or options.get("keep_unlocated")):
+            events.append(ev)
+    return events

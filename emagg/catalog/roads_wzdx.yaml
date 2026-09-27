@@ -1,0 +1,291 @@
+# State/local DOT Work Zone Data Exchange (WZDx) feeds, from the USDOT WZDx Feed Registry
+# (data.transportation.gov dataset 69qe-yiui, snapshot 2026-08-07). Only full closures in effect now are
+# shown by default (closures_only). Feeds that need a key stay 'not configured' until the env var is set.
+
+- id: wzdx_az_mcdot
+  type: wzdx
+  name: "Maricopa County DOT work zones"
+  states: [AZ]
+  url: "https://wzdxapi.aztech.org/construction"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 1m)"
+
+- id: wzdx_ca_mtc
+  type: wzdx
+  name: "Metropolitan Transportation Commission San Francisco work zones"
+  states: [CA]
+  url: "https://api.511.org/traffic/wzdx?api_key={api_key}"
+  api_key: ${WZDX_CA_MTC_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 5m)"
+    signup: "https://511.org/open-data/token"
+    notes: "Needs an API key: set WZDX_CA_MTC_KEY"
+
+- id: wzdx_co_cdot
+  type: wzdx
+  name: "Colorado DOT work zones"
+  states: [CO]
+  url: "https://data.cotrip.org/api/v1/wzdx?apiKey={api_key}"
+  api_key: ${WZDX_CO_CDOT_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 5m)"
+    signup: "https://maps.cotrip.org/help/section/for-developers.html"
+    notes: "Needs an API key: set WZDX_CO_CDOT_KEY"
+
+- id: wzdx_de_dedot
+  type: wzdx
+  name: "Delaware DOT work zones"
+  states: [DE]
+  url: "https://wzdx.e-dot.com/del_dot_feed_wzdx_v4.1.geojson"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 10m)"
+
+- id: wzdx_fl_fldot
+  type: wzdx
+  name: "Florida DOT work zones"
+  states: [FL]
+  url: "https://us-datacloud.one.network/fdot/feed.json?app_key=c4090b04-26de-c9ee-873b2bd9a38c"
+  interval: 300  # ~18k features; poll no faster than every 4 minutes
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 4m)"
+
+- id: wzdx_hi_hidot
+  type: wzdx
+  name: "Hawaii DOT work zones"
+  states: [HI]
+  url: "https://ai.blyncsy.io/wzdx/hidot/feed"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 168h)"
+
+- id: wzdx_id_iddot
+  type: wzdx
+  name: "Idaho DOT work zones"
+  states: [ID]
+  url: "https://511.idaho.gov/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 1m)"
+
+- id: wzdx_il_iltollway
+  type: wzdx
+  name: "Illinois Tollway work zones"
+  states: [IL]
+  url: "https://tims2go.tollway.state.il.us/wzdx/v4.2?api_key={api_key}"
+  api_key: ${WZDX_IL_ILTOLLWAY_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 60m)"
+    notes: "Needs an API key: set WZDX_IL_ILTOLLWAY_KEY"
+
+- id: wzdx_in_indot
+  type: wzdx
+  name: "Indiana DOT work zones"
+  states: [IN]
+  url: "https://in.carsprogram.org/carsapi_v1/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 1m)"
+
+- id: wzdx_ia_idot
+  type: wzdx
+  name: "Iowa DOT work zones"
+  states: [IA]
+  url: "https://iowa-atms.cloud-q-free.com/api/rest/dataprism/wzdx/wzdxfeed"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 1m)"
+
+- id: wzdx_ks_kansas
+  type: wzdx
+  name: "Kansas DOT work zones"
+  states: [KS]
+  url: "https://ks.carsprogram.org/carsapi_v1/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 60s)"
+
+- id: wzdx_ky_kytc
+  type: wzdx
+  name: "Kentucky Transportation Cabinet work zones"
+  states: [KY]
+  url: "https://storage.googleapis.com/kytc-its-2020-openrecords/public/feeds/WZDx/kytc_wzdx_v4.1.geojson"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 30m)"
+
+- id: wzdx_la_ladotd
+  type: wzdx
+  name: "Louisiana DOTD work zones"
+  states: [LA]
+  url: "https://wzdx.e-dot.com/la_dot_d_feed_wzdx_v4.1.geojson"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 10m)"
+
+- id: wzdx_md_mdot
+  type: wzdx
+  name: "Maryland DOT work zones"
+  states: [MD]
+  url: "https://filter.ritis.org/wzdx_v4.1/mdot.geojson"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 1m)"
+
+- id: wzdx_mn_mndot
+  type: wzdx
+  name: "Minnesota DOT work zones"
+  states: [MN]
+  url: "https://mn.carsprogram.org/carsapi_v1/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 1m)"
+
+- id: wzdx_ms_msdot
+  type: wzdx
+  name: "Mississippi DOT work zones"
+  states: [MS]
+  url: "https://api.mdottraffic.com/prod/v3/data/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 2m)"
+
+- id: wzdx_mo_modot
+  type: wzdx
+  name: "Missouri DOT work zones"
+  states: [MO]
+  url: "https://traveler.modot.org/timconfig/feed/desktop/mo_wzdx.json"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 3m)"
+
+- id: wzdx_mo_stcharlesco_v4
+  type: wzdx
+  name: "St. Charles County work zones"
+  states: [MO]
+  url: "https://scc.ridsi-dash.com:5000/wzdx.geojson"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 60m)"
+
+- id: wzdx_nj_njdot
+  type: wzdx
+  name: "New Jersey Institute of Technology work zones"
+  states: [NJ]
+  url: "https://smartworkzones.njit.edu/nj/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 2m)"
+
+- id: wzdx_nm_nmdot
+  type: wzdx
+  name: "New Mexico DOT work zones"
+  states: [NM]
+  url: "https://ai.blyncsy.io/wzdx/nmdot/feed"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 72h)"
+
+- id: wzdx_ny_nysdot
+  type: wzdx
+  name: "New York DOT work zones"
+  states: [NY]
+  url: "https://511ny.org/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 15m)"
+
+- id: wzdx_nc_ncdot
+  type: wzdx
+  name: "North Carolina DOT work zones"
+  states: [NC]
+  url: "https://drivenc.gov/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 4m)"
+
+- id: wzdx_oh_ohio
+  type: wzdx
+  name: "Ohio DOT work zones"
+  states: [OH]
+  url: "https://publicapi.ohgo.com/api/work-zones/wzdx/4.2?api-key={api_key}"
+  api_key: ${WZDX_OH_OHIO_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 60m)"
+    signup: "https://publicapi.ohgo.com/accounts/registration"
+    notes: "Needs an API key: set WZDX_OH_OHIO_KEY"
+
+- id: wzdx_ok_odot
+  type: wzdx
+  name: "Oklahoma DOT work zones"
+  states: [OK]
+  url: "https://oktraffic.org/api/Geojsons/workzones?&access_token=feOPynfHRJ5sdx8tf3IN5yOsGz89TAUuzHsN3V0jo1Fg41LcpoLhIRltaTPmDngD"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 1m)"
+
+- id: wzdx_pa_ptc
+  type: wzdx
+  name: "Pennsylvania Turnpike Commission work zones"
+  states: [PA]
+  url: "https://atms.paturnpike.com/api/WZDxWorkZoneFeed?api_key={api_key}"
+  api_key: ${WZDX_PA_PTC_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 1m)"
+    signup: "https://datahub.transportation.gov/api/views/69qe-yiui/files/de6330ba-7e11-4335-9a3f-caf24015dc1a?download=true&filename=WZDx_API_Key_Instructions.docx"
+    notes: "Needs an API key: set WZDX_PA_PTC_KEY"
+
+- id: wzdx_tx_austin
+  type: wzdx
+  name: "City of Austin work zones"
+  states: [TX]
+  url: "https://data.austintexas.gov/download/d9mm-cjw9"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 60m)"
+
+- id: wzdx_tx_txdot_v4_2
+  type: wzdx
+  name: "Texas DOT work zones"
+  states: [TX]
+  url: "https://api.drivetexas.org/api/conditions.wzdx.geojson?key={api_key}"
+  api_key: ${DRIVETEXAS_KEY}
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 5m)"
+    signup: "https://api.drivetexas.org/"
+    notes: "Needs an API key: set DRIVETEXAS_KEY"
+
+- id: wzdx_ut_udot
+  type: wzdx
+  name: "Utah DOT work zones"
+  states: [UT]
+  url: "https://udottraffic.utah.gov/wzdx/udot/v40/data"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4, updates 15m)"
+
+- id: wzdx_wa_wsdot
+  type: wzdx
+  name: "Washington State DOT work zones"
+  states: [WA]
+  url: "https://wzdx.wsdot.wa.gov/api/v4/WorkZoneFeed"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.2, updates 1m)"
+
+- id: wzdx_wi_wisdot
+  type: wzdx
+  name: "Wisconsin DOT work zones"
+  states: [WI]
+  url: "https://511wi.gov/api/wzdx"
+  meta:
+    confidence: high
+    evidence: "USDOT WZDx Feed Registry (version 4.1, updates 5m)"
