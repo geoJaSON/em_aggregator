@@ -1,0 +1,111 @@
+# EM Aggregator configuration. Copy to config.yaml and edit.
+# Any value can pull from the environment: ${NAME} or ${NAME:-default}. Keep keys and partner URLs in env vars.
+
+app:
+  title: "EM Aggregator"
+  # api.weather.gov requires an identifying User-Agent with contact info.
+  user_agent: "em-aggregator (eoc@your-county.gov)"
+  db_path: "data/emagg.sqlite"
+  retention_hours: 72          # how long cleared events stay queryable
+  # write_token: ${EMAGG_WRITE_TOKEN}   # if set, field reports / manual refresh need header X-EMAgg-Token
+
+area:
+  name: "Example County, VA"
+  # [min_lon, min_lat, max_lon, max_lat]. Events entirely outside are dropped (except tropical storms).
+  bbox: [-78.0, 38.3, -76.9, 39.1]
+  states: [VA]                 # used by NWS alerts; add neighbors if your area straddles a state line
+
+sources:
+  # --- Built in, free, no key -------------------------------------------------------------------------
+  - id: nws_alerts
+    type: nws_alerts           # NWS watches/warnings/advisories; zone-based alerts are drawn from zone outlines
+    # exclude_events: ["Air Quality Alert"]
+    # min_severity: minor
+
+  - id: river_gauges
+    type: nwps_gauges          # NOAA NWPS gauges at/above action stage, observed or forecast
+    # min_category: action     # action | minor | moderate | major
+    # include_forecast: true
+
+  - id: earthquakes
+    type: usgs_earthquakes
+    # feed: 2.5_day            # any USGS summary feed name: all_hour, 1.0_day, 4.5_week, significant_month, ...
+
+  - id: wildfires
+    type: nifc_wildfires       # NIFC/IRWIN current incidents
+    # min_acres: 10
+
+  - id: tropical
+    type: nhc_storms           # NHC active storms (kept even when outside the area bbox)
+
+  # --- Power ------------------------------------------------------------------------------------------
+  # Utilities whose public outage map runs on KUBRA Storm Center. Find the IDs: open the utility's outage
+  # map with browser dev tools (Network tab) and look for a request to
+  #   kubra.io/stormcenter/api/v1/stormcenters/<instance_id>/views/<view_id>/currentState
+  - id: my_utility
+    type: kubra
+    enabled: false
+    name: "My Utility"
+    instance_id: "00000000-0000-0000-0000-000000000000"
+    view_id: "00000000-0000-0000-0000-000000000000"
+    link: "https://outagemap.example.com"   # public outage map, shown as the source link
+    # outage_points: true       # also pull individual outages / clusters (more requests)
+    # max_tile_requests: 150    # cap per poll; unexpanded clusters are kept as clusters
+    # customers_served: 1200000 # override if the feed does not report it
+
+  # --- Roads ------------------------------------------------------------------------------------------
+  # Waze for Cities partner feed (free for government agencies). The URL contains your token.
+  - id: waze
+    type: waze
+    enabled: false
+    url: ${WAZE_FEED_URL}
+    # min_reliability: 5
+    # include_jams: false
+    # types: [ROAD_CLOSED, ROAD_CLOSED_EVENT, HAZARD_WEATHER_FLOOD, HAZARD_ON_ROAD_OBJECT, ...]
+
+  # State/local DOT Work Zone Data Exchange feed (see the USDOT WZDx feed registry).
+  - id: dot_work_zones
+    type: wzdx
+    enabled: false
+    name: "State DOT closures"
+    url: "https://example.gov/wzdx/v4/feed.geojson"
+    # closures_only: true
+    # headers: {Authorization: "Bearer ${DOT_TOKEN}"}
+
+  # State 511 on the IBI/Iteris platform (e.g. 511ny.org, 511ga.org, az511.gov, 511wi.gov). EXPERIMENTAL.
+  - id: state_511
+    type: ibi511
+    enabled: false
+    name: "State 511"
+    base_url: "https://511ny.org"
+    api_key: ${STATE_511_KEY}
+    # closures_only: false
+
+  # --- Anything published as ArcGIS or GeoJSON ------------------------------------------------------------
+  # County road closures, shelters, a utility's ESRI outage layer, evacuation zones...
+  - id: county_closures
+    type: arcgis
+    enabled: false
+    name: "County road closures"
+    url: "https://services.arcgis.com/XXXX/arcgis/rest/services/Road_Closures/FeatureServer/0"
+    where: "STATUS = 'Closed'"
+    category: roads             # weather | flood | power | comms | roads | fire | seismic | tropical | other
+    id_field: OBJECTID
+    title: "Road closed: {ROAD_NAME}"
+    description: "{REASON}"
+    area: "{JURISDICTION}"
+    severity: {field: STATUS, map: {Closed: severe, Restricted: moderate}, default: minor}
+    updated_field: EditDate
+    metrics: [DETOUR, AGENCY]
+
+  - id: shelters
+    type: geojson
+    enabled: false
+    name: "Open shelters"
+    url: "https://example.gov/shelters.geojson"
+    category: other
+    id_field: shelter_id
+    title: "Shelter: {name} ({occupancy}/{capacity})"
+    severity: info
+    filter: {status: [OPEN]}
+    metrics: {occupancy: occupancy, capacity: capacity, pets: pets_allowed}

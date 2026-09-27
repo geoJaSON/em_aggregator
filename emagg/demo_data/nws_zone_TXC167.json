@@ -1,0 +1,53 @@
+{
+ "id": "https://api.weather.gov/zones/county/TXC167",
+ "type": "Feature",
+ "geometry": {
+  "type": "Polygon",
+  "coordinates": [
+   [
+    [
+     -95.22,
+     29.52
+    ],
+    [
+     -94.99,
+     29.6
+    ],
+    [
+     -94.73,
+     29.52
+    ],
+    [
+     -94.37,
+     29.56
+    ],
+    [
+     -94.72,
+     29.33
+    ],
+    [
+     -95.05,
+     29.08
+    ],
+    [
+     -95.12,
+     29.22
+    ],
+    [
+     -95.22,
+     29.35
+    ],
+    [
+     -95.22,
+     29.52
+    ]
+   ]
+  ]
+ },
+ "properties": {
+  "id": "TXC167",
+  "type": "county",
+  "name": "Galveston",
+  "state": "TX"
+ }
+}

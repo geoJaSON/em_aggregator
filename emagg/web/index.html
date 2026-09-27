@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EM Aggregator</title>
+  <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">◎</span>
+      <div>
+        <h1 id="app-title">EM Aggregator</h1>
+        <div id="area-name" class="muted small"></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="live" class="live" title="Live update connection"><span class="dot"></span><span class="label">Connecting…</span></span>
+      <span id="updated" class="muted small"></span>
+      <button id="report-btn" class="btn primary" type="button">+ Field report</button>
+    </div>
+  </header>
+  <div id="demo-banner" class="demo-banner" hidden>
+    DEMO MODE — simulated sample data for a fictional scenario. Nothing shown here reflects real conditions.
+  </div>
+
+  <main class="layout">
+    <aside class="panel" aria-label="Situation summary and event list">
+      <section id="tiles" class="tiles" aria-label="Categories (click to show or hide)"></section>
+
+      <nav class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="events" aria-selected="true">Events <span id="events-count" class="count"></span></button>
+        <button role="tab" class="tab" data-tab="changes" aria-selected="false">Changes <span id="changes-count" class="count"></span></button>
+        <button role="tab" class="tab" data-tab="sources" aria-selected="false">Sources <span id="sources-alert" class="count warn" hidden></span></button>
+      </nav>
+
+      <section id="tab-events" class="tab-body">
+        <div class="filters">
+          <input id="search" type="search" placeholder="Filter by text…" aria-label="Filter events by text">
+          <select id="min-severity" aria-label="Minimum severity">
+            <option value="0">All severities</option>
+            <option value="1">Minor +</option>
+            <option value="2">Moderate +</option>
+            <option value="3">Severe +</option>
+            <option value="4">Extreme only</option>
+          </select>
+        </div>
+        <ul id="event-list" class="event-list"></ul>
+      </section>
+
+      <section id="tab-changes" class="tab-body" hidden>
+        <div class="filters">
+          <label class="small muted" for="changes-hours">Window</label>
+          <select id="changes-hours">
+            <option value="1">Last hour</option>
+            <option value="6" selected>Last 6 hours</option>
+            <option value="24">Last 24 hours</option>
+            <option value="72">Last 3 days</option>
+          </select>
+        </div>
+        <ul id="changes-list" class="changes-list"></ul>
+      </section>
+
+      <section id="tab-sources" class="tab-body" hidden>
+        <p class="small muted">Each feed is polled on its own schedule. A feed that is failing or stale means its layer may be out of date.</p>
+        <ul id="source-list" class="source-list"></ul>
+      </section>
+    </aside>
+
+    <section class="map-wrap">
+      <div id="map" aria-label="Map of current events"></div>
+      <div id="place-hint" class="place-hint" hidden>Click the map to place the report · <kbd>Esc</kbd> to cancel</div>
+      <div class="legend" aria-label="Severity legend">
+        <span><i class="sev-swatch" data-sev="extreme"></i>Extreme</span>
+        <span><i class="sev-swatch" data-sev="severe"></i>Severe</span>
+        <span><i class="sev-swatch" data-sev="moderate"></i>Moderate</span>
+        <span><i class="sev-swatch" data-sev="minor"></i>Minor</span>
+        <span><i class="sev-swatch" data-sev="info"></i>Info</span>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="report-dialog">
+    <form id="report-form" method="dialog">
+      <h2>New field report</h2>
+      <p id="report-where" class="small muted"></p>
+      <label>Category
+        <select name="category" required>
+          <option value="comms">Communications (cell / 911 / internet)</option>
+          <option value="roads">Roads (blocked / closed)</option>
+          <option value="power">Power</option>
+          <option value="flood">Flooding</option>
+          <option value="fire">Fire</option>
+          <option value="weather">Weather</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <label>Severity
+        <select name="severity">
+          <option value="minor">Minor</option>
+          <option value="moderate" selected>Moderate</option>
+          <option value="severe">Severe</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </label>
+      <label>Title <input name="title" required maxlength="200" placeholder="e.g. No cell service on any carrier"></label>
+      <label>Details <textarea name="description" rows="3" maxlength="4000" placeholder="Who reported it, what was observed, when"></textarea></label>
+      <div class="row">
+        <label>Expires after
+          <select name="expires_hours">
+            <option value="2">2 hours</option>
+            <option value="6">6 hours</option>
+            <option value="12" selected>12 hours</option>
+            <option value="24">24 hours</option>
+            <option value="72">3 days</option>
+          </select>
+        </label>
+        <label>Reported by <input name="reporter" maxlength="100" placeholder="Name / position"></label>
+      </div>
+      <p id="report-error" class="error" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn" id="report-cancel">Cancel</button>
+        <button type="submit" class="btn primary" value="submit">Add report</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/static/vendor/leaflet/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

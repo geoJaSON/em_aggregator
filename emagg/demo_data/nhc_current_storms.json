@@ -1,0 +1,25 @@
+{
+ "activeStorms": [
+  {
+   "id": "al992026",
+   "binNumber": "AT9",
+   "name": "Demo",
+   "classification": "HU",
+   "intensity": "105",
+   "pressure": "958",
+   "latitude": "29.0N",
+   "longitude": "94.7W",
+   "latitudeNumeric": 29.0,
+   "longitudeNumeric": -94.7,
+   "movementDir": 330,
+   "movementSpeed": 9,
+   "lastUpdate": "{{now-50m}}",
+   "publicAdvisory": {
+    "advNum": "18",
+    "issuance": "{{now-50m}}",
+    "fileUpdateTime": "{{now-50m}}",
+    "url": "https://www.nhc.noaa.gov/"
+   }
+  }
+ ]
+}

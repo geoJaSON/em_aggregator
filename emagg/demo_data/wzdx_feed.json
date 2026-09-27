@@ -1,0 +1,136 @@
+{
+ "feed_info": {
+  "publisher": "Demo DOT",
+  "version": "4.2",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "update_date": "{{now-5m}}",
+  "update_frequency": 300,
+  "data_sources": [
+   {
+    "data_source_id": "demo-dot",
+    "organization_name": "Demo DOT",
+    "update_date": "{{now-5m}}"
+   }
+  ]
+ },
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "id": "demo-wz-1",
+   "type": "Feature",
+   "properties": {
+    "core_details": {
+     "event_type": "work-zone",
+     "data_source_id": "demo-dot",
+     "road_names": [
+      "SH 288"
+     ],
+     "direction": "southbound",
+     "description": "DEMO: All lanes closed for emergency pavement repair.",
+     "update_date": "{{now-30m}}"
+    },
+    "start_date": "{{now-3h}}",
+    "end_date": "{{now+1d}}",
+    "is_start_date_verified": true,
+    "is_end_date_verified": false,
+    "is_start_position_verified": false,
+    "is_end_position_verified": false,
+    "location_method": "channel-device-method",
+    "vehicle_impact": "all-lanes-closed",
+    "beginning_milepost": 12.1,
+    "ending_milepost": 13.4
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -95.385,
+      29.66
+     ],
+     [
+      -95.387,
+      29.64
+     ],
+     [
+      -95.389,
+      29.62
+     ]
+    ]
+   }
+  },
+  {
+   "id": "demo-wz-2",
+   "type": "Feature",
+   "properties": {
+    "core_details": {
+     "event_type": "work-zone",
+     "data_source_id": "demo-dot",
+     "road_names": [
+      "I-69"
+     ],
+     "direction": "northbound",
+     "description": "Right lane closed.",
+     "update_date": "{{now-1h}}"
+    },
+    "start_date": "{{now-1d}}",
+    "end_date": "{{now+5d}}",
+    "vehicle_impact": "some-lanes-closed",
+    "location_method": "channel-device-method",
+    "is_start_date_verified": true,
+    "is_end_date_verified": false,
+    "is_start_position_verified": false,
+    "is_end_position_verified": false
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -95.44,
+      29.73
+     ],
+     [
+      -95.43,
+      29.74
+     ]
+    ]
+   }
+  },
+  {
+   "id": "demo-wz-3",
+   "type": "Feature",
+   "properties": {
+    "core_details": {
+     "event_type": "work-zone",
+     "data_source_id": "demo-dot",
+     "road_names": [
+      "Beltway 8"
+     ],
+     "direction": "eastbound",
+     "description": "Planned full closure next week.",
+     "update_date": "{{now-1h}}"
+    },
+    "start_date": "{{now+2d}}",
+    "end_date": "{{now+3d}}",
+    "vehicle_impact": "all-lanes-closed",
+    "location_method": "channel-device-method",
+    "is_start_date_verified": true,
+    "is_end_date_verified": false,
+    "is_start_position_verified": false,
+    "is_end_position_verified": false
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -95.2,
+      29.62
+     ],
+     [
+      -95.18,
+      29.62
+     ]
+    ]
+   }
+  }
+ ]
+}

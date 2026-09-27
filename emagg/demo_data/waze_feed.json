@@ -1,0 +1,180 @@
+{
+ "startTimeMillis": "{{ms:now-2m}}",
+ "endTimeMillis": "{{ms:now}}",
+ "startTime": "",
+ "endTime": "",
+ "alerts": [
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "WEATHERHAZARD",
+   "uuid": "demo-waze-001",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "HAZARD_WEATHER_FLOOD",
+   "street": "Allen Pkwy",
+   "roadType": 2,
+   "location": {
+    "x": -95.3871,
+    "y": 29.7609
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-25m}}",
+   "reportDescription": "Water over road, cars stalled"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 11,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 9,
+   "type": "WEATHERHAZARD",
+   "uuid": "demo-waze-002",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "HAZARD_WEATHER_FLOOD",
+   "street": "Memorial Dr",
+   "roadType": 2,
+   "location": {
+    "x": -95.4302,
+    "y": 29.7641
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-40m}}"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "ROAD_CLOSED",
+   "uuid": "demo-waze-003",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "ROAD_CLOSED_HAZARD",
+   "street": "I-10 Katy Fwy W",
+   "roadType": 2,
+   "location": {
+    "x": -95.5561,
+    "y": 29.7847
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-55m}}"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "WEATHERHAZARD",
+   "uuid": "demo-waze-004",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "HAZARD_ON_ROAD_TRAFFIC_LIGHT_FAULT",
+   "street": "Westheimer Rd",
+   "roadType": 2,
+   "location": {
+    "x": -95.4611,
+    "y": 29.7372
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-30m}}"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "ACCIDENT",
+   "uuid": "demo-waze-005",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "ACCIDENT_MAJOR",
+   "street": "I-45 Gulf Fwy S",
+   "roadType": 2,
+   "location": {
+    "x": -95.283,
+    "y": 29.6655
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-12m}}"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "WEATHERHAZARD",
+   "uuid": "demo-waze-006",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "HAZARD_ON_ROAD_POT_HOLE",
+   "street": "Main St",
+   "roadType": 2,
+   "location": {
+    "x": -95.3698,
+    "y": 29.7521
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-2h}}"
+  },
+  {
+   "country": "US",
+   "nThumbsUp": 2,
+   "city": "Houston, TX",
+   "reportRating": 3,
+   "reliability": 7,
+   "type": "WEATHERHAZARD",
+   "uuid": "demo-waze-008",
+   "speed": 0,
+   "reportMood": 0,
+   "subtype": "HAZARD_ON_ROAD_OBJECT",
+   "street": "Kirby Dr",
+   "roadType": 2,
+   "location": {
+    "x": -95.4183,
+    "y": 29.731
+   },
+   "magvar": 90,
+   "confidence": 2,
+   "pubMillis": "{{ms:now-18m}}",
+   "reportDescription": "Large tree across both lanes"
+  }
+ ],
+ "jams": [
+  {
+   "country": "US",
+   "city": "Houston, TX",
+   "level": 4,
+   "line": [
+    {
+     "x": -95.4,
+     "y": 29.7
+    },
+    {
+     "x": -95.39,
+     "y": 29.69
+    }
+   ],
+   "speedKMH": 6.0,
+   "length": 1200,
+   "uuid": 9001,
+   "street": "US-59 S",
+   "delay": 480,
+   "pubMillis": "{{ms:now-10m}}"
+  }
+ ]
+}

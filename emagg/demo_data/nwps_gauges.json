@@ -1,0 +1,400 @@
+{
+ "gauges": [
+  {
+   "lid": "BBPT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Buffalo Bayou at Piney Point",
+   "latitude": 29.747,
+   "longitude": -95.524,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": "HGIFF"
+   },
+   "status": {
+    "observed": {
+     "primary": 64.2,
+     "primaryUnit": "ft",
+     "secondary": 12.4,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "moderate",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": 67.5,
+     "primaryUnit": "ft",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "major",
+     "validTime": "{{now+18h}}"
+    }
+   }
+  },
+  {
+   "lid": "CYPT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Cypress Creek at Katy-Hockley Rd",
+   "latitude": 29.941,
+   "longitude": -95.804,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": "HGIFF"
+   },
+   "status": {
+    "observed": {
+     "primary": 157.3,
+     "primaryUnit": "ft",
+     "secondary": 3.1,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "minor",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": 157.9,
+     "primaryUnit": "ft",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "minor",
+     "validTime": "{{now+18h}}"
+    }
+   }
+  },
+  {
+   "lid": "BRMT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Brays Bayou at Main St",
+   "latitude": 29.705,
+   "longitude": -95.398,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": ""
+   },
+   "status": {
+    "observed": {
+     "primary": 45.1,
+     "primaryUnit": "ft",
+     "secondary": 22.8,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "major",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": -999,
+     "primaryUnit": "",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "",
+     "validTime": ""
+    }
+   }
+  },
+  {
+   "lid": "GRNT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Greens Bayou at US 59",
+   "latitude": 29.918,
+   "longitude": -95.305,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": ""
+   },
+   "status": {
+    "observed": {
+     "primary": 54.0,
+     "primaryUnit": "ft",
+     "secondary": 4.2,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "action",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": -999,
+     "primaryUnit": "",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "",
+     "validTime": ""
+    }
+   }
+  },
+  {
+   "lid": "RSHT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Brazos River near Rosharon",
+   "latitude": 29.349,
+   "longitude": -95.458,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Brazoria",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": "HGIFF"
+   },
+   "status": {
+    "observed": {
+     "primary": 44.6,
+     "primaryUnit": "ft",
+     "secondary": 61.0,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "minor",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": 47.2,
+     "primaryUnit": "ft",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "moderate",
+     "validTime": "{{now+18h}}"
+    }
+   }
+  },
+  {
+   "lid": "SJRT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "San Jacinto River near Sheldon",
+   "latitude": 29.853,
+   "longitude": -95.127,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": "HGIFF"
+   },
+   "status": {
+    "observed": {
+     "primary": 11.2,
+     "primaryUnit": "ft",
+     "secondary": 9.8,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "no_flooding",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": 16.4,
+     "primaryUnit": "ft",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "minor",
+     "validTime": "{{now+18h}}"
+    }
+   }
+  },
+  {
+   "lid": "CLKT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Clear Creek at Friendswood",
+   "latitude": 29.522,
+   "longitude": -95.197,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Galveston",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": ""
+   },
+   "status": {
+    "observed": {
+     "primary": 8.4,
+     "primaryUnit": "ft",
+     "secondary": 1.2,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "no_flooding",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": -999,
+     "primaryUnit": "",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "",
+     "validTime": ""
+    }
+   }
+  },
+  {
+   "lid": "ADDT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "Langham Creek near Addicks",
+   "latitude": 29.79,
+   "longitude": -95.62,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": ""
+   },
+   "status": {
+    "observed": {
+     "primary": -999,
+     "primaryUnit": "ft",
+     "secondary": -999,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "obs_not_current",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": -999,
+     "primaryUnit": "",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "",
+     "validTime": ""
+    }
+   }
+  },
+  {
+   "lid": "HMBT2",
+   "usgsId": "",
+   "reachId": "",
+   "name": "West Fork San Jacinto near Humble",
+   "latitude": 30.03,
+   "longitude": -95.26,
+   "rfc": {
+    "abbreviation": "WGRFC",
+    "name": "West Gulf River Forecast Center"
+   },
+   "wfo": {
+    "abbreviation": "HGX",
+    "name": "Houston/Galveston"
+   },
+   "state": {
+    "abbreviation": "TX",
+    "name": "Texas"
+   },
+   "county": "Harris",
+   "timeZone": "CST6CDT",
+   "pedts": {
+    "observed": "HGIRG",
+    "forecast": ""
+   },
+   "status": {
+    "observed": {
+     "primary": 48.0,
+     "primaryUnit": "ft",
+     "secondary": 5.5,
+     "secondaryUnit": "kcfs",
+     "floodCategory": "not_defined",
+     "validTime": "{{now-15m}}"
+    },
+    "forecast": {
+     "primary": -999,
+     "primaryUnit": "",
+     "secondary": -999,
+     "secondaryUnit": "",
+     "floodCategory": "",
+     "validTime": ""
+    }
+   }
+  }
+ ]
+}

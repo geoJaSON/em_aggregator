@@ -1,0 +1,83 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": 1,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.52,
+     30.33
+    ]
+   },
+   "properties": {
+    "OBJECTID": 1,
+    "IrwinID": "{D3M0F1RE-0000-0000-0000-000000000001}",
+    "IncidentName": "BEAR CREEK",
+    "IncidentTypeCategory": "WF",
+    "IncidentSize": 250,
+    "PercentContained": 60,
+    "FireDiscoveryDateTime": "{{ms:now-1d}}",
+    "ModifiedOnDateTime_dt": "{{ms:now-40m}}",
+    "POOState": "US-TX",
+    "POOCounty": "Montgomery",
+    "FireCause": "Undetermined",
+    "UniqueFireIdentifier": "2026-TXTXS-000123",
+    "FireOutDateTime": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 2,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.9,
+     38.9
+    ]
+   },
+   "properties": {
+    "OBJECTID": 2,
+    "IrwinID": "{D3M0F1RE-0000-0000-0000-000000000002}",
+    "IncidentName": "RIDGE",
+    "IncidentTypeCategory": "WF",
+    "IncidentSize": 18400,
+    "PercentContained": 15,
+    "FireDiscoveryDateTime": "{{ms:now-3d}}",
+    "ModifiedOnDateTime_dt": "{{ms:now-2h}}",
+    "POOState": "US-CA",
+    "POOCounty": "El Dorado",
+    "FireCause": "Human",
+    "UniqueFireIdentifier": "2026-CAENF-000456",
+    "FireOutDateTime": null
+   }
+  },
+  {
+   "type": "Feature",
+   "id": 3,
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.7,
+     30.1
+    ]
+   },
+   "properties": {
+    "OBJECTID": 3,
+    "IrwinID": "{D3M0F1RE-0000-0000-0000-000000000003}",
+    "IncidentName": "OLD MILL",
+    "IncidentTypeCategory": "WF",
+    "IncidentSize": 12,
+    "PercentContained": 100,
+    "FireDiscoveryDateTime": "{{ms:now-4d}}",
+    "ModifiedOnDateTime_dt": "{{ms:now-1d}}",
+    "POOState": "US-TX",
+    "POOCounty": "Harris",
+    "FireCause": "Natural",
+    "UniqueFireIdentifier": "2026-TXTXS-000099",
+    "FireOutDateTime": "{{ms:now-1d}}"
+   }
+  }
+ ]
+}
