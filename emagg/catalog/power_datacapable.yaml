@@ -1,0 +1,148 @@
+# DataCapable/utilisocial outage maps (same event format as CenterPoint and Entergy events).
+
+- id: datacapable_dlc_pa
+  type: json
+  name: "Duquesne Light Company"
+  states: [PA]
+  url: "https://utilisocial.io/datacapable/v2/p/dlc/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Duquesne Light Company"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: datacapable_nes_tn
+  type: json
+  name: "Nashville Electric Service"
+  states: [TN]
+  url: "https://utilisocial.io/datacapable/v2/p/NES/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Nashville Electric Service"}
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap (2026)"
+
+- id: datacapable_gre_fl
+  type: json
+  name: "Gainesville Regional Utilities"
+  states: [FL]
+  url: "https://utilisocial.io/datacapable/v2/p/gru/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Gainesville Regional Utilities"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: datacapable_kua_fl
+  type: json
+  name: "Kissimmee Utility Authority"
+  states: [FL]
+  url: "https://utilisocial.io/datacapable/v2/p/kissimmee/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Kissimmee Utility Authority"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: datacapable_colquitt_ga
+  type: json
+  name: "Colquitt EMC"
+  states: [GA]
+  url: "https://utilisocial.io/datacapable/v2/p/colquitt/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Colquitt EMC"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: datacapable_lus_la
+  type: json
+  name: "Lafayette Utilities System"
+  states: [LA]
+  url: "https://utilisocial.io/datacapable/v2/p/lus/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Lafayette Utilities System"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: datacapable_scl_wa
+  type: json
+  name: "Seattle City Light"
+  states: [WA]
+  url: "https://utilisocial.io/datacapable/v2/p/scl/map/events"
+  lat: latitude
+  lon: longitude
+  category: power
+  id_field: id
+  title: "{numPeople} customers out — {cause}"
+  severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: startTime
+  updated_field: lastUpdatedTime
+  exclude: {type: PLANNED_OUTAGE}
+  metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Seattle City Light"}
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"

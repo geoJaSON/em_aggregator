@@ -65,6 +65,14 @@ async def _poll(args: argparse.Namespace) -> int:
         report.append({"source": sid, "ok": False, "error": why})
     if args.json:
         print(json.dumps(report, indent=2, default=str))
+    elif args.markdown:
+        failed = sum(1 for r in report if not r["ok"])
+        print(f"# Feed check\n\n{len(report) - failed} of {len(report)} feeds OK.\n")
+        print("| Feed | Result | Events | Sample |\n|---|---|---|---|")
+        for r in sorted(report, key=lambda r: (r["ok"], r["source"])):
+            sample = "; ".join(e["title"] for e in r.get("top", [])[:2]).replace("|", "/")
+            result = "OK" if r["ok"] else str(r.get("error", "")).replace("|", "/")[:120]
+            print(f"| `{r['source']}` | {result} | {r.get('events', '')} | {sample[:160]} |")
     else:
         for r in report:
             if r["ok"]:
@@ -115,6 +123,48 @@ def cmd_catalog(args: argparse.Namespace) -> None:
     print(f"\n{len(rows)} catalog feeds")
 
 
+def source_hosts(configs) -> dict[str, set[str]]:
+    """Hostnames each source contacts: URLs in its options plus the fixed endpoints in its adapter module."""
+    import inspect
+    import re
+    from urllib.parse import urlsplit
+
+    module_hosts: dict[str, set[str]] = {}
+    out: dict[str, set[str]] = {}
+    for cfg in configs:
+        cls = REGISTRY.get(cfg.type)
+        if cls is None:
+            continue
+        if cfg.type not in module_hosts:
+            src = inspect.getsource(inspect.getmodule(cls))
+            module_hosts[cfg.type] = {
+                h for u in re.findall(r'"(https?://[^"{ ]+)', src)
+                if (h := urlsplit(u).hostname) and not h.endswith((".invalid", "example.com", "example.coop", "example.gov"))
+            }
+        hosts = set(module_hosts[cfg.type])
+        for value in cfg.options.values():
+            if isinstance(value, str) and value.startswith("http"):
+                hosts.add(urlsplit(value.replace("{api_key}", "")).hostname)
+        out[cfg.id] = {h for h in hosts if h}
+    return out
+
+
+def cmd_hosts(args: argparse.Namespace) -> None:
+    if args.catalog:
+        from emagg.config import CatalogConfig, Config
+
+        config = Config(catalog=CatalogConfig(enabled=True))
+        configs = config.sources
+    else:
+        configs = [c for c in load_config(args.config).sources if c.enabled]
+    hosts = sorted(set().union(*source_hosts(configs).values())) if configs else []
+    print("\n".join(hosts))
+    if not args.quiet:
+        print(f"\n# {len(hosts)} hosts for {len(configs)} sources (HTTPS, port 443). The dashboard's map tiles are fetched by"
+              " each viewer's browser from *.basemaps.cartocdn.com, tile.openstreetmap.org and server.arcgisonline.com.",
+              file=sys.stderr)
+
+
 def cmd_sources(_: argparse.Namespace) -> None:
     for name, cls in sorted(REGISTRY.items()):
         req = f"  requires: {', '.join(cls.required_options)}" if cls.required_options else ""
@@ -140,10 +190,17 @@ def main(argv: list[str] | None = None) -> None:
     poll.add_argument("--demo", action="store_true")
     poll.add_argument("--show", type=int, default=5, help="events to print per source")
     poll.add_argument("--json", action="store_true")
+    poll.add_argument("--markdown", action="store_true", help="markdown table (e.g. for a verification report)")
     poll.set_defaults(func=lambda a: sys.exit(asyncio.run(_poll(a))))
 
     srcs = sub.add_parser("sources", help="list available source types")
     srcs.set_defaults(func=cmd_sources)
+
+    hosts = sub.add_parser("hosts", help="list hostnames the configured feeds contact (for network allowlists)")
+    hosts.add_argument("-c", "--config")
+    hosts.add_argument("--catalog", action="store_true", help="every catalog feed, regardless of area and enabled state")
+    hosts.add_argument("-q", "--quiet", action="store_true")
+    hosts.set_defaults(func=cmd_hosts)
 
     cat = sub.add_parser("catalog", help="list the built-in catalog of known feeds")
     cat.add_argument("--state", help="only feeds covering this state (plus national feeds)")

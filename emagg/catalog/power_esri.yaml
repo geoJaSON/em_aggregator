@@ -1,0 +1,322 @@
+# Utility outage maps published as ArcGIS layers (queried with the generic arcgis adapter; servers that
+# reject GeoJSON are re-queried as Esri JSON). Customer counts roll up per utility via constants.
+
+- id: esri_xcel_energy
+  type: arcgis
+  name: "Xcel Energy"
+  states: [CO, KS, MN, ND, NM, OK, SD, TX, WI]
+  url: "https://emcs-gis.esriemcs.com/arcgis/rest/services/Xcel/XcelOutage/MapServer/3"
+  where: "1=1"
+  category: power
+  id_field: globalid
+  title: "{customers} customers out"
+  severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: off_
+  metrics: {customers_out: customers, etr: etr, county: county}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Xcel Energy"}
+  interval: 600
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap; BB-TStone/B-B-Power (2026)"
+
+- id: esri_central_maine_power_me
+  type: arcgis
+  name: "Central Maine Power"
+  states: [ME]
+  url: "https://avangrid-maine-ags.esriemcs.com/arcgis/rest/services/CMPOutageMap_v2/MapServer/0"
+  where: "1=1"
+  category: power
+  title: "{NumOut} customers out \u2014 {BgName}"
+  area: "{BgName}"
+  severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: NumOut, etr: EtrMax}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Central Maine Power"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_ce_mi
+  type: arcgis
+  name: "Consumers Energy"
+  states: [MI]
+  url: "https://www.consumersenergy.com/arcgispublic/rest/services/CEOutageMap/MapServer/1"
+  where: "1=1"
+  category: power
+  id_field: JOB_ID
+  title: "{CUSTOMER_COUNT} customers out"
+  severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: OUTAGE_TIME
+  metrics: {customers_out: CUSTOMER_COUNT, etr: EST_TIME_ETR}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Consumers Energy"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_chelan_wa
+  type: arcgis
+  name: "Chelan County PUD"
+  states: [WA]
+  url: "https://services1.arcgis.com/3ymEnGydxeYILJzI/arcgis/rest/services/Outages_view/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OutageID
+  title: "{AffectedCustomers} customers out \u2014 {CommunityName}"
+  area: "{CommunityName}"
+  severity: {field: AffectedCustomers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: StartTime
+  metrics: {customers_out: AffectedCustomers, etr: EstimatedEndTime}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Chelan County PUD"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_aps_az
+  type: arcgis
+  name: "Arizona Public Service Company"
+  states: [AZ]
+  url: "https://aps-ags.esriemcs.com/arcgis/rest/services/APSOutageMap/MapServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{customers} customers out \u2014 {city}"
+  area: "{city}"
+  severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: off
+  metrics: {customers_out: customers, etr: etr}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Arizona Public Service Company"}
+  interval: 600
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap (2026)"
+
+- id: esri_rge_ny
+  type: arcgis
+  name: "Rochester Gas and Electric Corp"
+  states: [NY]
+  url: "https://avangrid-newyork-ags.esriemcs.com/arcgis/rest/services/RGEOutageMap_v2/MapServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{NumOut} customers out \u2014 {BgName}"
+  area: "{BgName}"
+  severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: NumOut, customers_served: NumServed, etr: EtrMax}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Rochester Gas and Electric Corp"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_pge_ca
+  type: arcgis
+  name: "Pacific Gas and Electric Company"
+  states: [CA]
+  url: "https://ags.pge.esriemcs.com/arcgis/rest/services/43/outages/MapServer/4"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{EST_CUSTOMERS} customers out"
+  severity: {field: EST_CUSTOMERS, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: OUTAGE_START
+  metrics: {customers_out: EST_CUSTOMERS, etr: CURRENT_ETOR, county: COUNTY}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Pacific Gas and Electric Company"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_ladwp_ca
+  type: arcgis
+  name: "Los Angeles Dept of Water & Power"
+  states: [CA]
+  url: "https://services2.arcgis.com/v0bIBBLIiGigCimX/ArcGIS/rest/services/PowerOutages_Data/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{COUNT_IN_RANK} customers out \u2014 {CITY_NAM}"
+  area: "{CITY_NAM}"
+  severity: {field: COUNT_IN_RANK, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: COUNT_IN_RANK, etr: ETR_DATETIME}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Los Angeles Dept of Water & Power"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_np_mn_wi
+  type: arcgis
+  name: "Minnesota Power"
+  states: [MN, WI]
+  url: "https://services.arcgis.com/ehV0YC56b0w2eenG/ArcGIS/rest/services/OutageMap2021AGOL_viewLayer/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{CUSTCOUNT} customers out \u2014 {LOCATION}"
+  area: "{LOCATION}"
+  severity: {field: CUSTCOUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: CUSTCOUNT, etr: ETR}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Minnesota Power"}
+  interval: 600
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap; alecbibat/gsoc-monitor (2026)"
+
+- id: esri_cemc_tn
+  type: arcgis
+  name: "Cumberland EMC"
+  states: [TN]
+  url: "https://services.arcgis.com/Lr6UoJ6qLtKTzGkY/ArcGIS/rest/services/OutageMap2017/FeatureServer/4"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{CustomersAffected} customers out \u2014 {COUNTY}"
+  area: "{COUNTY}"
+  severity: {field: CustomersAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: CustomersAffected, customers_served: CustomersServed}
+  constants: {kind: outage, utility: "Cumberland EMC"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_nyseg_ny
+  type: arcgis
+  name: "New York State Electric & Gas"
+  states: [NY]
+  url: "https://avangrid-newyork-ags.esriemcs.com/arcgis/rest/services/NYSEGOutageMap_v2/MapServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{NumOut} customers out \u2014 {BgName}"
+  area: "{BgName}"
+  severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: NumOut, customers_served: NumServed}
+  constants: {kind: outage, utility: "New York State Electric & Gas"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_ne_responder_outages
+  type: arcgis
+  name: "Nebraska responder outages (OPPD / LES)"
+  states: [NE]
+  url: "https://services2.arcgis.com/knPkBS6PAixcYX73/ArcGIS/rest/services/ResponderOutages57_view/FeatureServer/1"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{CUSTOMER_COUNT} customers out \u2014 {REGION}"
+  area: "{REGION}"
+  severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: TIME_OUTAGE
+  metrics: {customers_out: CUSTOMER_COUNT, county: LES_AREA}
+  constants: {kind: outage, utility: "Nebraska responder outages (OPPD / LES)"}
+  interval: 600
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap (2026)"
+    notes: "One shared responder layer covering OPPD and LES; counted as one feed to avoid duplicates"
+
+- id: esri_ssvec_az
+  type: arcgis
+  name: "Sulphur Springs Valley Electric Coop"
+  states: [AZ]
+  url: "https://services.arcgis.com/oiVF7alPNKGlpRRF/arcgis/rest/services/Active_Outages_Public/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{CUSTOMER_COUNT} customers out \u2014 {REGION}"
+  area: "{REGION}"
+  severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: TIME_OUTAGE
+  metrics: {customers_out: CUSTOMER_COUNT}
+  constants: {kind: outage, utility: "Sulphur Springs Valley Electric Coop"}
+  interval: 600
+  meta:
+    confidence: high
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); alecbibat/gsoc-monitor (2026)"
+
+- id: esri_cot_fl
+  type: arcgis
+  name: "City of Tallahassee"
+  states: [FL]
+  url: "https://tallahassee-ags.esriemcs.com/arcgis/rest/services/TallahasseeOutageMap/MapServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{customers} customers out \u2014 {region}"
+  area: "{region}"
+  severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: customers, etr: etr}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "City of Tallahassee"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_eweb_or
+  type: arcgis
+  name: "Eugene Water & Electric Board"
+  states: [OR]
+  url: "https://services7.arcgis.com/6AM8yPAeyXiPc9eF/ArcGIS/rest/services/PublicOutageMap_Public_View/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{custcnt} customers out"
+  severity: {field: custcnt, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: custcnt, etr: etor}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Eugene Water & Electric Board"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_ce_mn
+  type: arcgis
+  name: "Connexus Energy"
+  states: [MN]
+  url: "https://services6.arcgis.com/tLxmfwKZGo8Ff5TR/ArcGIS/rest/services/OutagePro_WFL1/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: INCIDENT_I
+  title: "{CUSTOMER_C} customers out"
+  severity: {field: CUSTOMER_C, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  starts_field: TIME_OUTAG
+  metrics: {customers_out: CUSTOMER_C}
+  constants: {kind: outage, utility: "Connexus Energy"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
+
+- id: esri_tpu_wa
+  type: arcgis
+  name: "Tacoma Public Utilities"
+  states: [WA]
+  url: "https://services8.arcgis.com/WmwtIvhWFFy9A5go/ArcGIS/rest/services/Outage_Area_view/FeatureServer/0"
+  where: "1=1"
+  category: power
+  id_field: OBJECTID
+  title: "{CustAffected} customers out"
+  severity: {field: CustAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
+  metrics: {customers_out: CustAffected, etr: ETR}
+  time_metrics: [etr]
+  constants: {kind: outage, utility: "Tacoma Public Utilities"}
+  interval: 600
+  meta:
+    confidence: medium
+    evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"

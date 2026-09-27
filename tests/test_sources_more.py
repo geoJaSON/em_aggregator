@@ -213,3 +213,31 @@ def test_flatten_and_string_numbers():
     m = FieldMapping({"metrics": {"out": "Customers Out", "name": "County"}})
     e = m.to_event({"properties": {"Customers Out": "1,234", "County": "007"}}, 0)
     assert e.metrics == {"out": 1234, "name": "007"}
+
+
+def test_arcgis_falls_back_to_esri_json():
+    import emagg.sources.mapped  # noqa: F401
+
+    calls = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request.url.params["f"])
+        if request.url.params["f"] == "geojson":
+            return httpx.Response(200, json={"error": {"code": 400, "message": "Invalid or missing input parameters."}})
+        return httpx.Response(200, json={"features": [
+            {"attributes": {"OBJECTID": 7, "customers": 42, "county": "Lubbock"}, "geometry": {"x": -101.85, "y": 33.58}},
+            {"attributes": {"OBJECTID": 8, "customers": 5}, "geometry": {"rings": [[[-101, 33], [-101.1, 33], [-101.1, 33.1], [-101, 33]]]}},
+        ]})
+
+    async def go():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            cfg = SourceConfig(id="x", type="arcgis", url="https://example.gov/arcgis/rest/services/Outages/MapServer/3",
+                               category="power", title="{customers} customers out", constants={"kind": "outage", "utility": "Xcel"},
+                               metrics={"customers_out": "customers"})
+            return await REGISTRY["arcgis"](cfg, SourceContext(http, AreaConfig(), Store())).fetch()
+
+    events = by_id(asyncio.run(go()))
+    assert calls == ["geojson", "json"]
+    assert events["7"].geometry == {"type": "Point", "coordinates": [-101.85, 33.58]}
+    assert events["7"].metrics == {"kind": "outage", "utility": "Xcel", "customers_out": 42}
+    assert events["8"].geometry["type"] == "Polygon"

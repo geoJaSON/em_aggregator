@@ -141,6 +141,24 @@ class FieldMapping:
         return out
 
 
+def esri_to_geojson(feature: dict[str, Any]) -> dict[str, Any]:
+    """Convert an Esri JSON feature ({attributes, geometry}) queried with outSR=4326 to a GeoJSON feature."""
+    g = feature.get("geometry") or {}
+    geometry = None
+    if "x" in g and "y" in g and g["x"] is not None and g["y"] is not None:
+        geometry = {"type": "Point", "coordinates": [g["x"], g["y"]]}
+    elif g.get("points"):
+        geometry = {"type": "MultiPoint", "coordinates": g["points"]}
+    elif g.get("paths"):
+        paths = g["paths"]
+        geometry = {"type": "LineString", "coordinates": paths[0]} if len(paths) == 1 else {"type": "MultiLineString", "coordinates": paths}
+    elif g.get("rings"):
+        geometry = {"type": "Polygon", "coordinates": g["rings"]}
+    attrs = feature.get("attributes") or {}
+    oid = next((attrs[k] for k in ("OBJECTID", "objectid", "FID", "ObjectID") if k in attrs), None)
+    return {"type": "Feature", "id": oid, "geometry": geometry, "properties": attrs}
+
+
 async def query_arcgis(
     source: Source,
     layer_url: str,
@@ -152,13 +170,15 @@ async def query_arcgis(
     max_pages: int = 20,
     extra_params: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
-    """Query an ArcGIS FeatureServer/MapServer layer as GeoJSON, following pagination."""
+    """Query an ArcGIS FeatureServer/MapServer layer, following pagination. Asks for GeoJSON; servers that
+    reject that format (older ArcGIS Server, common for utility outage maps) are re-queried as Esri JSON."""
     url = layer_url.rstrip("/") + "/query"
     params: dict[str, Any] = {
         "where": where,
         "outFields": out_fields,
         "outSR": 4326,
         "f": "geojson",
+        "returnGeometry": "true",
         "resultRecordCount": page_size,
     }
     if area is not None and area.bbox:
@@ -172,17 +192,30 @@ async def query_arcgis(
         )
     params.update(extra_params or {})
     features: list[dict[str, Any]] = []
-    for page in range(max_pages):
+    page = 0
+    while page < max_pages:
         params["resultOffset"] = page * page_size
-        data = await source.get_json(url, params=params)
+        try:
+            data = await source.get_json(url, params=params)
+        except SourceError:
+            if params["f"] == "geojson" and page == 0:
+                params["f"] = "json"  # some servers answer f=geojson with an HTTP error
+                continue
+            raise
         if isinstance(data, dict) and data.get("error"):
+            if params["f"] == "geojson" and page == 0:
+                params["f"] = "json"
+                continue
             err = data["error"]
             raise SourceError(f"ArcGIS error {err.get('code')}: {err.get('message')}")
         batch = data.get("features") or []
+        if params["f"] == "json" or (batch and "attributes" in batch[0] and "properties" not in batch[0]):
+            batch = [esri_to_geojson(f) for f in batch]
         features.extend(batch)
         exceeded = data.get("exceededTransferLimit") or (data.get("properties") or {}).get("exceededTransferLimit")
         if not exceeded or not batch:
             break
+        page += 1
     return features
 
 

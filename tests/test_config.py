@@ -4,7 +4,7 @@ import httpx
 import pytest
 from pydantic import ValidationError
 
-from emagg.config import Config, load_config
+from emagg.config import Config, SourceConfig, load_config
 from emagg.scheduler import build_sources
 from emagg.sources import REGISTRY, SourceContext
 from emagg.store import Store
@@ -57,3 +57,15 @@ def test_validation_errors():
         Config.model_validate({"sources": [{"id": "field_reports", "type": "waze"}]})
     with pytest.raises(ValidationError):
         Config.model_validate({"area": {"bbox": [10, 10, 5, 20]}})
+
+
+def test_hosts_command_lists_option_and_module_hosts():
+    from emagg.cli import source_hosts
+
+    cfgs = [SourceConfig(id="a", type="nws_alerts"),
+            SourceConfig(id="b", type="wzdx", url="https://wzdx.example-dot.gov/feed?key={api_key}", api_key="k"),
+            SourceConfig(id="c", type="ibi511", base_url="https://511la.org", api_key="k")]
+    hosts = source_hosts(cfgs)
+    assert hosts["a"] == {"api.weather.gov"}
+    assert hosts["b"] == {"wzdx.example-dot.gov"}
+    assert hosts["c"] == {"511la.org"}
