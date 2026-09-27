@@ -51,39 +51,11 @@ def parse_summary(summary: dict[str, Any], utility: str, customers_served: int |
     served = customers_served or (sum(to_int(t.get("total_cust_s")) or 0 for t in totals) or None)
     outage_counts = [to_int(t.get("total_outages")) for t in totals]
     outages = sum(n for n in outage_counts if n is not None) if any(n is not None for n in outage_counts) else None
-    pct = (out / served * 100.0) if served else num(totals[0].get("total_percent_cust_a"))
-    if pct is not None:
-        if pct >= 20:
-            sev = Severity.extreme
-        elif pct >= 5:
-            sev = Severity.severe
-        elif pct >= 1:
-            sev = Severity.moderate
-        else:
-            sev = Severity.minor if out else Severity.info
-    else:
-        sev = Severity.extreme if out >= 50000 else Severity.severe if out >= 10000 else Severity.moderate if out >= 1000 else Severity.minor if out else Severity.info
-    title = f"{utility}: {out:,} customers without power"
-    if pct is not None and out:
-        title += f" ({pct:.1f}%)"
-    return Event(
-        id="total",
-        category=Category.power,
-        title=title,
-        severity=sev,
-        description=f"{outages:,} active outages." if outages is not None else None,
-        area=utility,
-        geometry=None,
-        updated_at=parse_time(sfd.get("date_generated")),
-        url=link,
-        metrics={
-            "kind": "utility_total",
-            "utility": utility,
-            "customers_out": out,
-            "customers_served": served,
-            "percent_out": round(pct, 3) if pct is not None else None,
-            "outages": outages,
-        },
+    from emagg.sources.power_common import utility_total_event
+
+    return utility_total_event(
+        utility, out, served, outages, updated=sfd.get("date_generated"), link=link,
+        percent_out=num(totals[0].get("total_percent_cust_a")),
     )
 
 
