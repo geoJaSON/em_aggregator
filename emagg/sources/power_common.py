@@ -27,6 +27,13 @@ __all__ = [
 ]
 
 
+def format_percent(pct: float, whole_above: float | None = None) -> str:
+    """"23.6%", or "<0.1%" (never "0.0%" for a real outage); whole numbers at or above ``whole_above``."""
+    if pct < 0.1:
+        return "<0.1%"
+    return f"{pct:.0f}%" if whole_above is not None and pct >= whole_above else f"{pct:.1f}%"
+
+
 def total_severity(out: int, pct: float | None) -> Severity:
     """Utility-wide severity: by share of customers when known, else by count."""
     if pct is not None:
@@ -59,9 +66,9 @@ def utility_total_event(
     out = int(customers_out or 0)
     served = int(customers_served) if customers_served else None
     pct = (out / served * 100.0) if served else percent_out
-    title = f"{utility}: {out:,} customers without power"
+    title = f"{utility}: {out:,} customer{'' if out == 1 else 's'} without power"
     if pct is not None and out:
-        title += f" ({pct:.1f}%)"
+        title += f" ({format_percent(pct)})"
     return Event(
         id="total",
         category=Category.power,

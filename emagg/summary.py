@@ -23,14 +23,21 @@ LABELS = {
 }
 
 
+def is_multistate_total(e: dict[str, Any]) -> bool:
+    """A utility-wide total spanning several states: its severity and count can't be assigned to any one state."""
+    return e["metrics"].get("kind") == "utility_total" and len(e["states"]) > 1
+
+
 def utility_customers_out(events: list[dict[str, Any]], state: str | None = None) -> dict[str, int]:
     """Customers out per utility, using the best figure each utility publishes: its total (only when it can be
-    attributed to the requested state), else its county report, else its outage points."""
+    attributed to the requested state), else its county report, else its outage points. Utilities at 0 are omitted."""
     figures: dict[str, dict[str, int]] = {}
     for e in events:
         m = e["metrics"]
         kind, util, n = m.get("kind"), m.get("utility"), m.get("customers_out") or 0
         if kind not in ("utility_total", "county_outage", "outage", "outage_cluster") or not util:
+            continue
+        if state is not None and state not in e["states"]:
             continue
         f = figures.setdefault(util, {})
         if kind == "utility_total":
@@ -40,15 +47,32 @@ def utility_customers_out(events: list[dict[str, Any]], state: str | None = None
             f["county"] = f.get("county", 0) + n
         else:
             f["points"] = f.get("points", 0) + n
-    return {u: f.get("total", f.get("county", f.get("points", 0))) for u, f in figures.items()}
+    out = {u: f.get("total", f.get("county", f.get("points", 0))) for u, f in figures.items()}
+    return {u: n for u, n in out.items() if n > 0}
+
+
+def customers_out_for_states(events: list[dict[str, Any]], states: list[str] | None) -> dict[str, int]:
+    """Per-utility customers out, national (states=None) or summed over the given states using the per-state rule."""
+    if not states:
+        return utility_customers_out(events)
+    total: dict[str, int] = {}
+    for st in states:
+        for util, n in utility_customers_out(events, state=st).items():
+            total[util] = total.get(util, 0) + n
+    return total
 
 
 def _plural(n: int, word: str) -> str:
     return f"{n:,} {word}{'' if n == 1 else 's'}"
 
 
-def build_summary(events: list[dict[str, Any]], now: datetime | None = None) -> dict[str, Any]:
+def build_summary(
+    events: list[dict[str, Any]], now: datetime | None = None, states: list[str] | None = None
+) -> dict[str, Any]:
+    """Per-category counts and headlines. With ``states`` (a state filter or the configured area), multi-state
+    utility totals are left out of counts and severities and customers are counted state by state."""
     now = now or utcnow()
+    states = [s.upper() for s in states or [] if s]
     recent = ts(now - timedelta(hours=1))
     cats: dict[str, dict[str, Any]] = {}
     for c in Category:
@@ -63,6 +87,9 @@ def build_summary(events: list[dict[str, Any]], now: datetime | None = None) -> 
         }
     by_cat: dict[str, list[dict[str, Any]]] = {c.value: [] for c in Category}
     for e in events:
+        if states and is_multistate_total(e):
+            by_cat[e["category"]].append(e)  # still feeds the customer figures (counties/points), not the counts
+            continue
         c = cats[e["category"]]
         c["count"] += 1
         c["by_severity"][e["severity"]] += 1
@@ -74,19 +101,22 @@ def build_summary(events: list[dict[str, Any]], now: datetime | None = None) -> 
     for c in cats.values():
         if c["max_severity"] is not None:
             c["max_severity"] = c["max_severity"].value
-        c["headline"] = _headline(c["category"], by_cat[c["category"]])
-    return {"generated_at": ts(now), "total": len(events), "categories": list(cats.values())}
+        c["headline"] = _headline(c["category"], by_cat[c["category"]], states)
+    total = sum(c["count"] for c in cats.values())
+    return {"generated_at": ts(now), "total": total, "categories": list(cats.values())}
 
 
-def _headline(category: str, events: list[dict[str, Any]]) -> str | None:
+def _headline(category: str, events: list[dict[str, Any]], states: list[str] | None = None) -> str | None:
     if not events:
         return None
     m = [e["metrics"] for e in events]
     if category == "power":
-        per_utility = utility_customers_out(events)
+        per_utility = customers_out_for_states(events, states)
         if per_utility:
             n = len(per_utility)
             return f"{sum(per_utility.values()):,} customers out across {n} {'utility' if n == 1 else 'utilities'}"
+        if any(x.get("kind") in ("utility_total", "county_outage", "outage", "outage_cluster") for x in m):
+            return "No customers out reported"
         return _plural(len(events), "report")
     if category == "flood":
         gauges = [x for x in m if x.get("kind") == "river_gauge"]
@@ -124,7 +154,8 @@ def _headline(category: str, events: list[dict[str, Any]]) -> str | None:
 
 
 def build_state_rollup(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Per-state counts for a national overview. Multi-state events count once in each state."""
+    """Per-state counts for a national overview. Multi-state events count once in each state, except utility-wide
+    totals spanning several states, whose severity and count belong to no single state."""
     from emagg.regions import state_bbox, state_name
 
     rows: dict[str, dict[str, Any]] = {}
@@ -139,14 +170,17 @@ def build_state_rollup(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "customers_out": 0,
                 "bbox": state_bbox(st),
             })
+            r.setdefault("_events", []).append(e)
+            if is_multistate_total(e):
+                continue
             r["count"] += 1
             r["by_severity"][e["severity"]] += 1
             r["by_category"][e["category"]] = r["by_category"].get(e["category"], 0) + 1
-            r.setdefault("_events", []).append(e)
     out = []
     for code, r in rows.items():
         evs = r.pop("_events", [])
         r["customers_out"] = sum(utility_customers_out(evs, state=code).values())
-        out.append(r)
+        if r["count"] or r["customers_out"]:
+            out.append(r)
     out.sort(key=lambda r: (-r["by_severity"]["extreme"], -r["by_severity"]["severe"], -r["count"]))
     return out

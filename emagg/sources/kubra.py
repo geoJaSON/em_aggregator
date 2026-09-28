@@ -59,6 +59,12 @@ def parse_summary(summary: dict[str, Any], utility: str, customers_served: int |
     )
 
 
+def _fmt_pct(pct: float) -> str:
+    from emagg.sources.power_common import format_percent
+
+    return format_percent(pct, whole_above=10)
+
+
 def county_severity(pct: float | None, customers: int) -> Severity:
     if pct is None:
         return customers_severity(customers)
@@ -83,7 +89,7 @@ def county_outage_event(
     return Event(
         id=f"county-{county['fips']}",
         category=Category.power,
-        title=f"{utility}: {out:,} out in {name}, {state}" + (f" ({pct:.0f}%)" if pct is not None else ""),
+        title=f"{utility}: {out:,} out in {name}, {state}" + (f" ({_fmt_pct(pct)})" if pct is not None else ""),
         severity=county_severity(pct, out),
         area=f"{name}, {state}",
         geometry=county_geometry(county),
@@ -106,9 +112,9 @@ def parse_county_report(
     report: dict[str, Any], utility: str, states: list[str], link: str | None = None
 ) -> list[Event]:
     """Kubra area report (file_data.areas[], possibly nested state -> county -> ...) to county events."""
-    from emagg.regions import find_county, state_code_for_name
+    from emagg.regions import resolve_county, state_code_for_name
 
-    events: dict[str, Event] = {}
+    rows: dict[str, dict[str, Any]] = {}  # fips -> aggregated row (a county can appear under several areas)
 
     def walk(areas: list[dict[str, Any]], state: str | None) -> None:
         for a in areas or []:
@@ -119,18 +125,24 @@ def parse_county_report(
                 continue
             if key == "county":
                 out = to_int(a.get("cust_a")) or 0
-                candidates = [state] if state else states
-                county = next((c for st in candidates if st and (c := find_county(st, name))), None)
+                county = resolve_county(name, [state] if state else states)
                 if county and out > 0:
-                    st = county["state"]
-                    ev = county_outage_event(utility, st, county, out, to_int(a.get("cust_s")), a.get("etr"), link=link)
-                    events[ev.id] = ev
+                    row = rows.setdefault(county["fips"], {"county": county, "out": 0, "served": 0, "served_known": True, "etr": None})
+                    row["out"] += out
+                    served = to_int(a.get("cust_s"))
+                    row["served"] += served or 0
+                    row["served_known"] &= served is not None
+                    row["etr"] = row["etr"] or a.get("etr")
                 continue
             walk(a.get("areas") or [], state)
 
     fd = report.get("file_data") or {}
     walk(fd.get("areas") if isinstance(fd, dict) else fd, states[0] if len(states) == 1 else None)
-    return list(events.values())
+    return [
+        county_outage_event(utility, r["county"]["state"], r["county"], r["out"], r["served"] if r["served_known"] else None,
+                            r["etr"], link=link)
+        for r in rows.values()
+    ]
 
 
 def _text(v: Any) -> str | None:

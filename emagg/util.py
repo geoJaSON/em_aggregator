@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import re
 import string
 from datetime import datetime, timezone
 from typing import Any
@@ -86,12 +87,37 @@ class _SafeDict(dict):
         return ""
 
 
+class _LenientFormatter(string.Formatter):
+    """Numeric format specs such as ``{customers:,}`` also work on numeric strings ("1234" -> "1,234"); a value
+    that can't take the spec is shown as-is instead of breaking the whole template."""
+
+    def format_field(self, value: Any, format_spec: str) -> str:
+        if format_spec:
+            try:
+                return super().format_field(value, format_spec)
+            except (ValueError, TypeError):
+                n = num(value)
+                if n is not None:
+                    try:
+                        return super().format_field(int(n) if n.is_integer() else n, format_spec)
+                    except (ValueError, TypeError):
+                        pass
+                return str(value)
+        return super().format_field(value, format_spec)
+
+
+_FORMATTER = _LenientFormatter()
+_DANGLING = re.compile(r"\s*[—–:,-]\s*$")
+
+
 def render_template(template: str, values: dict[str, Any]) -> str:
-    """str.format with missing keys rendered as empty strings."""
+    """str.format with missing keys rendered as empty strings; a separator left dangling by an empty trailing field
+    ("12 customers out — ") is removed."""
     try:
-        return string.Formatter().vformat(template, (), _SafeDict({k: "" if v is None else v for k, v in values.items()}))
-    except (ValueError, IndexError, AttributeError):
+        text = _FORMATTER.vformat(template, (), _SafeDict({k: "" if v is None else v for k, v in values.items()}))
+    except (ValueError, IndexError, AttributeError, KeyError):
         return template
+    return _DANGLING.sub("", text)
 
 
 def clean_text(value: Any) -> str | None:

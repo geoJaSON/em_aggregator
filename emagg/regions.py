@@ -176,6 +176,19 @@ def find_county(state: str, name: str) -> dict[str, Any] | None:
     return _county_name_index().get((state.upper(), _norm_county(name)))
 
 
+def resolve_county(name: str | None, states: list[str] | None) -> dict[str, Any] | None:
+    """The county called ``name`` within the given states, or a 5-digit FIPS code. None when unknown or ambiguous
+    (the same name in two of the states, e.g. Washington County): a wrong county is worse than none."""
+    text = (name or "").strip()
+    if not text:
+        return None
+    if text.isdigit() and len(text) == 5:
+        county = county_by_fips(text)
+        return county if county and (not states or county["state"] in states) else None
+    matches = {c["fips"]: c for st in states or [] if st and (c := find_county(st, text))}
+    return next(iter(matches.values())) if len(matches) == 1 else None
+
+
 def county_by_fips(fips: str) -> dict[str, Any] | None:
     return _data()["county_by_fips"].get(str(fips).zfill(5))
 

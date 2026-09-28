@@ -11,6 +11,7 @@ import sys
 import httpx
 
 from emagg.config import Config, load_config
+from emagg.http import make_http_client
 from emagg.scheduler import Notifier, Scheduler, build_sources
 from emagg.sources import REGISTRY, SourceContext
 from emagg.store import Store
@@ -44,12 +45,7 @@ def cmd_serve(args: argparse.Namespace) -> None:
 async def _poll(args: argparse.Namespace) -> int:
     config, transport = _load(args)
     store = Store(":memory:")
-    async with httpx.AsyncClient(
-        headers={"User-Agent": config.app.user_agent},
-        timeout=config.app.request_timeout,
-        follow_redirects=True,
-        transport=transport,
-    ) as http:
+    async with make_http_client(config, transport) as http:
         ctx = SourceContext(http=http, area=config.area, store=store)
         configs = [c for c in config.sources if not args.source or c.id in args.source]
         sources, problems = build_sources(configs, ctx)
@@ -123,11 +119,27 @@ def cmd_catalog(args: argparse.Namespace) -> None:
     print(f"\n{len(rows)} catalog feeds")
 
 
+# Options that are shown to people but never fetched by the server.
+DISPLAY_ONLY_OPTIONS = {"link"}
+
+
+def _endpoint(url: str) -> str | None:
+    """"host" for HTTPS on 443, else "http://host" / "host:port" so allowlists get the scheme and port right."""
+    from urllib.parse import urlsplit
+
+    parts = urlsplit(url.replace("{api_key}", ""))
+    if not parts.hostname or parts.hostname.endswith((".invalid", "example.com", "example.coop", "example.gov")):
+        return None
+    default = 443 if parts.scheme == "https" else 80
+    port = parts.port or default
+    label = parts.hostname if port == default else f"{parts.hostname}:{port}"
+    return label if parts.scheme == "https" else f"http://{label}"
+
+
 def source_hosts(configs) -> dict[str, set[str]]:
-    """Hostnames each source contacts: URLs in its options plus the fixed endpoints in its adapter module."""
+    """Endpoints each source contacts: URLs in its options plus the fixed endpoints in its adapter module."""
     import inspect
     import re
-    from urllib.parse import urlsplit
 
     module_hosts: dict[str, set[str]] = {}
     out: dict[str, set[str]] = {}
@@ -137,15 +149,13 @@ def source_hosts(configs) -> dict[str, set[str]]:
             continue
         if cfg.type not in module_hosts:
             src = inspect.getsource(inspect.getmodule(cls))
-            module_hosts[cfg.type] = {
-                h for u in re.findall(r'"(https?://[^"{ ]+)', src)
-                if (h := urlsplit(u).hostname) and not h.endswith((".invalid", "example.com", "example.coop", "example.gov"))
-            }
+            module_hosts[cfg.type] = {h for u in re.findall(r'"(https?://[^"{ ]+)', src) if (h := _endpoint(u))}
         hosts = set(module_hosts[cfg.type])
-        for value in cfg.options.values():
-            if isinstance(value, str) and value.startswith("http"):
-                hosts.add(urlsplit(value.replace("{api_key}", "")).hostname)
-        out[cfg.id] = {h for h in hosts if h}
+        for key, value in cfg.options.items():
+            if key not in DISPLAY_ONLY_OPTIONS and isinstance(value, str) and value.startswith("http"):
+                if h := _endpoint(value):
+                    hosts.add(h)
+        out[cfg.id] = hosts
     return out
 
 
@@ -157,12 +167,15 @@ def cmd_hosts(args: argparse.Namespace) -> None:
         configs = config.sources
     else:
         configs = [c for c in load_config(args.config).sources if c.enabled]
-    hosts = sorted(set().union(*source_hosts(configs).values())) if configs else []
+    hosts = sorted(set().union(*source_hosts(configs).values()), key=lambda h: h.removeprefix("http://")) if configs else []
     print("\n".join(hosts))
     if not args.quiet:
-        print(f"\n# {len(hosts)} hosts for {len(configs)} sources (HTTPS, port 443). The dashboard's map tiles are fetched by"
-              " each viewer's browser from *.basemaps.cartocdn.com, tile.openstreetmap.org and server.arcgisonline.com.",
-              file=sys.stderr)
+        plain = sum(1 for h in hosts if h.startswith("http://"))
+        ported = sum(1 for h in hosts if ":" in h.removeprefix("http://"))
+        print(f"\n# {len(hosts)} endpoints for {len(configs)} sources. Bare names are HTTPS on port 443; "
+              f"{plain} need plain HTTP (shown as http://host) and {ported} a non-standard port (host:port). "
+              "Dashboard map tiles are fetched by each viewer's browser from *.basemaps.cartocdn.com, "
+              "tile.openstreetmap.org and server.arcgisonline.com.", file=sys.stderr)
 
 
 def cmd_sources(_: argparse.Namespace) -> None:

@@ -22,7 +22,9 @@ from pydantic import BaseModel, Field
 from emagg import __version__
 from emagg.config import Config
 from emagg.geo import point
+from emagg.http import make_http_client
 from emagg.models import SEVERITY_ORDER, Category, Event, Severity, utcnow
+from emagg.regions import state_codes, state_name
 from emagg.scheduler import Notifier, Scheduler, attribute, build_sources
 from emagg.sources import REGISTRY, SourceContext
 from emagg.store import Store, ts
@@ -58,12 +60,7 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        http = httpx.AsyncClient(
-            headers={"User-Agent": config.app.user_agent},
-            timeout=config.app.request_timeout,
-            follow_redirects=True,
-            transport=transport,
-        )
+        http = make_http_client(config, transport)
         ctx = SourceContext(http=http, area=config.area, store=store)
         sources, problems = build_sources(config.sources, ctx)
         for sid, why in problems.items():
@@ -116,6 +113,7 @@ def create_app(
                 "bbox": config.area.bbox,
                 "states": config.area.states,
             },
+            "state_names": dict(sorted(((s, state_name(s)) for s in state_codes()), key=lambda kv: kv[1] or kv[0])),
             "categories": [{"id": c.value, "label": LABELS[c]} for c in Category],
             "severities": [s.value for s in SEVERITY_ORDER],
             "write_token_required": bool(config.app.write_token),
@@ -136,12 +134,15 @@ def create_app(
             sources=source,
             min_severity=min_severity,
             states=state,
-            limit=limit,
         )
+        kept, omitted = _limit_events(rows, limit)
         return {
             "type": "FeatureCollection",
             "generated_at": ts(utcnow()),
-            "features": [_feature(r) for r in rows],
+            "total": len(rows),
+            "truncated": len(kept) < len(rows),
+            "omitted": omitted,
+            "features": [_feature(r) for r in kept],
         }
 
     @app.get("/api/events/{source_id}/{event_id}")
@@ -153,7 +154,9 @@ def create_app(
 
     @app.get("/api/summary")
     async def get_summary(state: list[str] | None = Query(None)) -> dict[str, Any]:
-        return build_summary(store.query_events(status="active", states=state))
+        # Customers are counted per state for a state filter or a regional area (multi-state utility totals
+        # can't be split); nationally, utility totals are used as published.
+        return build_summary(store.query_events(status="active", states=state), states=state or config.area.states)
 
     @app.get("/api/states")
     async def get_states() -> dict[str, Any]:
@@ -293,6 +296,31 @@ def create_app(
         )
 
     return app
+
+
+BULK_KINDS = ("outage", "outage_cluster")
+
+
+def _limit_events(rows: list[dict[str, Any]], limit: int) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """Keep every non-bulk event (alerts, closures, shelters, totals, county figures) and trim only bulk outage
+    points, least important first, so a large outage never pushes other categories off the dashboard."""
+    if len(rows) <= limit:
+        return rows, {}
+    bulk = [r for r in rows if r["metrics"].get("kind") in BULK_KINDS]
+    other = [r for r in rows if r["metrics"].get("kind") not in BULK_KINDS]
+    if len(other) >= limit:  # extreme case: even non-bulk events exceed the limit (rows are severity-sorted)
+        kept = other[:limit]
+    else:
+        bulk.sort(key=lambda r: (r["severity_rank"], r["metrics"].get("customers_out") or 0), reverse=True)
+        kept = other + bulk[: limit - len(other)]
+    kept_ids = {r["uid"] for r in kept}
+    omitted: dict[str, int] = {}
+    for r in rows:
+        if r["uid"] not in kept_ids:
+            kind = r["metrics"].get("kind") or r["category"]
+            omitted[kind] = omitted.get(kind, 0) + 1
+    kept.sort(key=lambda r: r["severity_rank"], reverse=True)
+    return kept, omitted
 
 
 def _feature(row: dict[str, Any]) -> dict[str, Any]:
