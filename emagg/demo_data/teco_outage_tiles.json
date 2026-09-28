@@ -1,0 +1,642 @@
+{
+ "took": 3,
+ "timed_out": false,
+ "_shards": {
+  "total": 1,
+  "successful": 1,
+  "skipped": 0,
+  "failed": 0
+ },
+ "hits": {
+  "total": {
+   "value": 11,
+   "relation": "eq"
+  },
+  "max_score": null,
+  "hits": [
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "gIChe5IBl02o2aqHoFuC",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're aware of the outage",
+     "reason": "Pending Investigation",
+     "customerCount": 4514,
+     "polygonCenter": [
+      -82.46969332223755,
+      28.0602660249929
+     ],
+     "incidentId": "A202428301846",
+     "polygonPointsGoogle": [
+      {
+       "lat": 28.060266024993,
+       "lng": -82.464287486724
+      },
+      {
+       "lat": 28.063041545473,
+       "lng": -82.465944980517
+      },
+      {
+       "lat": 28.065806515075,
+       "lng": -82.468586251877
+      },
+      {
+       "lat": 28.063827855356,
+       "lng": -82.472023670744
+      },
+      {
+       "lat": 28.062087292883,
+       "lng": -82.475363755371
+      },
+      {
+       "lat": 28.058597009151,
+       "lng": -82.474889725678
+      },
+      {
+       "lat": 28.056736897661,
+       "lng": -82.472002274593
+      },
+      {
+       "lat": 28.055095166508,
+       "lng": -82.468660109637
+      },
+      {
+       "lat": 28.057681082192,
+       "lng": -82.466202355762
+      }
+     ],
+     "estimatedTimeOfRestoration": "{{now+9h}}"
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428301846"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "VYChe5IBl02o2aqHoFuB",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Weather-related damage to equipment",
+     "customerCount": 788,
+     "polygonCenter": [
+      -82.1231162169736,
+      28.046347048340884
+     ],
+     "incidentId": "A202428310463",
+     "polygonPointsGoogle": [
+      {
+       "lat": 28.046347048341,
+       "lng": -82.119956585672
+      },
+      {
+       "lat": 28.047802288318,
+       "lng": -82.121151169107
+      },
+      {
+       "lat": 28.048606227927,
+       "lng": -82.122664858528
+      },
+      {
+       "lat": 28.048750638071,
+       "lng": -82.12468857615
+      },
+      {
+       "lat": 28.04749474715,
+       "lng": -82.126689061434
+      },
+      {
+       "lat": 28.04554612268,
+       "lng": -82.12560953908
+      },
+      {
+       "lat": 28.04419484352,
+       "lng": -82.124524127383
+      },
+      {
+       "lat": 28.043325602192,
+       "lng": -82.122512566318
+      },
+      {
+       "lat": 28.044078047099,
+       "lng": -82.120052326399
+      }
+     ],
+     "estimatedTimeOfRestoration": "{{now+4h}}"
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428310463"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "q4Che5IBl02o2aqHoGGD",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Weather-related damage to equipment",
+     "customerCount": 5,
+     "polygonCenter": [
+      -82.10078895015786,
+      27.927073597783874
+     ],
+     "incidentId": "A202428324910",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.927073597784,
+       "lng": -82.099220723328
+      },
+      {
+       "lat": 27.92788687933,
+       "lng": -82.099691969431
+      },
+      {
+       "lat": 27.928700367544,
+       "lng": -82.100464299362
+      },
+      {
+       "lat": 27.927967074053,
+       "lng": -82.101372790371
+      },
+      {
+       "lat": 27.927611695322,
+       "lng": -82.102462222939
+      },
+      {
+       "lat": 27.926665288592,
+       "lng": -82.10205863197
+      },
+      {
+       "lat": 27.926123695192,
+       "lng": -82.101409662034
+      },
+      {
+       "lat": 27.926010793114,
+       "lng": -82.100576848611
+      },
+      {
+       "lat": 27.92629813512,
+       "lng": -82.099742980775
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428324910"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "RIChe5IBl02o2aqHoF-C",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Pending Investigation",
+     "customerCount": 849,
+     "polygonCenter": [
+      -82.38906551233327,
+      27.835456879218697
+     ],
+     "incidentId": "A202428343144",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.835456879219,
+       "lng": -82.385204495485
+      },
+      {
+       "lat": 27.837049453688,
+       "lng": -82.386919212307
+      },
+      {
+       "lat": 27.838478806491,
+       "lng": -82.388462943048
+      },
+      {
+       "lat": 27.838187485486,
+       "lng": -82.390848312505
+      },
+      {
+       "lat": 27.836400907452,
+       "lng": -82.391998588403
+      },
+      {
+       "lat": 27.834424444308,
+       "lng": -82.39227326611
+      },
+      {
+       "lat": 27.833461772155,
+       "lng": -82.390368108485
+      },
+      {
+       "lat": 27.833192755017,
+       "lng": -82.388614048224
+      },
+      {
+       "lat": 27.83384039582,
+       "lng": -82.386886990432
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428343144"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "RYChe5IBl02o2aqHoF-C",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Pending Investigation",
+     "customerCount": 1321,
+     "polygonCenter": [
+      -82.38906551233327,
+      27.835456879218697
+     ],
+     "incidentId": "A202428343144",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.835456879219,
+       "lng": -82.384897573253
+      },
+      {
+       "lat": 27.837551298675,
+       "lng": -82.386242879785
+      },
+      {
+       "lat": 27.838476865412,
+       "lng": -82.388463330097
+      },
+      {
+       "lat": 27.838509934662,
+       "lng": -82.391058838077
+      },
+      {
+       "lat": 27.836586092322,
+       "lng": -82.39257395394
+      },
+      {
+       "lat": 27.834416362767,
+       "lng": -82.392298375288
+      },
+      {
+       "lat": 27.832098135521,
+       "lng": -82.391258420521
+      },
+      {
+       "lat": 27.831796243005,
+       "lng": -82.388335585121
+      },
+      {
+       "lat": 27.833561836551,
+       "lng": -82.386511578307
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428343144"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "FoChe5IBl02o2aqHoFyC",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Pending Investigation",
+     "customerCount": 3098,
+     "polygonCenter": [
+      -82.37341089996815,
+      27.694423303991282
+     ],
+     "incidentId": "A202428354338",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.694423303991,
+       "lng": -82.368093190051
+      },
+      {
+       "lat": 27.697378051817,
+       "lng": -82.369433966637
+      },
+      {
+       "lat": 27.699732465911,
+       "lng": -82.372353629356
+      },
+      {
+       "lat": 27.69880571602,
+       "lng": -82.376268451023
+      },
+      {
+       "lat": 27.695811305181,
+       "lng": -82.377717805928
+      },
+      {
+       "lat": 27.692497909436,
+       "lng": -82.379385313642
+      },
+      {
+       "lat": 27.691242678316,
+       "lng": -82.375484826426
+      },
+      {
+       "lat": 27.690135710257,
+       "lng": -82.372557065235
+      },
+      {
+       "lat": 27.691130150837,
+       "lng": -82.368978491074
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428354338"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "A4Che5IBl02o2aqHoGKD",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're aware of the outage",
+     "reason": "Under investigation",
+     "customerCount": 76,
+     "polygonCenter": [
+      -82.47379489191306,
+      28.007106787147155
+     ],
+     "incidentId": "A202428392512",
+     "polygonPointsGoogle": [
+      {
+       "lat": 28.007106787147,
+       "lng": -82.472182865749
+      },
+      {
+       "lat": 28.008208241776,
+       "lng": -82.4723081116
+      },
+      {
+       "lat": 28.008412720311,
+       "lng": -82.473534076387
+      },
+      {
+       "lat": 28.008724515277,
+       "lng": -82.474852777328
+      },
+      {
+       "lat": 28.007774070038,
+       "lng": -82.475871420152
+      },
+      {
+       "lat": 28.006495945259,
+       "lng": -82.475695780496
+      },
+      {
+       "lat": 28.005334418743,
+       "lng": -82.474953901669
+      },
+      {
+       "lat": 28.005567921594,
+       "lng": -82.473487556101
+      },
+      {
+       "lat": 28.005891069147,
+       "lng": -82.472153875078
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428392512"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "fIChe5IBl02o2aqHoF2C",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're on our way to investigate",
+     "reason": "Pending Investigation",
+     "customerCount": 3477,
+     "polygonCenter": [
+      -82.13392648673317,
+      28.131257555174244
+     ],
+     "incidentId": "A202428418364",
+     "polygonPointsGoogle": [
+      {
+       "lat": 28.131257555174,
+       "lng": -82.12830034298
+      },
+      {
+       "lat": 28.134424721347,
+       "lng": -82.129646397122
+      },
+      {
+       "lat": 28.135821367712,
+       "lng": -82.133013967325
+      },
+      {
+       "lat": 28.136058231318,
+       "lng": -82.137069435659
+      },
+      {
+       "lat": 28.133238333151,
+       "lng": -82.140097627774
+      },
+      {
+       "lat": 28.129658062088,
+       "lng": -82.138909729453
+      },
+      {
+       "lat": 28.126817582133,
+       "lng": -82.136833287376
+      },
+      {
+       "lat": 28.127616524968,
+       "lng": -82.133198474638
+      },
+      {
+       "lat": 28.127905227112,
+       "lng": -82.129396170441
+      }
+     ],
+     "estimatedTimeOfRestoration": null
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428418364"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "cYChe5IBl02o2aqHoF6C",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're working onsite",
+     "reason": "Under investigation",
+     "customerCount": 28,
+     "polygonCenter": [
+      -82.31272877023261,
+      27.99807443658171
+     ],
+     "incidentId": "A202428480878",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.998074436582,
+       "lng": -82.310883706772
+      },
+      {
+       "lat": 27.999290349228,
+       "lng": -82.311087628241
+      },
+      {
+       "lat": 27.999809420661,
+       "lng": -82.312382295492
+      },
+      {
+       "lat": 27.999247080945,
+       "lng": -82.313495536513
+      },
+      {
+       "lat": 27.998563810965,
+       "lng": -82.314251534499
+      },
+      {
+       "lat": 27.997511657972,
+       "lng": -82.314479943129
+      },
+      {
+       "lat": 27.997073971881,
+       "lng": -82.31338295203
+      },
+      {
+       "lat": 27.996608622483,
+       "lng": -82.312436048492
+      },
+      {
+       "lat": 27.997260909478,
+       "lng": -82.311630736179
+      }
+     ],
+     "estimatedTimeOfRestoration": "{{now+2h}}"
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428480878"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "xIChe5IBl02o2aqHoF6C",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "Additional support enroute",
+     "reason": "Pending Investigation",
+     "customerCount": 1,
+     "polygonCenter": [
+      -82.57509000072253,
+      28.15104999663987
+     ],
+     "incidentId": "A202428487702",
+     "polygonPointsGoogle": null,
+     "estimatedTimeOfRestoration": "{{now+1h}}"
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428487702"
+    ]
+   },
+   {
+    "_index": "geopoints-prod-487b10ae-4960-4f79-8221-cbdfb8785d69",
+    "_id": "voChe5IBl02o2aqHoFyC",
+    "_score": null,
+    "_source": {
+     "updateTime": "{{now-12m}}",
+     "status": "We're aware of the outage",
+     "reason": "Pending Investigation",
+     "customerCount": 1,
+     "polygonCenter": [
+      -82.42200000079227,
+      27.773709996855622
+     ],
+     "incidentId": "A202428519911",
+     "polygonPointsGoogle": [
+      {
+       "lat": 27.773709996856,
+       "lng": -82.420848580988
+      },
+      {
+       "lat": 27.774341305104,
+       "lng": -82.421149675041
+      },
+      {
+       "lat": 27.775117274118,
+       "lng": -82.421719550537
+      },
+      {
+       "lat": 27.774598958371,
+       "lng": -82.422580069891
+      },
+      {
+       "lat": 27.774086560125,
+       "lng": -82.423169310314
+      },
+      {
+       "lat": 27.773302548836,
+       "lng": -82.423265214071
+      },
+      {
+       "lat": 27.772416158502,
+       "lng": -82.422844261916
+      },
+      {
+       "lat": 27.772729358562,
+       "lng": -82.421804573589
+      },
+      {
+       "lat": 27.772920661344,
+       "lng": -82.420936823947
+      }
+     ],
+     "estimatedTimeOfRestoration": "{{now+45m}}"
+    },
+    "sort": [
+     "{{ms:now-12m}}",
+     "A202428519911"
+    ]
+   }
+  ]
+ },
+ "aggregations": {
+  "customerCountSum": {
+   "value": 14158.0
+  }
+ },
+ "_tiles": {
+  "generated": "{{now-1m}}",
+  "performance": {
+   "totalTimeMs": 41
+  }
+ }
+}

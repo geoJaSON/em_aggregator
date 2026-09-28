@@ -1,0 +1,175 @@
+# Utilities on CFA Software's OutageEntry map (www.outageentry.com/Outage/outage.php?Client=<client>). Public, no key.
+# One form POST per poll to /Outage/ajax/ajaxShellOut.php (target=cfa_device_markers). Utility total from the
+# markers + outage points when markers carry positions. The feed has no customers-served figure, so
+# customers_served comes from lukesteve03's missing_customers_served.json (2026). Naive local times are read
+# in `timezone` (set here for split-zone states, otherwise derived from `states`).
+
+- id: outageentry_greys_ga
+  type: outageentry
+  name: GreyStone Power
+  states: [GA]
+  client: GREYS
+  customers_served: 155949
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json + core/registry/base_collectors/outageentry_base.py (2026); github.com/Y3KDigital/winter-em index.html (2026, a link to the public map outageentry.com/Outage/outage.php?Client=greys only)"
+    notes: "Only lukesteve03 reads the ajaxShellOut feed; the second repo confirms the client code through a map link, not the endpoint"
+
+- id: outageentry_walton_ga
+  type: outageentry
+  name: Walton EMC
+  states: [GA]
+  client: WALTON
+  customers_served: 143288
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_tallahatchie_ms
+  type: outageentry
+  name: Tallahatchie Valley Electric Power Association
+  states: [MS]
+  client: TALLAHATCHIE
+  customers_served: 28646
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_nemepa_ms
+  type: outageentry
+  name: Northeast Mississippi EPA
+  states: [MS]
+  client: NEMEPA
+  customers_served: 30519
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026); web: outageentry.com/Outage/outage.php?Client=NEMEPA (search index 2026)"
+
+- id: outageentry_alcorn_ms
+  type: outageentry
+  name: Alcorn County EPA
+  states: [MS]
+  client: ALCORN_COUNTY
+  customers_served: 23565
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_tsemc_ga_tn_nc
+  type: outageentry
+  name: Tri-State EMC
+  states: [GA, TN, NC]
+  client: tsemc
+  customers_served: 22040
+  timezone: America/New_York
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_wise_tx
+  type: outageentry
+  name: Wise Electric Cooperative
+  states: [TX]
+  enabled: false
+  client: WISE
+  timezone: America/Chicago
+  meta:
+    confidence: low
+    evidence: "web: outageentry.com/Outage/outage.php?Client=WISE ('Report an Outage', search index 2026-09); search snippets for Wise EC (Decatur, TX) point to an outageentry.com map (pages not fetched)"
+    notes: "Off by default: not in any open-source repo, and the client-to-utility match is from search results only. The search index also lists outageentry.com/CustomerFacingApp/map.php?clientid=WISE, a different app whose markers may not come from ajaxShellOut. No customers_served (percent not shown). Enable via catalog.enable after `emagg poll`"
+
+- id: outageentry_albany_ga
+  type: outageentry
+  name: Albany Utilities
+  states: [GA]
+  enabled: false
+  client: albany
+  meta:
+    confidence: low
+    evidence: "web: outageentry.com/Outage/outage.php?Client=albany ('Outage App', search index 2026-09), returned for Albany Utilities (GA) searches alongside wfxl.com 'Albany Utilities provide new power outage tools' (pages not fetched)"
+    notes: "City of Albany, GA. Off by default: not in any open-source repo, and the client-to-utility match is from search results only. No customers_served. Enable via catalog.enable after `emagg poll`"
+
+- id: outageentry_svec_va
+  type: outageentry
+  name: Shenandoah Valley Electric Coop
+  states: [VA]
+  client: SVEC
+  customers_served: 102312
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026); web: 'SVEC Outage Map' at outageentry.com/Outage/outage.php?Client=SVEC (search index 2026)"
+
+- id: outageentry_plateau_tn
+  type: outageentry
+  name: Plateau Electric Cooperative
+  states: [TN]
+  client: plateau
+  customers_served: 18542
+  timezone: America/New_York
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+    notes: "Oneida, TN (Eastern time)"
+
+- id: outageentry_cde_tn_ky
+  type: outageentry
+  name: Clarksville Dept of Electricity (CDE Lightband)
+  states: [TN, KY]
+  client: CDE
+  customers_served: 86271
+  timezone: America/Chicago
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_carroll_ar_mo
+  type: outageentry
+  name: Carroll Electric Cooperative
+  states: [AR, MO]
+  client: CECAR
+  customers_served: 125455
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_cfu_ia
+  type: outageentry
+  name: Cedar Falls Utilities
+  states: [IA]
+  client: cfu
+  customers_served: 20080
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_glendale_ca
+  type: outageentry
+  name: Glendale Water & Power
+  states: [CA]
+  client: glendale
+  customers_served: 95258
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_santaclara_ca
+  type: outageentry
+  name: Silicon Valley Power
+  states: [CA]
+  client: santa_clara
+  customers_served: 62720
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/outageentry_sources.json (2026)"
+
+- id: outageentry_alcoa_tn
+  type: outageentry
+  name: Alcoa Electric Department
+  states: [TN]
+  enabled: false
+  client: ALCOA
+  timezone: America/New_York
+  meta:
+    confidence: low
+    evidence: "github.com/Sedwards8900/text_mining_final_project articles/Tennessee_4.html (2023, outageentry.com/Outages/outage.php?Client=ALCOA)"
+    notes: "Older link on the /Outages/ path (base_url may need to be https://www.outageentry.com/Outages/). Enable via catalog.enable after `emagg poll`"

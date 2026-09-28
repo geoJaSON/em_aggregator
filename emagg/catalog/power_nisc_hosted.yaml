@@ -1,0 +1,703 @@
+# Co-ops and public utilities on NISC's hosted outage map (<tenant>.outagemap.coop), adapter type nisc_hosted.
+# Data: https://outagemap-data.cloud.coop/<tenant>/Hosted_Outage_Map/summary.json (+ config.json for locations).
+# All public, no key. confidence: high = tenant in >= 2 independent repos; medium = one working repo;
+# low = slug inferred from the public map hostname only.
+
+- id: nisc_samhouston_tx
+  type: nisc_hosted
+  name: "Sam Houston Electric Cooperative"
+  states: [TX]
+  tenant: samhouston
+  link: https://samhouston.outagemap.coop/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_coserv_tx
+  type: nisc_hosted
+  name: "CoServ Electric"
+  states: [TX]
+  tenant: coserv
+  link: https://coserv.outagemap.coop/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_bandera_tx
+  type: nisc_hosted
+  name: "Bandera Electric Cooperative"
+  states: [TX]
+  tenant: bandera
+  link: https://bandera.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_bartlettec_tx
+  type: nisc_hosted
+  name: "Bartlett Electric Cooperative"
+  states: [TX]
+  tenant: bartlettec
+  link: https://bartlettec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_bigcountry_tx
+  type: nisc_hosted
+  name: "Big Country Electric Cooperative"
+  states: [TX]
+  tenant: bigcountry
+  link: https://bigcountry.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_ctec_tx
+  type: nisc_hosted
+  name: "Central Texas Electric Cooperative"
+  states: [TX]
+  tenant: ctec
+  link: https://ctec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_cvec_tx
+  type: nisc_hosted
+  name: "Concho Valley Electric Cooperative"
+  states: [TX]
+  tenant: cvec
+  link: https://cvec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_dsec_tx
+  type: nisc_hosted
+  name: "Deaf Smith Electric Cooperative"
+  states: [TX]
+  tenant: dsec
+  link: https://dsec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_fayette_tx
+  type: nisc_hosted
+  name: "Fayette Electric Cooperative"
+  states: [TX]
+  tenant: fayette
+  link: https://fayette.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_graysoncollin_tx
+  type: nisc_hosted
+  name: "Grayson-Collin Electric Cooperative"
+  states: [TX]
+  tenant: graysoncollin
+  link: https://graysoncollin.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_hamiltonelectric_tx
+  type: nisc_hosted
+  name: "Hamilton County Electric Cooperative"
+  states: [TX]
+  tenant: hamiltonelectric
+  link: https://hamiltonelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_hilco_tx
+  type: nisc_hosted
+  name: "HILCO Electric Cooperative"
+  states: [TX]
+  tenant: hilco
+  link: https://hilco.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_hotec_tx
+  type: nisc_hosted
+  name: "Heart of Texas Electric Cooperative"
+  states: [TX]
+  tenant: hotec
+  link: https://hotec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_jecec_tx
+  type: nisc_hosted
+  name: "Jackson Electric Cooperative"
+  states: [TX]
+  tenant: jecec
+  link: https://jecec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_karnesec_tx
+  type: nisc_hosted
+  name: "Karnes Electric Cooperative"
+  states: [TX]
+  tenant: karnesec
+  link: https://karnesec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_kpub_tx
+  type: nisc_hosted
+  name: "Kerrville Public Utility Board"
+  states: [TX]
+  tenant: kpub
+  link: https://kpub.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_lamarelectric_tx
+  type: nisc_hosted
+  name: "Lamar Electric Cooperative"
+  states: [TX]
+  tenant: lamarelectric
+  link: https://lamarelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_lcec_tx
+  type: nisc_hosted
+  name: "Lamb County Electric Cooperative"
+  states: [TX]
+  tenant: lcec
+  link: https://lcec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_medinaec_tx
+  type: nisc_hosted
+  name: "Medina Electric Cooperative"
+  states: [TX]
+  tenant: medinaec
+  link: https://medinaec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_nueceselectric_tx
+  type: nisc_hosted
+  name: "Nueces Electric Cooperative"
+  states: [TX]
+  tenant: nueceselectric
+  link: https://nueceselectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+    notes: "Same utility as wov_nueces_ec_tx (milsoft_wov, low confidence, power_outage_summary catalog): keep only one enabled or TX rollups count it twice. This NISC tenant is the one seen in working code."
+
+- id: nisc_rcelectric_tx
+  type: nisc_hosted
+  name: "Rusk County Electric Cooperative"
+  states: [TX]
+  tenant: rcelectric
+  link: https://rcelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_ritablancaelectric_tx
+  type: nisc_hosted
+  name: "Rita Blanca Electric Cooperative"
+  states: [TX]
+  tenant: ritablancaelectric
+  link: https://ritablancaelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_sanpatricioelectric_tx
+  type: nisc_hosted
+  name: "San Patricio Electric Cooperative"
+  states: [TX]
+  tenant: sanpatricioelectric
+  link: https://sanpatricioelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_taylorelectric_tx
+  type: nisc_hosted
+  name: "Taylor Electric Cooperative"
+  states: [TX]
+  tenant: taylorelectric
+  link: https://taylorelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_urecc_tx
+  type: nisc_hosted
+  name: "Upshur Rural Electric Cooperative"
+  states: [TX]
+  tenant: urecc
+  link: https://urecc.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_victoriaelectric_tx
+  type: nisc_hosted
+  name: "Victoria Electric Cooperative"
+  states: [TX]
+  tenant: victoriaelectric
+  link: https://victoriaelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+
+- id: nisc_wcec_tx
+  type: nisc_hosted
+  name: "Wood County Electric Cooperative"
+  states: [TX]
+  tenant: wcec
+  link: https://wcec.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+    notes: "Same utility as wov_wood_county_ec_tx (milsoft_wov, disabled by default, power_outage_summary catalog): enable only one or TX rollups count it twice."
+
+- id: nisc_choctawelectric_ok_tx
+  type: nisc_hosted
+  name: "Choctaw Electric Cooperative"
+  states: [OK, TX]
+  tenant: choctawelectric
+  link: https://choctawelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+    notes: "Hugo, OK co-op listed on a Texas map; service area is mostly southeast Oklahoma"
+
+- id: nisc_rrvrea_ok_tx
+  type: nisc_hosted
+  name: "Red River Valley Rural Electric Association"
+  states: [OK, TX]
+  tenant: rrvrea
+  link: https://rrvrea.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/TexasTechUtil/tx-utility-map utilities.json (2026-09)"
+    notes: "Marietta, OK co-op listed on a Texas map; service area is mostly south-central Oklahoma"
+
+- id: nisc_swrea_ar_tx_ok
+  type: nisc_hosted
+  name: "Southwest Arkansas Electric Cooperative"
+  states: [AR, TX, OK]
+  tenant: swrea
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_slemco_la
+  type: nisc_hosted
+  name: "SLEMCO"
+  states: [LA]
+  tenant: slemco
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/alecbibat/gsoc-monitor server/src/routes/outages.ts (2026-09)"
+
+- id: nisc_our_la
+  type: nisc_hosted
+  name: "Claiborne Electric Cooperative"
+  states: [LA]
+  tenant: our
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+    notes: "tenant slug is 'our' in the evidence"
+
+- id: nisc_sawnee_ga
+  type: nisc_hosted
+  name: "Sawnee EMC"
+  states: [GA]
+  tenant: sawnee
+  link: https://sawnee.outagemap.cloud.coop/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/alecbibat/gsoc-monitor server/src/routes/outages.ts (2026-09); github.com/BB-TStone/B-B-Power batch_outage_checker.py (map host, 2026)"
+
+- id: nisc_hsvutil_al
+  type: nisc_hosted
+  name: "Huntsville Utilities"
+  states: [AL]
+  tenant: hsvutil
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_decaturutilities_al
+  type: nisc_hosted
+  name: "Decatur Utilities"
+  states: [AL]
+  tenant: decaturutilities
+  link: https://decaturutilities.outagemap.cloud.coop/
+  meta:
+    confidence: low
+    evidence: "public map host decaturutilities.outagemap.cloud.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain (true for every evidenced tenant); confirm with emagg poll"
+
+- id: nisc_withlacoochee_fl
+  type: nisc_hosted
+  name: "Withlacoochee River Electric Cooperative"
+  states: [FL]
+  tenant: withlacoochee
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_lcecswfl_fl
+  type: nisc_hosted
+  name: "LCEC (Lee County Electric Cooperative)"
+  states: [FL]
+  tenant: lcecswfl
+  link: https://lcecswfl.outagemap.cloud.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_clayelectric_fl
+  type: nisc_hosted
+  name: "Clay Electric Cooperative"
+  states: [FL]
+  tenant: clayelectric
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_ozarksecc_ar_ok
+  type: nisc_hosted
+  name: "Ozarks Electric Cooperative"
+  states: [AR, OK]
+  tenant: ozarksecc
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_svalleyec_tn
+  type: nisc_hosted
+  name: "Sequachee Valley Electric Cooperative"
+  states: [TN]
+  tenant: svalleyec
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_mtemc_tn
+  type: nisc_hosted
+  name: "Middle Tennessee Electric"
+  states: [TN]
+  tenant: mtemc
+  link: https://mtemc.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_volunteer_tn
+  type: nisc_hosted
+  name: "Volunteer Energy Cooperative"
+  states: [TN]
+  tenant: volunteer
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_brightridge_tn
+  type: nisc_hosted
+  name: "BrightRidge"
+  states: [TN]
+  tenant: brightridge
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_theenergycoop_oh
+  type: nisc_hosted
+  name: "The Energy Cooperative (Licking Rural Electrification)"
+  states: [OH]
+  tenant: theenergycoop
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_buckeyerec_oh
+  type: nisc_hosted
+  name: "Buckeye Rural Electric Cooperative"
+  states: [OH]
+  tenant: buckeyerec
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_pieg_mi
+  type: nisc_hosted
+  name: "Presque Isle Electric & Gas Co-op"
+  states: [MI]
+  tenant: pieg
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_cloverland_mi
+  type: nisc_hosted
+  name: "Cloverland Electric Cooperative"
+  states: [MI]
+  tenant: cloverland
+  link: https://cloverland.outagemap.cloud.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/alecbibat/gsoc-monitor server/src/routes/outages.ts (2026-09)"
+
+- id: nisc_priceelectric_wi
+  type: nisc_hosted
+  name: "Price Electric Cooperative"
+  states: [WI]
+  tenant: priceelectric
+  meta:
+    confidence: medium
+    evidence: "github.com/alecbibat/gsoc-monitor server/src/routes/outages.ts (2026-09)"
+
+- id: nisc_ecemn_mn_wi
+  type: nisc_hosted
+  name: "East Central Energy"
+  states: [MN, WI]
+  tenant: ecemn
+  link: https://ecemn.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "public map host ecemn.outagemap.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain; confirm with emagg poll"
+
+- id: nisc_siouxvalleyenergy_sd_mn_ia
+  type: nisc_hosted
+  name: "Sioux Valley Energy"
+  states: [SD, MN, IA]
+  tenant: siouxvalleyenergy
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_dawsonpower_ne
+  type: nisc_hosted
+  name: "Dawson Public Power District"
+  states: [NE]
+  tenant: dawsonpower
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_highwestenergy_wy_co_ne
+  type: nisc_hosted
+  name: "High West Energy"
+  states: [WY, CO, NE]
+  tenant: highwestenergy
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_pvrea_co
+  type: nisc_hosted
+  name: "Poudre Valley REA"
+  states: [CO]
+  tenant: pvrea
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_mvea_co
+  type: nisc_hosted
+  name: "Mountain View Electric Association"
+  states: [CO]
+  tenant: mvea
+  link: https://mvea.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "public map host mvea.outagemap.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain; confirm with emagg poll"
+
+- id: nisc_prairielandelectric_ks
+  type: nisc_hosted
+  name: "Prairie Land Electric Cooperative"
+  states: [KS]
+  tenant: prairielandelectric
+  link: https://prairielandelectric.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "github.com/AndrewDeFever/Weather-and-Power-App app/providers/prairie_land_arcgis.py (2026; slug derived from the map hostname)"
+
+- id: nisc_nhec_nh
+  type: nisc_hosted
+  name: "New Hampshire Electric Cooperative"
+  states: [NH]
+  tenant: nhec
+  link: https://nhec.outagemap.coop/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026-09)"
+
+- id: nisc_vermontelectric_vt
+  type: nisc_hosted
+  name: "Vermont Electric Cooperative"
+  states: [VT]
+  tenant: vermontelectric
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_mohaveelectric_az
+  type: nisc_hosted
+  name: "Mohave Electric Cooperative"
+  states: [AZ]
+  tenant: mohaveelectric
+  link: https://mohaveelectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/vmanam1/az-power-outage-archive providers/mohave.py (hourly archive, 2026-09)"
+    notes: "coordinate decode verified against the utility's own map markers by the evidence repo"
+
+- id: nisc_trico_az
+  type: nisc_hosted
+  name: "Trico Electric Cooperative"
+  states: [AZ]
+  tenant: trico
+  link: https://trico.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/vmanam1/az-power-outage-archive providers/trico.py (hourly archive, 2026-09)"
+
+- id: nisc_navopache_az_nm
+  type: nisc_hosted
+  name: "Navopache Electric Cooperative"
+  states: [AZ, NM]
+  tenant: navopache
+  link: https://navopache.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/vmanam1/az-power-outage-archive providers/navopache.py (hourly archive, 2026-09)"
+
+- id: nisc_dixiepower_ut_az
+  type: nisc_hosted
+  name: "Dixie Power"
+  states: [UT, AZ]
+  tenant: dixiepower
+  link: https://dixiepower.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/vmanam1/az-power-outage-archive providers/dixie.py (hourly archive, 2026-09)"
+
+- id: nisc_garkaneenergy_ut_az
+  type: nisc_hosted
+  name: "Garkane Energy"
+  states: [UT, AZ]
+  tenant: garkaneenergy
+  link: https://garkaneenergy.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/vmanam1/az-power-outage-archive providers/garkane.py (hourly archive, 2026-09)"
+
+- id: nisc_meccoop_mt_id
+  type: nisc_hosted
+  name: "Missoula Electric Cooperative"
+  states: [MT, ID]
+  tenant: meccoop
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_yvec_mt
+  type: nisc_hosted
+  name: "Yellowstone Valley Electric Cooperative"
+  states: [MT]
+  tenant: yvec
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_clearwaterpower_id_wa_or
+  type: nisc_hosted
+  name: "Clearwater Power"
+  states: [ID, WA, OR]
+  tenant: clearwaterpower
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_inlandpower_wa_id
+  type: nisc_hosted
+  name: "Inland Power & Light"
+  states: [WA, ID]
+  tenant: inlandpower
+  link: https://inlandpower.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "public map host inlandpower.outagemap.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain; confirm with emagg poll"
+
+- id: nisc_tannerelectric_wa
+  type: nisc_hosted
+  name: "Tanner Electric Cooperative"
+  states: [WA]
+  tenant: tannerelectric
+  link: https://tannerelectric.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "public map host tannerelectric.outagemap.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain; confirm with emagg poll"
+
+- id: nisc_clpud_or
+  type: nisc_hosted
+  name: "Central Lincoln PUD"
+  states: [OR]
+  tenant: clpud
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026); github.com/the-roseburg-community/utility-outages app.py (2026-08)"
+
+- id: nisc_douglaselectric_or
+  type: nisc_hosted
+  name: "Douglas Electric Cooperative"
+  states: [OR]
+  tenant: douglaselectric
+  link: https://douglaselectric.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/the-roseburg-community/utility-outages app.py (2026-08)"
+
+- id: nisc_mea_ak
+  type: nisc_hosted
+  name: "Matanuska Electric Association"
+  states: [AK]
+  tenant: mea
+  link: https://mea.outagemap.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/cloud_coop_sources.json (2026)"
+
+- id: nisc_kiuc_hi
+  type: nisc_hosted
+  name: "Kauai Island Utility Cooperative"
+  states: [HI]
+  tenant: kiuc
+  link: https://kiuc.outagemap.coop/
+  meta:
+    confidence: low
+    evidence: "public map host kiuc.outagemap.coop (web search 2026-09)"
+    notes: "data slug assumed equal to the map subdomain; confirm with emagg poll"

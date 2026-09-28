@@ -1,0 +1,30 @@
+{
+ "count": 3,
+ "totalState": 46,
+ "outages": [
+  {
+   "icon": "standard",
+   "longitude": -105.583,
+   "latitude": 41.331,
+   "etr": "Before 07:30 PM on 09/27",
+   "outCount": 2,
+   "custOut": 45,
+   "cause": "Multiple outages in the area",
+   "crewStatus": "Crews Arrived",
+   "reported": "08:25 AM on 09/27",
+   "zip": "82072"
+  },
+  {
+   "icon": "standard",
+   "longitude": -105.907,
+   "latitude": 42.869,
+   "etr": "Before 11:30 PM on 09/27",
+   "outCount": 1,
+   "custOut": 1,
+   "cause": "Wildlife",
+   "crewStatus": "Crews Arrived",
+   "reported": "12:48 PM on 09/27",
+   "zip": "82637"
+  }
+ ]
+}

@@ -1,0 +1,186 @@
+# Co-op outage maps on Siena Technologies WebMaps (<code>.maps.sienatech.com). Public JSON, no key:
+#   https://cache.sienatech.com/apex/siena_ords/webmaps/data/<code>/OUTAGE
+# Utility total + county events (the map's "County" report) + outage points when the feed carries positions.
+#
+# Confidence is low throughout: the one open-source collector for this endpoint (lukesteve03) ships the tenant
+# list and parser but has its Sienatech runner commented out, and treats HTTP 420/5xx as "no data". Run
+# `emagg poll` before relying on these. The tenant code matches the map's subdomain wherever both are known
+# (bremco, bemc, joemc, dec, core, unitil, demco), which is how the extra, disabled entries were found.
+
+- id: sienatech_ssemc_ga
+  type: sienatech
+  name: Snapping Shoals EMC
+  states: [GA]
+  code: SSEMC
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json + core/registry/base_collectors/sienatech_base.py (2026)"
+    notes: "Collector present but disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_mvec_tx
+  type: sienatech
+  name: Magic Valley Electric Coop
+  states: [TX]
+  code: MVEC
+  timezone: America/Chicago
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Rio Grande Valley co-op. Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_cfemc_ga
+  type: sienatech
+  name: Coweta-Fayette EMC
+  states: [GA]
+  code: CFEMC
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_coast_ms
+  type: sienatech
+  name: Coast Electric Power Association
+  states: [MS]
+  code: COAST
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Mississippi Gulf Coast co-op. Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_preco_fl
+  type: sienatech
+  name: Peace River Electric Coop
+  states: [FL]
+  code: PRECO
+  timezone: America/New_York
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_bremco_nc
+  type: sienatech
+  name: Blue Ridge Energy
+  states: [NC]
+  code: BREMCO
+  link: http://bremco.maps.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026); github.com/DisasterMasters/TweetAnalysis DATA/northcarolina_data/blueridgeemc.txt (2018, map at bremco.maps.sienatech.com)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_bemc_nc
+  type: sienatech
+  name: Brunswick EMC
+  states: [NC]
+  code: BEMC
+  link: https://bemc.maps.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026); github.com/Sedwards8900/text_mining_final_project articles/North Carolina_0.html (2023, map at bemc.maps.sienatech.com)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_joemc_nc
+  type: sienatech
+  name: Jones-Onslow EMC
+  states: [NC]
+  code: JOEMC
+  link: http://joemc.maps.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026); github.com/Sedwards8900/text_mining_final_project articles/North Carolina_0.html (2023, map at joemc.maps.sienatech.com)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+
+- id: sienatech_dec_de
+  type: sienatech
+  name: Delaware Electric Cooperative
+  states: [DE]
+  code: DEC
+  link: https://dec.maps.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_unitil_nh_ma
+  type: sienatech
+  name: Unitil
+  states: [NH, MA]
+  code: UNITIL
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026); github.com/hrbrmstr/psnh R/unitil.R (2014, older unitil.maps.sienatech.com table)"
+    notes: "Multi-state: counties are matched only where the name is unique to NH or MA"
+
+- id: sienatech_core_co
+  type: sienatech
+  name: CORE Electric Cooperative
+  states: [CO]
+  code: CORE
+  link: https://core.trouble.maps4.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+- id: sienatech_homer_ak
+  type: sienatech
+  name: Homer Electric Association
+  states: [AK]
+  code: HOMER
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/sienatech_sources.json (2026)"
+    notes: "Collector disabled in that repo's runner; verify with `emagg poll`"
+
+# --- off by default -------------------------------------------------------------------------------------------------
+# Another catalog already covers this utility on a different platform.
+
+- id: sienatech_demco_la
+  type: sienatech
+  name: Dixie Electric Membership Corporation (DEMCO)
+  states: [LA]
+  enabled: false
+  code: DEMCO
+  meta:
+    confidence: low
+    evidence: "github.com/mefferso/cwa-outage-viewer docs/app.js (2026: cache.sienatech.com/apex/siena_ords/webmaps/lines/DEMCO/temp, the same API's outage-line layer); web: demco.internal.maps.sienatech.com (2026)"
+    notes: "Off by default: DEMCO is covered by wov_dixie_la (Milsoft WOV at outagemap.dixie.coop, medium). Enable only one of the two, or DEMCO is counted twice in the Power and LA totals. Tenant code seen only on the line layer of this ORDS API, not on the OUTAGE document"
+
+# Tenant code inferred from the map's subdomain only.
+
+- id: sienatech_lec_sc
+  type: sienatech
+  name: Laurens Electric Cooperative
+  states: [SC]
+  enabled: false
+  code: LEC
+  meta:
+    confidence: low
+    evidence: "web: lec.internal.maps.sienatech.com and lec.test.maps.sienatech.com, titled 'Laurens Electric Outage Map' (search index 2026)"
+    notes: "Code guessed from the subdomain; only internal/test maps were seen. Enable via catalog.enable after `emagg poll`"
+
+- id: sienatech_jemc_ga
+  type: sienatech
+  name: Jackson EMC
+  states: [GA]
+  enabled: false
+  code: JEMC
+  meta:
+    confidence: low
+    evidence: "github.com/simonw/irma-scrapers irma.py (2017, jemc.maps.sienatech.com/data/outages.xml, the older XML feed); github.com/simonw/disaster-data irma-2017-archive/jemc-outages.json (2017)"
+    notes: "Old evidence; Jackson EMC may no longer use Siena. Enable via catalog.enable after `emagg poll`"
+
+- id: sienatech_choptank_md
+  type: sienatech
+  name: Choptank Electric Cooperative
+  states: [MD]
+  enabled: false
+  code: CHOPTANK
+  link: https://choptank.maps.sienatech.com/
+  meta:
+    confidence: low
+    evidence: "web: choptank.maps.sienatech.com, titled 'Choptank Outage Map' (search index 2026)"
+    notes: "Code guessed from the subdomain. Enable via catalog.enable after `emagg poll`"

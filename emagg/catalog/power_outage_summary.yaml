@@ -1,0 +1,857 @@
+# Co-op and municipal outage maps on Milsoft's Web Outage Viewer (DisSPatch OMS public map).
+# Each viewer serves data/outageSummary.json, data/outages.json and data/boundaries.json under its root
+# (lukesteve03 calls this platform "kubra_v2"; it is not KUBRA). Adapter: emagg/sources/outage_summary.py.
+# Southeast (TX, LA, MS, AL, FL, GA, SC, NC) entries first, then the rest of the country.
+
+- id: wov_bemcc_al
+  type: milsoft_wov
+  name: "Baldwin EMC"
+  states: [AL]
+  url: https://oms.baldwinemc.com:82/
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; lukesteve03 turns off TLS certificate checks for this host (https on port 82); the shared client verifies certificates, so expect a TLS error until the utility fixes its certificate"
+
+- id: wov_mdkec_al
+  type: milsoft_wov
+  name: "Marshall-DeKalb Electric Coop"
+  states: [AL]
+  url: https://outage.mdec.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_pec_al
+  type: milsoft_wov
+  name: "Pioneer Electric Coop"
+  states: [AL]
+  url: https://maps.pioneerelectric.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_south_alabama_ec_al
+  type: milsoft_wov
+  name: "South Alabama Electric Cooperative"
+  states: [AL]
+  enabled: false
+  url: https://omsviewer.southaec.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at omsviewer.southaec.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_cwec_fl
+  type: milsoft_wov
+  name: "Choctawhatchee Electric Coop"
+  states: [FL]
+  url: https://outageview.chelco.com:8080/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_gulf_coast_ec_fl
+  type: milsoft_wov
+  name: "Gulf Coast Electric Cooperative"
+  states: [FL]
+  enabled: false
+  url: https://outagemap.gcec.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outagemap.gcec.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_keys_energy_fl
+  type: milsoft_wov
+  name: "Keys Energy Services"
+  states: [FL]
+  url: https://powerstatus.keysenergy.com/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/codebooker/floridamap proxy.py (2026); same author's github.com/codebooker/AmericaMap proxy.py (2026)"
+    notes: "Milsoft Web Outage Viewer file layout (data/outageSummary.json, outages.json, outagePolygons.json); boundaries.json not seen in code, skipped if absent"
+
+- id: wov_amicalola_emc_ga
+  type: milsoft_wov
+  name: "Amicalola EMC"
+  states: [GA]
+  enabled: false
+  url: https://outages.amicalolaemc.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outages.amicalolaemc.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_brmemc_ga_nc
+  type: milsoft_wov
+  name: "Blue Ridge Mountain EMC"
+  states: [GA, NC]
+  url: http://outage.brmemc.com:8008/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_cgemc_ga
+  type: milsoft_wov
+  name: "Central Georgia EMC"
+  states: [GA]
+  url: https://oms.cgemc.com:7575/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Outage Viewer' at oms.cgemc.com:7575 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_diverse_power_ga
+  type: milsoft_wov
+  name: "Diverse Power"
+  states: [GA]
+  url: http://outages.diversepower.com/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Web Outage Viewer' at outages.diversepower.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_flint_ga
+  type: milsoft_wov
+  name: "Flint Energies"
+  states: [GA]
+  url: http://outage.flintemc.com:8283/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_grady_emc_ga
+  type: milsoft_wov
+  name: "Grady EMC"
+  states: [GA]
+  url: https://outage.gradyemc.com:7576/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Grady EMC' at outage.gradyemc.com:7576 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_jefferson_energy_ga
+  type: milsoft_wov
+  name: "Jefferson Energy Cooperative"
+  states: [GA]
+  url: https://outage.jec.coop:83/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Jefferson Energy Outage Map' at outage.jec.coop:83 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_ngemc_ga
+  type: milsoft_wov
+  name: "North Georgia EMC"
+  states: [GA]
+  url: https://www2.ngemc.com/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/chankal/scraper2 main.py (data/outages.json, 2024); github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Web Outage Viewer' at www2.ngemc.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_okefenoke_remc_ga
+  type: milsoft_wov
+  name: "Okefenoke REMC"
+  states: [GA, FL]
+  url: https://oms.oremc.co:8443/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Okefenoke REMC Outage Viewer' at oms.oremc.co:8443 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_satilla_remc_ga
+  type: milsoft_wov
+  name: "Satilla REMC"
+  states: [GA]
+  url: https://ov.satillaemc.com/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Satilla REMC Outage map' at ov.satillaemc.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_washington_emc_ga
+  type: milsoft_wov
+  name: "Washington EMC"
+  states: [GA]
+  url: http://outage.washingtonemc.com:8081/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_ga.yaml, WOV-format 'layout 1' provider (2026); web search: page titled 'Web Outage Viewer - Washington EMC' at outage.washingtonemc.com:8081 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_bec_la
+  type: milsoft_wov
+  name: "Beauregard Electric Coop"
+  states: [LA]
+  url: http://www.becioutage.org/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/scottarver/outage-tracker index.ts (boundaries.json, 2020)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_dixie_la
+  type: milsoft_wov
+  name: "Dixie Electric Membership Corporation (DEMCO)"
+  states: [LA]
+  url: https://outagemap.dixie.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); web search: page titled 'Web Outage Viewer' at outagemap.dixie.coop (2026-09)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_4count_ms
+  type: milsoft_wov
+  name: "4-County Electric Power Association"
+  states: [MS]
+  url: https://outages.4county.org:8181/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_spe_ms
+  type: milsoft_wov
+  name: "Southern Pine Electric"
+  states: [MS]
+  url: https://outages.southernpine.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_sre_ms_al
+  type: milsoft_wov
+  name: "Singing River Electric"
+  states: [MS, AL]
+  url: https://outageviewer.singingriver.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); web search: page titled 'Web Outage Viewer' at outageviewer.singingriver.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_tcepa_ms
+  type: milsoft_wov
+  name: "Tishomingo County Electric Power Association"
+  states: [MS]
+  url: https://outages.tcepa.com:7576/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_carteret_craven_ec_nc
+  type: milsoft_wov
+  name: "Carteret-Craven Electric Cooperative"
+  states: [NC]
+  enabled: false
+  url: http://outage.carteretcraven.coop/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outage.carteretcraven.coop (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_central_emc_nc
+  type: milsoft_wov
+  name: "Central Electric Membership Corporation"
+  states: [NC]
+  enabled: false
+  url: https://outage.cemcpower.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outage.cemcpower.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_piedmont_emc_nc
+  type: milsoft_wov
+  name: "Piedmont Electric Membership Corporation"
+  states: [NC]
+  enabled: false
+  url: https://outageviewer.pemc.coop/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer - Piedmont Electric' at outageviewer.pemc.coop (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_remc_nc
+  type: milsoft_wov
+  name: "Rutherford EMC"
+  states: [NC]
+  url: http://cvoutage.remc.com:8083/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_south_river_emc_nc
+  type: milsoft_wov
+  name: "South River EMC"
+  states: [NC]
+  enabled: false
+  url: https://outage.sremc.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outage.sremc.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_upc_nc
+  type: milsoft_wov
+  name: "Union Power Coop"
+  states: [NC]
+  url: https://outage.union-power.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_brec_sc
+  type: milsoft_wov
+  name: "Blue Ridge Electric Coop"
+  states: [SC]
+  url: https://www.brecoutagemap.com:7575/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_hec_sc
+  type: milsoft_wov
+  name: "Horry Electric Coop"
+  states: [SC]
+  url: https://outages.horryelectric.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_pec_sc
+  type: milsoft_wov
+  name: "Palmetto Electric Coop"
+  states: [SC]
+  url: http://66.180.237.180:83/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; served from a bare IP address, which may change; check with `emagg poll`"
+
+- id: wov_bbec_tx
+  type: milsoft_wov
+  name: "Bluebonnet Electric Coop"
+  states: [TX]
+  url: https://outage.bluebonnetelectric.coop/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_bcec_tx
+  type: milsoft_wov
+  name: "Bowie-Cass Electric Cooperative"
+  states: [TX]
+  url: http://outages.bcec.com:89/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider 'Bowie-Cass Electric Coop, Inc.' (2026); web search: page titled 'Web Outage Viewer' at outages.bcec.com:89 (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_btu_tx
+  type: milsoft_wov
+  name: "Bryan Texas Utilities"
+  states: [TX]
+  url: https://outages.btutilities.com/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026); web search: page titled 'BTU Outage Map' at outages.btutilities.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_detec_tx
+  type: milsoft_wov
+  name: "Deep East Texas Electric Coop"
+  states: [TX]
+  url: http://135.84.115.162:8082/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; served from a bare IP address, which may change; check with `emagg poll`"
+
+- id: wov_fec_tx
+  type: milsoft_wov
+  name: "Farmers Electric Coop"
+  states: [TX]
+  url: https://outageviewer.fecelectric.com/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_gvec_tx
+  type: milsoft_wov
+  name: "Guadalupe Valley Electric Coop"
+  states: [TX]
+  url: https://outages.gvec.org/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026); web search: page titled 'Web Outage Viewer' at outages.gvec.org (2026-09)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_houston_county_ec_tx
+  type: milsoft_wov
+  name: "Houston County Electric Cooperative"
+  states: [TX]
+  enabled: false
+  url: https://milsoft.houstoncountyelec.com:16443/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Houston County EC Outage Map' at milsoft.houstoncountyelec.com:16443 (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_midsouth_ec_tx
+  type: milsoft_wov
+  name: "MidSouth Electric Co-op"
+  states: [TX]
+  url: https://outage.midsouthelectric.com/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider 'Mid-South Electric Coop Association' (2026); web search: page titled 'Web Outage Viewer' at outage.midsouthelectric.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`. Navasota, TX (Brazos, Grimes, Madison, Montgomery, Walker, Waller counties); also branded Mid-South Synergy"
+
+- id: wov_nbu_tx
+  type: milsoft_wov
+  name: "New Braunfels Utilities"
+  states: [TX]
+  url: https://oms.nbutexas.com/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026); web search: page titled 'Web Outage Viewer' at oms.nbutexas.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform; check with `emagg poll`"
+
+- id: wov_nueces_ec_tx
+  type: milsoft_wov
+  name: "Nueces Electric Cooperative"
+  states: [TX]
+  enabled: false
+  url: https://outage.nueceselectric.org/
+  meta:
+    confidence: low
+    evidence: "github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026); web search: page titled 'NEC Outage Viewer' at outage.nueceselectric.org (2026-09)"
+    notes: "Milsoft Web Outage Viewer format confirmed for this utility by GROWER; viewer host from web search and data path inferred from the platform. Off by default: the current public map is NISC cloud.coop (nisc_nueceselectric_tx in power_nisc_hosted, TexasTechUtil 2026); enable only if that entry is removed, or TX rollups count Nueces twice"
+
+- id: wov_nvec_tx
+  type: milsoft_wov
+  name: "Navasota Valley Electric Cooperative"
+  states: [TX]
+  enabled: false
+  url: https://outages.navasotavalley.com:85/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outages.navasotavalley.com:85 (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_spec_tx
+  type: milsoft_wov
+  name: "South Plains Electric Coop"
+  states: [TX]
+  url: https://outage.spec.coop/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_tvec_tx
+  type: milsoft_wov
+  name: "Trinity Valley Electric Coop"
+  states: [TX]
+  url: https://outages.tvec.net/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/Alfredkkk/outage_reconstruct mvp_config_tx.yaml, WOV-format 'layout 8' provider (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ucs_tx
+  type: milsoft_wov
+  name: "United Coop Services"
+  states: [TX]
+  url: https://outage.united-cs.com:7577/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_wood_county_ec_tx
+  type: milsoft_wov
+  name: "Wood County Electric Cooperative"
+  states: [TX]
+  enabled: false
+  url: https://outagemap.wcec.org/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer' at outagemap.wcec.org (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: the current public map is NISC cloud.coop (nisc_wcec_tx in power_nisc_hosted, TexasTechUtil 2026); enable only if that entry is removed, or TX rollups count Wood County EC twice"
+
+- id: wov_gvea_ak
+  type: milsoft_wov
+  name: "Golden Valley Electric Association"
+  states: [AK]
+  url: https://outage.gvea.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); web search: page titled 'GVEA Web Outage Viewer' at outage.gvea.com (2026-09)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_fec_ar
+  type: milsoft_wov
+  name: "First Electric Coop"
+  states: [AR]
+  url: https://outage.fecc.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_mid_ca
+  type: milsoft_wov
+  name: "Modesto Irrigation District"
+  states: [CA]
+  url: https://outage.mid.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ywelec_co_ne
+  type: milsoft_wov
+  name: "Y-W Electric Association"
+  states: [CO, NE]
+  url: https://outage.ywelectric.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ame_ia
+  type: milsoft_wov
+  name: "Ames Municipal Electric"
+  states: [IA]
+  url: http://electric.cityofames.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_alap_in
+  type: milsoft_wov
+  name: "Anderson Light and Power"
+  states: [IN]
+  url: https://wov.cityofanderson.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_jackson_county_remc_in
+  type: milsoft_wov
+  name: "Jackson County REMC"
+  states: [IN]
+  enabled: false
+  url: https://weboutage.jacksonremc.com/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Jackson County REMC Outage Viewer' at weboutage.jacksonremc.com (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_bgenergy_ky
+  type: milsoft_wov
+  name: "Blue Grass Energy Coop"
+  states: [KY]
+  url: https://outage.bgenergy.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_bsrecc_ky
+  type: milsoft_wov
+  name: "Big Sandy RECC"
+  states: [KY]
+  url: https://outagemap.bigsandyrecc.com/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_clark_ky
+  type: milsoft_wov
+  name: "Clark Energy Coop"
+  states: [KY]
+  url: https://outage.clarkenergy.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_wrecc_ky_tn
+  type: milsoft_wov
+  name: "Warren RECC"
+  states: [KY, TN]
+  url: http://12.153.21.72:82/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; served from a bare IP address, which may change; check with `emagg poll`"
+
+- id: wov_emtc_me
+  type: milsoft_wov
+  name: "Eastern Maine Electric Cooperative"
+  states: [ME]
+  url: https://outages.emec.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_crec_mo
+  type: milsoft_wov
+  name: "Cuivre River Electric Coop"
+  states: [MO]
+  url: https://outage.cuivre.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ipl_mo
+  type: milsoft_wov
+  name: "Independence Power & Light"
+  states: [MO]
+  enabled: false
+  url: http://iplmap.indepmo.org/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Outage Viewer' at iplmap.indepmo.org (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds. The title is 'Outage Viewer', not 'Web Outage Viewer', so the platform is less certain than for the other page-title entries"
+
+- id: wov_fhec_mt
+  type: milsoft_wov
+  name: "Flathead Electric Coop"
+  states: [MT]
+  url: https://outage.flathead.coop:8181/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ccec_nd
+  type: milsoft_wov
+  name: "Cass County Electric Coop"
+  states: [ND]
+  url: https://outage.kwh.com/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_otp_nd_sd_mn
+  type: milsoft_wov
+  name: "Otter Tail Power Company"
+  states: [ND, SD, MN]
+  url: https://outages.otpco.com/
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (outageSummary.json + outages.json, 2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; investor-owned utility on the same viewer"
+
+- id: wov_sussex_nj_ny
+  type: milsoft_wov
+  name: "Sussex REC"
+  states: [NJ, NY]
+  url: https://outages.sussexrec.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_vea_nv
+  type: milsoft_wov
+  name: "Valley Electric Association"
+  states: [NV]
+  url: https://outages.vea.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ce_oh
+  type: milsoft_wov
+  name: "Consolidated Electric Cooperative"
+  states: [OH]
+  url: http://outagewatch.consolidatedelectric.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_hwe_oh
+  type: milsoft_wov
+  name: "Hancock-Wood Electric Cooperative"
+  states: [OH]
+  url: https://oms.hwe.coop/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_scp_oh
+  type: milsoft_wov
+  name: "South Central Power"
+  states: [OH]
+  url: https://outage.southcentralpower.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_cec_ok
+  type: milsoft_wov
+  name: "Central Electric Coop"
+  states: [OK]
+  url: https://outagemap.cec.coop:7576/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; utility name as recorded by lukesteve03; not independently confirmed"
+
+- id: wov_central_rural_ec_ok
+  type: milsoft_wov
+  name: "Central Rural Electric Cooperative"
+  states: [OK]
+  enabled: false
+  url: https://crecoutageviewer.crec.coop/
+  meta:
+    confidence: low
+    evidence: "web search: page titled 'Web Outage Viewer - Stillwater - Central Rural Electric' at crecoutageviewer.crec.coop (2026-09)"
+    notes: "Milsoft viewer identified from the page title/host only; data path inferred, not seen in code. Off by default: enable via catalog.enable after `emagg poll` succeeds"
+
+- id: wov_cpws_tn
+  type: milsoft_wov
+  name: "Columbia Power & Water Systems"
+  states: [TN]
+  url: https://oms.cpws.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_des_tn
+  type: milsoft_wov
+  name: "Dickson Electric System"
+  states: [TN]
+  url: https://outage.dicksonelectric.com/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_dremc_tn
+  type: milsoft_wov
+  name: "Duck River EMC"
+  states: [TN]
+  url: https://outagemap.dremc.com:8182/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_eed_tn
+  type: milsoft_wov
+  name: "Elizabethton Electric Dept"
+  states: [TN]
+  url: https://oms.eesonline.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_flec_tn
+  type: milsoft_wov
+  name: "Fort Loudoun Electric Coop"
+  states: [TN]
+  url: http://outage.flec.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_pvec_tn_va
+  type: milsoft_wov
+  name: "Powell Valley Electric Cooperative"
+  states: [TN, VA]
+  url: https://outages.pve.coop/
+  params: {}
+  meta:
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; lukesteve03 turns off TLS certificate checks for this host; the shared client verifies certificates, so expect a TLS error until the utility fixes its certificate; recorded without ?v=2"
+
+- id: wov_swtemc_tn
+  type: milsoft_wov
+  name: "Southwest Tennessee Electric Membership Corp"
+  states: [TN]
+  url: https://map.stemc.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_tcemc_tn_ky
+  type: milsoft_wov
+  name: "Tri-County EMC"
+  states: [TN, KY]
+  url: https://outages.tcemc.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_ucemc_tn
+  type: milsoft_wov
+  name: "Upper Cumberland EMC"
+  states: [TN]
+  url: https://outagemap.ucemc.com/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"
+
+- id: wov_viwpa_vi
+  type: milsoft_wov
+  name: "Virgin Islands Water & Power Authority"
+  states: [VI]
+  url: http://outageviewer.viwapa.vi:7575/
+  params: {}
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer; recorded without ?v=2"
+
+- id: wov_nli_wa_id_mt
+  type: milsoft_wov
+  name: "Northern Lights Inc"
+  states: [WA, ID, MT]
+  url: https://publicweb.nli.coop/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outage-scraper/config/sources_config/kubra_v2_sources.json (2026)"
+    notes: "Milsoft Web Outage Viewer: utility total, outage points, and counties when boundaries.json has a county/parish layer"

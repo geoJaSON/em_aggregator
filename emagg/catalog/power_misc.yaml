@@ -1,0 +1,146 @@
+# Utility outage maps on smaller platforms: PacifiCorp's outage-map files, OSI (Emerson) Public Outage Portal,
+# WEC Energy Group's OutageEventJSON and NorthWestern Energy's {"d": ...} feed. All public JSON behind the
+# utilities' own outage maps; no key. Evidence = open-source projects reading the same endpoints.
+
+# --- PacifiCorp (type: pacificorp) ------------------------------------------------------------------------
+
+- id: pacificorp_rmp_ut
+  type: pacificorp
+  name: "Rocky Mountain Power (UT)"
+  states: [UT]
+  site: https://www.rockymountainpower.net
+  state: UT
+  link: https://www.rockymountainpower.net/outages-safety.html
+  meta:
+    confidence: high
+    evidence: "github.com/richardsondev/rmp-outages mapUT.json + listUT.json git-scraped every 15 min (2026-09-27); github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json listUT (2026); github.com/codebooker/AmericaMap proxy.py mapUT (2026); github.com/SecuritahGuy/openrisk-radar ut.json (2026)"
+    notes: "Outage points (map), county breakdown (list) and state total. No customers-served figure."
+
+- id: pacificorp_rmp_wy
+  type: pacificorp
+  name: "Rocky Mountain Power (WY)"
+  states: [WY]
+  site: https://www.rockymountainpower.net
+  state: WY
+  link: https://www.rockymountainpower.net/outages-safety.html
+  meta:
+    confidence: high
+    evidence: "github.com/richardsondev/rmp-outages mapWY.json + listWY.json (2026-09-27); github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026)"
+
+- id: pacificorp_rmp_id
+  type: pacificorp
+  name: "Rocky Mountain Power (ID)"
+  states: [ID]
+  site: https://www.rockymountainpower.net
+  state: ID
+  link: https://www.rockymountainpower.net/outages-safety.html
+  meta:
+    confidence: high
+    evidence: "github.com/richardsondev/rmp-outages mapID.json + listID.json (2026-09-27); github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026)"
+
+- id: pacificorp_pp_or
+  type: pacificorp
+  name: "Pacific Power (OR)"
+  states: [OR]
+  site: https://www.pacificpower.net
+  state: OR
+  link: https://www.pacificpower.net/outages-safety.html
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json listOR (2026); github.com/codebooker/AmericaMap proxy.py mapOR (2026); github.com/the-roseburg-community/utility-outages app.py mapOR (2026)"
+
+- id: pacificorp_pp_wa
+  type: pacificorp
+  name: "Pacific Power (WA)"
+  states: [WA]
+  site: https://www.pacificpower.net
+  state: WA
+  link: https://www.pacificpower.net/outages-safety.html
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json listWA (2026); github.com/codebooker/AmericaMap proxy.py mapWA (2026)"
+
+- id: pacificorp_pp_ca
+  type: pacificorp
+  name: "Pacific Power (CA)"
+  states: [CA]
+  site: https://www.pacificpower.net
+  state: CA
+  link: https://www.pacificpower.net/outages-safety.html
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper pacificorp_sources.json listCA (2026)"
+    notes: "listCA.json is the only file seen in use; mapCA.json follows the same pattern as the other states. A missing map file leaves the total and county numbers."
+
+# --- OSI Public Outage Portal (type: osi_pop) ---------------------------------------------------------------
+
+- id: osi_pop_black_hills
+  type: osi_pop
+  name: "Black Hills Energy"
+  states: [CO, MT, SD, WY]
+  url: https://www.blackhillsenergy.com
+  link: https://www.blackhillsenergy.com/
+  customers_served: 225000
+  meta:
+    confidence: high
+    evidence: "github.com/aachokey/denver-outages get_data.yml + recorded PopOutage snapshots (2025-12); github.com/lukesteve03/OpenSourcePowerOutageScraper pop_sources.json + pop_base.py (2026)"
+    notes: "Electric service only (ServiceType=Electric). Outage areas are Black Hills service areas (e.g. Pueblo North), not counties. customers_served: about 225,000 electric customers in CO, MT, SD and WY (Black Hills Corp. Form 10-K for 2024, sec.gov); used instead of the summary's totalCount, which may list only areas with outages."
+
+- id: osi_pop_turlock_id
+  type: osi_pop
+  name: "Turlock Irrigation District"
+  states: [CA]
+  url: https://outages.tid.org
+  link: https://outages.tid.org/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper pop_sources.json (2026)"
+
+- id: osi_pop_redding_eu
+  type: osi_pop
+  name: "Redding Electric Utility"
+  states: [CA]
+  url: https://reuoutage.ci.redding.ca.us
+  link: https://reuoutage.ci.redding.ca.us/
+  meta:
+    confidence: medium
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper pop_sources.json (2026)"
+
+# --- WEC Energy Group OutageEventJSON (type: wec_outages) ---------------------------------------------------
+
+- id: wec_we_energies
+  type: wec_outages
+  name: "We Energies"
+  states: [WI, MI]
+  url: https://www.we-energies.com/outagesummary/view/OutageEventJSON
+  link: https://www.we-energies.com/outagesummary/view/outagegrid
+  customers_served: 1260000
+  meta:
+    confidence: high
+    evidence: "github.com/tmoody1973/mke-power-outage-tracker fetch_outages.py + git-scraped latest.json (2026-09-27); github.com/lukesteve03/OpenSourcePowerOutageScraper outageeventjson_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026)"
+    notes: "Serves southeast / Fox Valley WI and part of Michigan's Upper Peninsula. The feed has no utility-wide customer count; customers_served is the sum of the largest RegionCusts recorded per region in the mke tracker's history (southeast wi 1,075,211 + fox valley wi 143,501 + upper peninsula mi 41,427 = 1,260,139, 2026). codebooker/AmericaMap uses 1,100,000."
+
+- id: wec_wps
+  type: wec_outages
+  name: "Wisconsin Public Service"
+  states: [WI]
+  url: https://www.wisconsinpublicservice.com/outagesummary/view/OutageEventJSON
+  link: https://www.wisconsinpublicservice.com/outagesummary/view/outagegrid
+  customers_served: 450000
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper outageeventjson_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026)"
+    notes: "customers_served is the figure codebooker/AmericaMap uses; the feed has none."
+
+# --- NorthWestern Energy (type: dstring_events) ---------------------------------------------------------------
+
+- id: dstring_northwestern
+  type: dstring_events
+  name: "NorthWestern Energy"
+  states: [MT, SD, WY]
+  url: https://www.northwesternenergy.com/get-outage-map-data
+  link: https://www.northwesternenergy.com/outages/outage-map
+  meta:
+    confidence: high
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper dstring_sources.json (2026); github.com/codebooker/AmericaMap proxy.py (2026)"
+    notes: "One list for all states (MT, SD, and Yellowstone in WY per lukesteve03); the total is multi-state, points land in their own state. ARCHIVED rows are dropped."

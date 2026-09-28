@@ -1,0 +1,103 @@
+﻿ Communications Status Report for Areas Impacted by Hurricane Demo
+DEMO DATA - fictional report for the offline demo; not FCC data.
+
+The following is a summary of the status of communications services in the geographic areas impacted by Hurricane Demo as of {{now-3h}}.  This report incorporates network outage data submitted by communications providers to the Federal Communications Commission's (FCC) Disaster Information Reporting System (DIRS).
+
+911 Services
+The following PSAPs were reported as being affected:
+State
+County
+PSAP Name
+Status
+Texas
+Galveston
+Galveston County Emergency Communications
+Rerouted without ALI
+
+Wireless Services
+21.3% of the cell sites in the affected area are out of service.
+
+Percent Cell Sites Out-Of-Service By County
+State
+Affected County
+Cell Sites Served
+Cell Sites Out
+Percent Out
+Cell Sites Out Due to Damage
+Cell Sites Out Due to Transport
+Cell Sites Out Due to Power
+Cell Sites Up but On Back-up Power
+Texas
+Galveston
+236
+131
+55.51%
+9
+38
+84
+12
+Texas
+Harris
+2,210
+486
+21.99%
+4
+171
+311
+142
+Texas
+Brazoria
+302
+97
+32.12%
+2
+30
+65
+21
+Texas
+Chambers
+64
+22
+34.38%
+1
+6
+15
+3
+Texas
+Fort Bend
+468
+51
+10.90%
+0
+17
+34
+28
+Texas
+Montgomery
+412
+18
+4.37%
+0
+5
+13
+19
+Texas
+Liberty
+88
+0
+0.00%
+0
+0
+0
+2
+Total
+3,780
+805
+21.30%
+16
+267
+522
+227
+
+Cable Systems, Wireline and Broadcast
+Cable and wireline companies reported 412,580 subscribers out of service in the disaster area.  This may include the loss of telephone, television, and/or Internet services.

@@ -1,0 +1,25 @@
+{
+  "totalServed": 47046,
+  "outages": [
+    {
+      "id": "349870",
+      "nbrOut": 1,
+      "timeOff": 1784899201388,
+      "planned": false,
+      "x": 85852,
+      "y": 138987
+    },
+    {
+      "id": "349902",
+      "nbrOut": 92,
+      "timeOff": 1785126999953,
+      "estimateTime": 1785134400000,
+      "cause": "WEATHER                 ",
+      "comment": "Crews are responding.",
+      "planned": true,
+      "x": 3535,
+      "y": 95257
+    }
+  ],
+  "lastUpdate": 1785131228367
+}

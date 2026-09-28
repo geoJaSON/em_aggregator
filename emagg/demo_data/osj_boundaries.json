@@ -1,0 +1,13 @@
+[
+  {
+    "name": "County",
+    "nameField": "NAME",
+    "boundaries": [
+      {"name": "Jasper", "customersAffected": 2730, "customersOutNow": 2490, "customersServed": 14200},
+      {"name": "Newton", "customersAffected": 860, "customersOutNow": 860, "customersServed": 6900},
+      {"name": "Sabine", "customersAffected": 5600, "customersOutNow": 5600, "customersServed": 7400},
+      {"name": "San Augustine", "customersAffected": 45, "customersOutNow": 0, "customersServed": 4300},
+      {"name": "Tyler", "customersAffected": 1, "customersOutNow": 1, "customersServed": 5100}
+    ]
+  }
+]

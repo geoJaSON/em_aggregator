@@ -1,0 +1,44 @@
+{
+  "totalServed": 143810,
+  "outages": [
+    {"id": "1840231", "nbrOut": 2140, "timeOff": "{{ms:now-3h}}", "estimateTime": "{{ms:now+9h}}", "cause": "WEATHER                 ", "comment": "Crews are responding.", "planned": false, "crewAssigned": true, "x": 144715, "y": 20563},
+    {"id": "1840245", "nbrOut": 860, "timeOff": "{{ms:now-2h}}", "cause": "TREE                    ", "planned": false, "crewAssigned": false, "x": 112433, "y": 56627},
+    {"id": "1840252", "nbrOut": 1420, "timeOff": "{{ms:now-150m}}", "estimateTime": "{{ms:now+6h}}", "cause": "WEATHER                 ", "planned": false, "crewAssigned": true, "x": 83490, "y": 51469},
+    {"id": "1840260", "nbrOut": 312, "timeOff": "{{ms:now-100m}}", "cause": "UNKNOWN                 ", "planned": false, "crewAssigned": false, "x": 107980, "y": 88915},
+    {"id": "1840266", "nbrOut": 95, "timeOff": "{{ms:now-80m}}", "cause": "EQUIPMENT               ", "planned": false, "crewAssigned": false, "x": 130244, "y": 104442},
+    {"id": "1840271", "nbrOut": 3875, "timeOff": "{{ms:now-70m}}", "cause": "WEATHER                 ", "comment": "Multiple poles down. Assessing damage.", "planned": false, "crewAssigned": true, "x": 134697, "y": 19276},
+    {"id": "1840279", "nbrOut": 7, "timeOff": "{{ms:now-45m}}", "cause": "ANIMAL                  ", "planned": false, "crewAssigned": false, "x": 61226, "y": 105737},
+    {"id": "1840284", "nbrOut": 44, "timeOff": "{{ms:now-30m}}", "cause": "WEATHER                 ", "planned": false, "crewAssigned": false, "x": 199262, "y": 60497},
+    {"id": "1839990", "nbrOut": 23, "timeOff": "{{ms:now-4h}}", "estimateTime": "{{ms:now+1h}}", "cause": "PLANNED                 ", "comment": "Scheduled maintenance.", "planned": true, "crewAssigned": true, "x": 187017, "y": 113509}
+  ],
+  "regionDataSets": [
+    {
+      "id": "Counties",
+      "description": "County",
+      "regions": [
+        {"id": "Hardin", "numberOut": 44, "numberServed": 9870},
+        {"id": "Jasper", "numberOut": 0, "numberServed": 5230},
+        {"id": "Liberty", "numberOut": 6875, "numberServed": 21450},
+        {"id": "Montgomery", "numberOut": 1420, "numberServed": 38210},
+        {"id": "Newton", "numberOut": 0, "numberServed": 3990},
+        {"id": "Polk", "numberOut": 95, "numberServed": 24630},
+        {"id": "San Jacinto", "numberOut": 312, "numberServed": 14980},
+        {"id": "Trinity", "numberOut": 0, "numberServed": 6140},
+        {"id": "Tyler", "numberOut": 23, "numberServed": 7420},
+        {"id": "Walker", "numberOut": 7, "numberServed": 11890}
+      ]
+    },
+    {
+      "id": "Zip",
+      "description": "Zip Code",
+      "regions": [
+        {"id": "77327", "numberOut": 860, "numberServed": 9120},
+        {"id": "77535", "numberOut": 3875, "numberServed": 8210},
+        {"id": "77575", "numberOut": 2140, "numberServed": 7980},
+        {"id": "77302", "numberOut": 1420, "numberServed": 12740}
+      ]
+    }
+  ],
+  "lastUpdate": "{{ms:now-2m}}",
+  "configurationId": 1740084366762
+}

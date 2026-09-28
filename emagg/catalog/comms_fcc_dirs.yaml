@@ -1,0 +1,22 @@
+# FCC DIRS communications status reports: county "% cell sites out", cable/wireline subscribers out by state and
+# affected 911 centers. The FCC publishes one report a day only while DIRS is activated for a disaster; the source
+# is empty the rest of the time. National (no states): each event is tagged with its own state and county.
+
+- id: fcc_dirs
+  type: fcc_dirs
+  name: FCC DIRS cell sites out
+  enabled: false
+  event_pages:
+    - https://www.fcc.gov/tags/disaster-information-reporting-system
+  interval: 1800
+  meta:
+    confidence: low
+    evidence: "FCC EDOCS attachments DOC-406055A1 (.txt/.pdf, Hurricane Helene 2024-10-01), DOC-405443A1.docx (Francine 2024), DOC-418207A1.txt (Winter Storm Fern 2026) as indexed by web search (2026); AnanN-36/Healthcare-IT-Project 00_raw_materials/04_Chris/Chris_source_08_infrastructure_failure_and_fallback.md quoting DOC-406055A1 (2026); jrandre2/HABRI docs/national_data_sources.json fcc_dirs_public_reports (2026)"
+    notes: >-
+      Off by default: docs.fcc.gov and www.fcc.gov could not be reached from the build environment, so neither the
+      report layout (.docx/.txt tables) nor whether the DIRS tag page links the reports could be checked against a live
+      copy. During an activation, find the newest report on the FCC's event page (e.g. https://www.fcc.gov/helene) and
+      either set reports: [DOC-nnnnnnA1] (DOC id, attachment URL or a downloaded .docx/.txt file) or
+      event_pages: [https://www.fcc.gov/<event>], enable it with catalog.enable: [fcc_dirs], and check it with
+      emagg poll. Reports older than max_age_hours (48) are ignored. PDF attachments are not read; the adapter uses the
+      .docx, then the .txt.

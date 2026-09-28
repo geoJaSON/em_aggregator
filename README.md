@@ -4,14 +4,15 @@ A near-real-time situational-awareness board for emergency management, national 
 data feeds, normalizes everything into one event model with a common severity scale, tags every event with its
 state and county, tracks what is **new, escalating, or cleared**, and shows it on one map with state rollups.
 
-It currently knows **118 public feeds** (58 for the Gulf & Southeast coast):
+Its catalog lists **342 public feeds**. 317 are on by default nationally, and 151 cover the Gulf & Southeast
+coast:
 
 - Weather, flooding, tropical: NWS alerts, river gauges, NHC cones, coastal tide gauges, storm reports,
   SPC/WPC outlooks.
-- Power outages for about 60 utilities.
-- Road closures from 30 DOT feeds and state 511 systems.
+- Power outages for about 280 utilities, including roughly 180 electric co-ops.
+- Road closures from 30 DOT feeds, statewide incident layers and state 511 systems.
 - Internet outages, airport status, local public alerts (evacuations, 911 outages), FEMA declarations and
-  open shelters.
+  open shelters, plus an FCC DIRS cell-outage report reader for disaster activations.
 
 Operators can add **field reports** for what no feed covers, such as cell service down or a road blocked by
 debris.
@@ -36,7 +37,10 @@ emagg serve              # live: every open catalog feed, nationwide, no configu
 cp config.example.yaml config.yaml   # pick a region preset (e.g. gulf_southeast), add keys, your own feeds
 emagg poll                           # poll each configured feed once and show what came back / why it failed
 emagg catalog --state FL             # list known feeds for a state
+emagg hosts                          # hostnames your config contacts (for firewall / proxy allowlists)
 ```
+
+Network requirements (outbound HTTPS to about 225 hosts for the full catalog) are in [docs/NETWORK.md](docs/NETWORK.md).
 
 Demo mode runs the real adapters, store and UI against sample payloads in each feed's real format. It is
 labelled DEMO throughout; none of it reflects real conditions.
@@ -50,9 +54,9 @@ The full list, with evidence and confidence for each entry, is in [docs/CATALOG.
 | **Weather** | NWS alerts; NWS Local Storm Reports (trees/wires down, damage, surge); SPC Day 1 severe outlook |
 | **Flooding** | NOAA NWPS river gauges (observed + forecast flood category); NOAA CO-OPS tide gauges vs. NWS coastal flood thresholds; WPC excessive-rainfall outlook; flood reports from storm reports |
 | **Tropical** | NHC active storms, forecast cones and tracks, coastal hurricane/tropical-storm watch and warning segments |
-| **Power** | 52 utilities on KUBRA Storm Center: utility totals plus county breakdowns. Southeast: Georgia Power, Alabama Power, Mississippi Power, Dominion SC/NC, Santee Cooper, JEA, OUC, Lakeland, SECO, Cobb EMC, Fayetteville PWC, Oncor, AEP Texas, CPS, Austin Energy, TNMP, Pedernales, SWEPCO. Also Duke Energy (ArcGIS), FPL (county + points), Entergy LA/MS/TX/AR (county), CenterPoint, Cleco |
+| **Power** | 286 feeds, about 120 of them in the Gulf/Southeast. **Investor-owned and municipal utilities:** 52 on KUBRA Storm Center, which gives utility totals plus county breakdowns (in the Southeast: Georgia, Alabama and Mississippi Power, Dominion SC/NC, Santee Cooper, JEA, OUC, Lakeland, SECO, Oncor, AEP Texas, CPS, Austin Energy, TNMP, SWEPCO and others). Also Duke Energy, FPL, Entergy LA/MS/TX/AR, CenterPoint, Cleco, Tampa Electric (TECO), Xcel, Tallahassee, Gainesville, Kissimmee, Lafayette and 20+ more utilities on ArcGIS and DataCapable. **Co-ops:** about 180, on the Milsoft Web Outage Viewer (83), NISC hosted maps (71), Sienatech and OutageEntry. **Other platforms:** PacifiCorp, Black Hills (OSI), WEC and NorthWestern |
 | **Roads** | 30 DOT WZDx closure feeds nationwide (LA, MS, FL, NC, Austin, and 20+ other states); NCDOT and FDOT statewide incident layers. With a developer key (free self-service for LA, GA and NC): 511LA, 511GA, DriveNC, 511NY, NVroads. On application (for EM agencies): DriveTexas. By agreement: FL511 |
-| **Comms** | IODA state-level internet outages; IPAWS 911-outage alerts; field reports |
+| **Comms** | IODA state-level internet outages; IPAWS 911-outage alerts; FCC DIRS "% cell sites out" by county during disaster activations (off by default; see below); field reports |
 | **Public alerts** | FEMA IPAWS: non-NWS alerts from state/county authorities (evacuation orders, shelter-in-place, civil emergencies) |
 | **Transport** | FAA airport closures, ground stops, ground delay programs |
 | **Shelters / declarations** | FEMA National Shelter System open shelters; OpenFEMA disaster/emergency declarations (drawn as counties) |
@@ -60,16 +64,19 @@ The full list, with evidence and confidence for each entry, is in [docs/CATALOG.
 
 ### Gaps and next connections
 
-* **Cell service:** there is no free real-time public feed. FCC DIRS publishes county-level "% cell sites out"
-  daily during activations, as documents (PDF/DOCX/TXT). A DIRS report parser is the next comms step. Carrier
-  maps and Downdetector have no public API.
-* **Power:** other connections found but not yet built:
-  * TECO (Florida)
-  * co-ops on NISC/cloud.coop, Sienatech, OutageEntry (dozens of TX/FL/GA/AL/LA co-ops)
-  * Xcel/SPS and Tallahassee (ESRI)
-
-  El Paso Electric has no usable feed. ORNL ODIN (national, county-level) is available but **off by
-  default**, because it can double-count utilities already connected.
+* **Cell service:** there is no free real-time public feed. During a DIRS activation, the FCC publishes a daily
+  county-level "% cell sites out" report, and the `fcc_dirs` adapter reads its .docx/.txt versions.
+  * It ships **off by default at low confidence**: no real report could be downloaded from the build
+    environment, so the table layout is designed from published excerpts.
+  * During an activation, point it at the FCC's event page or a report (see the notes in
+    `emagg/catalog/comms_fcc_dirs.yaml`) and check it with `emagg poll`.
+  * Carrier maps and Downdetector have no public API.
+* **Power:**
+  * El Paso Electric has no usable feed.
+  * Co-ops whose maps sit behind bot protection (several NISC "GWT-RPC" maps, e.g. Jackson EMC) are skipped.
+  * ORNL ODIN (national, county-level) is available but **off by default**, because it can double-count
+    utilities already connected.
+  * A few co-ops found on two platforms are enabled on only one.
 * **Roads:** Alabama (ALGO Traffic) is connected but **off by default**, since its API is undocumented with no
   stated terms. Found but not connected:
   * SCDOT/511SC: no developer API
@@ -88,6 +95,15 @@ against sample payloads in that format.
 
 The build environment could reach only one feed live: Kentucky's WZDx feed. Parsing that feed exposed and
 fixed a real gap: KYTC marks every work zone's impact "unknown" and describes closures per lane.
+
+Each co-op and utility platform adapter was built by one agent and then checked by an independent reviewer.
+The reviewer re-derived the request, response shape and coordinate math from the evidence code, and
+blocker/major findings were fixed. Some details were checked only against code and hand-built fixtures:
+* NISC's region tables
+* the OutageEntry and Sienatech payloads
+* the DIRS table layout
+
+Those catalog entries carry medium or low confidence.
 
 **Before relying on the others, run `emagg poll`**. It prints what each feed returned, or exactly why it failed.
 Utility IDs and undocumented endpoints change; the Sources tab shows any feed that stops working.
@@ -177,8 +193,9 @@ Interactive docs at `/docs`.
 
 * One process, SQLite, no external services. Put it behind your usual reverse proxy with authentication: the
   dashboard has no login of its own. Set `app.write_token` to protect field reports and manual refresh.
-* The national default polls about 115 feeds, mostly every 2–10 minutes. That is modest per feed, but keep the
-  default intervals and set a real contact in `app.user_agent` (api.weather.gov requires it). FEMA asks that
+* The national default polls about 320 feeds, mostly every 5–10 minutes (1–3 requests each; one full offline
+  round takes about 30 s). Keep the default intervals and set a real contact in `app.user_agent`
+  (api.weather.gov requires it). A regional preset such as `gulf_southeast` polls about half as many. FEMA asks that
   IPAWS be polled no more often than every 2 minutes; the 511 APIs allow about 10 calls per minute per key.
 * Map tiles come from CARTO/OpenStreetMap/Esri; the map libraries are bundled.
 * Boundaries: simplified U.S. Census cartographic boundaries via `us-atlas` (rebuild with

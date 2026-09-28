@@ -1,0 +1,48 @@
+{
+  "reportData": {
+    "summary": {"affected": 1874, "accounts": 111265, "outages": 6},
+    "reports": [
+      {
+        "name": "County",
+        "polygons": [
+          {"name": "Henry", "affected": 1210, "accounts": 45812, "outages": 3, "etor": "{{now+3h}}", "outageStart": "{{now-95m}}", "percentAffected": 2.64},
+          {"name": "Newton", "affected": 402, "accounts": 31044, "outages": 1, "etor": "{{now+2h}}", "outageStart": "{{now-70m}}", "percentAffected": 1.29},
+          {"name": "Rockdale", "affected": 187, "accounts": 12310, "outages": 1, "etor": "{{now+90m}}", "outageStart": "{{now-40m}}", "percentAffected": 1.52},
+          {"name": "Butts", "affected": 75, "accounts": 4102, "outages": 1, "etor": null, "outageStart": "{{now-15m}}", "percentAffected": 1.83},
+          {"name": "Jasper", "affected": 0, "accounts": 2208, "outages": 0, "etor": null, "outageStart": null, "percentAffected": 0},
+          {"name": "Morgan", "affected": 0, "accounts": 1985, "outages": 0, "etor": null, "outageStart": null, "percentAffected": 0},
+          {"name": "Walton", "affected": 0, "accounts": 6317, "outages": 0, "etor": null, "outageStart": null, "percentAffected": 0},
+          {"name": "DeKalb", "affected": 0, "accounts": 3871, "outages": 0, "etor": null, "outageStart": null, "percentAffected": 0},
+          {"name": "Spalding", "affected": 0, "accounts": 3616, "outages": 0, "etor": null, "outageStart": null, "percentAffected": 0}
+        ]
+      },
+      {
+        "name": "District",
+        "polygons": [
+          {"name": "McDonough District", "affected": 1285, "accounts": 58915, "outages": 4, "etor": "{{now+3h}}", "outageStart": "{{now-95m}}", "percentAffected": 2.18},
+          {"name": "Covington District", "affected": 589, "accounts": 52350, "outages": 2, "etor": "{{now+2h}}", "outageStart": "{{now-70m}}", "percentAffected": 1.13}
+        ]
+      },
+      {
+        "name": "Zip",
+        "polygons": [
+          {"name": "30253", "affected": 980, "accounts": 21044, "outages": 1, "etor": "{{now+3h}}", "outageStart": "{{now-95m}}", "percentAffected": 4.66},
+          {"name": "30252", "affected": 230, "accounts": 14200, "outages": 2, "etor": "{{now+2h}}", "outageStart": "{{now-60m}}", "percentAffected": 1.62},
+          {"name": "30014", "affected": 402, "accounts": 17630, "outages": 1, "etor": "{{now+2h}}", "outageStart": "{{now-70m}}", "percentAffected": 2.28},
+          {"name": "30094", "affected": 187, "accounts": 9210, "outages": 1, "etor": "{{now+90m}}", "outageStart": "{{now-40m}}", "percentAffected": 2.03},
+          {"name": "30216", "affected": 75, "accounts": 3302, "outages": 1, "etor": null, "outageStart": "{{now-15m}}", "percentAffected": 2.27}
+        ]
+      }
+    ]
+  },
+  "outageData": {
+    "outages": [
+      {"id": 2609271, "county": "Henry", "customersAffected": 980, "etor": "{{now+3h}}", "outageStart": "{{now-95m}}"},
+      {"id": 2609274, "county": "Henry", "customersAffected": 150, "etor": "{{now+2h}}", "outageStart": "{{now-60m}}"},
+      {"id": 2609279, "county": "Henry", "customersAffected": 80, "etor": "{{now+2h}}", "outageStart": "{{now-55m}}"},
+      {"id": 2609272, "county": "Newton", "customersAffected": 402, "etor": "{{now+2h}}", "outageStart": "{{now-70m}}"},
+      {"id": 2609281, "county": "Rockdale", "customersAffected": 187, "etor": "{{now+90m}}", "outageStart": "{{now-40m}}"},
+      {"id": 2609290, "county": "Butts", "customersAffected": 75, "etor": null, "outageStart": "{{now-15m}}"}
+    ]
+  }
+}

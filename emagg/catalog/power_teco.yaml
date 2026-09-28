@@ -1,0 +1,20 @@
+# Tampa Electric (TECO): the data service behind outage.tecoenergy.com. Public, no key. See emagg/sources/teco.py.
+
+- id: teco_fl
+  type: teco
+  name: Tampa Electric
+  states: [FL]
+  # The feed publishes no customers-served figure. EIA-861 2024 (Sales_Ult_Cust, utility 18454, total customers).
+  customers_served: 849876
+  link: https://outage.tecoenergy.com/
+  meta:
+    confidence: high
+    evidence: "github.com/codebooker/floridamap proxy.py (2026-09); github.com/codebooker/AmericaMap proxy.py (2026-09); github.com/pdichone/teco-api teco_uni_api.py (2025-07); github.com/simonw/scrape-florida-outages outage.tecoenergy.com/outage.json history (2024-10, 2025-07; previous endpoint, used only to confirm the record shape)"
+    notes: >-
+      GET api/v1/config (sets the map's session cookie), then POST api/v1/outage-tiles with an Elasticsearch
+      geo_bounding_box search over Florida. Returns the utility total (aggregations.customerCountSum), the outage
+      count and one event per incidentId, drawn as its polygonPointsGoogle outline when the record has one.
+      Times are Eastern local time. customers_served is from EIA-861 2024
+      (lukesteve03/OpenSourcePowerOutageScraper us_region_data/Sales_Ult_Cust_2024.csv). The predecessor
+      endpoint (mioutage-data-prod.azureedge.net) needed a credential copied from the map's JavaScript and
+      has returned nothing since mid-2025, so it is not used.

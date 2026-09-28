@@ -1,0 +1,129 @@
+﻿ Communications Status Report for Areas Impacted by Hurricane Helene
+October 1, 2024
+
+The following is a summary of the status of communications services in the geographic areas impacted by Hurricane Helene as of October 1, 2024 at 9:00 a.m. EDT.  This report incorporates network outage data submitted by communications providers to the Federal Communications Commission's (FCC) Disaster Information Reporting System (DIRS).  Note that the operational status of communications services during a disaster may evolve rapidly, and this report represents a snapshot in time.
+
+911 Services
+The Public Safety and Homeland Security Bureau (PSHSB) learns the status of each Public Safety Answering Point (PSAP) through the PSAP's 911 Service Provider, state 911 Administrators, and, in some cases, individual PSAPs.  The following PSAPs were reported as being affected:
+
+State
+County
+PSAP Name
+Status
+North Carolina
+Yancey
+Yancey County
+Rerouted without ALI
+Georgia
+Berrien
+Berrien County
+Rerouted without ALI
+
+Wireless Services
+The following section describes the status of wireless communications services and restoration in the affected area as provided by wireless providers.  The percentage of cell sites out of service for a given area does not necessarily correspond to the availability of wireless service to consumers in that area because wireless networks are often designed with numerous, overlapping cell sites that provide maximum capacity and continuity of service even when an individual site is inoperable.
+
+21.7% of the cell sites in the affected area are out of service (up from 9.1% yesterday).
+
+The following table provides cell sites out of service by state:
+State
+Cell Sites Served
+Cell Sites Out
+Percent Out
+North Carolina
+1,452
+707
+48.69%
+Tennessee
+620
+77
+12.42%
+
+Percent Cell Sites Out-Of-Service By County
+State
+Affected County
+Cell Sites Served
+Cell Sites Out
+Percent Out
+Cell Sites Out Due to Damage
+Cell Sites Out Due to Transport
+Cell Sites Out Due to Power
+Cell Sites Up but On Back-up Power
+North Carolina
+Buncombe
+348
+215
+61.78%
+0
+89
+117
+26
+North Carolina
+Yancey
+41
+33
+80.49%
+0
+14
+19
+2
+McDowell
+77
+30
+38.96%
+1
+11
+17
+5
+
+State
+Affected County
+Cell Sites Served
+Cell Sites Out
+Percent Out
+Cell Sites Out Due to Damage
+Cell Sites Out Due to Transport
+Cell Sites Out Due to Power
+Cell Sites Up but On Back-up Power
+Tennessee
+Washington
+126
+15
+11.90%
+0
+6
+9
+3
+Tennessee
+Unicoi
+29
+12
+41.38%
+2
+4
+6
+0
+Tennessee
+Sullivan
+160
+0
+0.00%
+0
+0
+0
+0
+Total
+781
+305
+39.05%
+3
+124
+168
+36
+
+Cable Systems, Wireline and Broadcast
+Cable and wireline companies reported 796,999 subscribers out of service in the disaster area.  This may include the loss of telephone, television, and/or Internet services.
+
+Broadcast
+5 TV stations, 34 FM radio stations and 6 AM radio stations are reported out of service.
+
+[emagg test fixture, NOT a recorded FCC file; shaped after DOC-406055A1. Traceable to a saved source quoting that report (AnanN-36/Healthcare-IT-Project, 2026): the report time (October 1, 2024, 9:00 a.m. EDT), the 21.7% figure, North Carolina 707 of 1,452 cell sites out (48.7%) and the 796,999 wireline figure. Seen only in unsaved web-search snippets: the title line, the wording of the as-of sentence, the county-table column names and the Yancey/Berrien PSAP statuses (DOC-406144A1). The Buncombe row is UNVERIFIED (from a search snippet that could not be reproduced) and, like every other number, illustrative.]

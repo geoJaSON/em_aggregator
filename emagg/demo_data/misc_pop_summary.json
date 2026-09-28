@@ -1,0 +1,51 @@
+[
+ {
+  "serviceType": "Electric",
+  "summaryField": "County",
+  "summaryFieldValue": "Pueblo",
+  "affectedCount": 1,
+  "totalCount": 45210
+ },
+ {
+  "serviceType": "Electric",
+  "summaryField": "County",
+  "summaryFieldValue": "Laramie",
+  "affectedCount": 1,
+  "totalCount": 41980
+ },
+ {
+  "serviceType": "Electric",
+  "summaryField": "County",
+  "summaryFieldValue": "Custer",
+  "affectedCount": 3,
+  "totalCount": 2100
+ },
+ {
+  "serviceType": "Electric",
+  "summaryField": "County",
+  "summaryFieldValue": "Pennington",
+  "affectedCount": 0,
+  "totalCount": 52030
+ },
+ {
+  "serviceType": "Electric",
+  "summaryField": "Town",
+  "summaryFieldValue": "Pueblo",
+  "affectedCount": 1,
+  "totalCount": 38120
+ },
+ {
+  "serviceType": "Electric",
+  "summaryField": "Town",
+  "summaryFieldValue": "Cheyenne",
+  "affectedCount": 1,
+  "totalCount": 30450
+ },
+ {
+  "serviceType": "Gas",
+  "summaryField": "County",
+  "summaryFieldValue": "Pueblo",
+  "affectedCount": 40,
+  "totalCount": 51000
+ }
+]

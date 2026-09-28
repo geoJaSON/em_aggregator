@@ -1,0 +1,8 @@
+{
+  "mapSettings": {
+    "boundaryExtent": [-10697803.0, 3490702.0, -10419504.0, 3684806.0]
+  },
+  "outageSettings": {
+    "defaultRegionDataSet": "Counties"
+  }
+}

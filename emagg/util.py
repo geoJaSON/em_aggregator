@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import string
 from datetime import datetime, timezone
 from typing import Any
@@ -48,15 +49,17 @@ def parse_time(value: Any) -> datetime | None:
 
 
 def num(value: Any) -> float | None:
-    """Coerce to float; also unwraps Kubra-style {"val": n} objects."""
+    """Coerce to float; also unwraps Kubra-style {"val": n} objects. NaN/Infinity (which json.loads accepts)
+    count as missing, so they can never crash a parser."""
     if isinstance(value, dict):
         value = value.get("val", value.get("value"))
     if value is None or isinstance(value, bool):
         return None
     try:
-        return float(str(value).replace(",", "").strip())
+        n = float(str(value).replace(",", "").strip())
     except ValueError:
         return None
+    return n if math.isfinite(n) else None
 
 
 def to_int(value: Any) -> int | None:

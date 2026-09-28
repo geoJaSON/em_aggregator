@@ -1,0 +1,32 @@
+[
+ {
+  "id": "6941adafa9d2537c6f5c71cc",
+  "serviceType": "Electric",
+  "currentAffected": 1,
+  "fieldValues": {
+   "energizationStatus": "Predicted",
+   "currentAffected": "1",
+   "outageStepOffTime": "2025-12-16T19:06:23Z",
+   "publishedEtr": "2025-12-16T20:56:23Z",
+   "geographicAorIDs": "Pueblo North"
+  },
+  "lat": 38.32580245,
+  "lon": -104.6867147,
+  "geoJSONPolygon": null
+ },
+ {
+  "id": "6941e01ca9d2537c6f5c884c",
+  "serviceType": "Electric",
+  "currentAffected": 1,
+  "fieldValues": {
+   "energizationStatus": "Predicted",
+   "currentAffected": "1",
+   "outageStepOffTime": "2025-12-16T22:41:27Z",
+   "publishedEtr": "2025-12-17T00:31:32Z",
+   "geographicAorIDs": "Cheyenne South"
+  },
+  "lat": 41.10327501,
+  "lon": -104.8232439,
+  "geoJSONPolygon": null
+ }
+]
