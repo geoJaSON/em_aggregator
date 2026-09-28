@@ -9,7 +9,7 @@
   where: "1=1"
   category: power
   id_field: globalid
-  title: "{customers} customers out"
+  title: "{customers:,} customers out"
   severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: off_
   metrics: {customers_out: customers, etr: etr, county: county}
@@ -27,7 +27,7 @@
   url: "https://avangrid-maine-ags.esriemcs.com/arcgis/rest/services/CMPOutageMap_v2/MapServer/0"
   where: "1=1"
   category: power
-  title: "{NumOut} customers out \u2014 {BgName}"
+  title: "{NumOut:,} customers out \u2014 {BgName}"
   area: "{BgName}"
   severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: NumOut, etr: EtrMax}
@@ -46,7 +46,7 @@
   where: "1=1"
   category: power
   id_field: JOB_ID
-  title: "{CUSTOMER_COUNT} customers out"
+  title: "{CUSTOMER_COUNT:,} customers out"
   severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: OUTAGE_TIME
   metrics: {customers_out: CUSTOMER_COUNT, etr: EST_TIME_ETR}
@@ -65,7 +65,7 @@
   where: "1=1"
   category: power
   id_field: OutageID
-  title: "{AffectedCustomers} customers out \u2014 {CommunityName}"
+  title: "{AffectedCustomers:,} customers out \u2014 {CommunityName}"
   area: "{CommunityName}"
   severity: {field: AffectedCustomers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: StartTime
@@ -79,19 +79,19 @@
 
 - id: esri_aps_az
   type: arcgis
-  name: "Arizona Public Service Company"
+  name: "Arizona Public Service (APS)"
   states: [AZ]
   url: "https://aps-ags.esriemcs.com/arcgis/rest/services/APSOutageMap/MapServer/0"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{customers} customers out \u2014 {city}"
+  title: "{customers:,} customers out \u2014 {city}"
   area: "{city}"
   severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: off
   metrics: {customers_out: customers, etr: etr}
   time_metrics: [etr]
-  constants: {kind: outage, utility: "Arizona Public Service Company"}
+  constants: {kind: outage, utility: "Arizona Public Service (APS)"}
   interval: 600
   meta:
     confidence: high
@@ -99,18 +99,18 @@
 
 - id: esri_rge_ny
   type: arcgis
-  name: "Rochester Gas and Electric Corp"
+  name: "Rochester Gas and Electric (RG&E)"
   states: [NY]
   url: "https://avangrid-newyork-ags.esriemcs.com/arcgis/rest/services/RGEOutageMap_v2/MapServer/0"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{NumOut} customers out \u2014 {BgName}"
+  title: "{NumOut:,} customers out \u2014 {BgName}"
   area: "{BgName}"
   severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: NumOut, customers_served: NumServed, etr: EtrMax}
   time_metrics: [etr]
-  constants: {kind: outage, utility: "Rochester Gas and Electric Corp"}
+  constants: {kind: outage, utility: "Rochester Gas and Electric (RG&E)"}
   interval: 600
   meta:
     confidence: medium
@@ -118,18 +118,18 @@
 
 - id: esri_pge_ca
   type: arcgis
-  name: "Pacific Gas and Electric Company"
+  name: "Pacific Gas and Electric (PG&E)"
   states: [CA]
   url: "https://ags.pge.esriemcs.com/arcgis/rest/services/43/outages/MapServer/4"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{EST_CUSTOMERS} customers out"
+  title: "{EST_CUSTOMERS:,} customers out"
   severity: {field: EST_CUSTOMERS, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: OUTAGE_START
   metrics: {customers_out: EST_CUSTOMERS, etr: CURRENT_ETOR, county: COUNTY}
   time_metrics: [etr]
-  constants: {kind: outage, utility: "Pacific Gas and Electric Company"}
+  constants: {kind: outage, utility: "Pacific Gas and Electric (PG&E)"}
   interval: 600
   meta:
     confidence: medium
@@ -137,18 +137,18 @@
 
 - id: esri_ladwp_ca
   type: arcgis
-  name: "Los Angeles Dept of Water & Power"
+  name: "Los Angeles Department of Water and Power"
   states: [CA]
   url: "https://services2.arcgis.com/v0bIBBLIiGigCimX/ArcGIS/rest/services/PowerOutages_Data/FeatureServer/0"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{COUNT_IN_RANK} customers out \u2014 {CITY_NAM}"
+  title: "{COUNT_IN_RANK:,} customers out \u2014 {CITY_NAM}"
   area: "{CITY_NAM}"
   severity: {field: COUNT_IN_RANK, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: COUNT_IN_RANK, etr: ETR_DATETIME}
   time_metrics: [etr]
-  constants: {kind: outage, utility: "Los Angeles Dept of Water & Power"}
+  constants: {kind: outage, utility: "Los Angeles Department of Water and Power"}
   interval: 600
   meta:
     confidence: medium
@@ -162,7 +162,7 @@
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{CUSTCOUNT} customers out \u2014 {LOCATION}"
+  title: "{CUSTCOUNT:,} customers out \u2014 {LOCATION}"
   area: "{LOCATION}"
   severity: {field: CUSTCOUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: CUSTCOUNT, etr: ETR}
@@ -181,7 +181,7 @@
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{CustomersAffected} customers out \u2014 {COUNTY}"
+  title: "{CustomersAffected:,} customers out \u2014 {COUNTY}"
   area: "{COUNTY}"
   severity: {field: CustomersAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: CustomersAffected, customers_served: CustomersServed}
@@ -193,17 +193,17 @@
 
 - id: esri_nyseg_ny
   type: arcgis
-  name: "New York State Electric & Gas"
+  name: "New York State Electric & Gas (NYSEG)"
   states: [NY]
   url: "https://avangrid-newyork-ags.esriemcs.com/arcgis/rest/services/NYSEGOutageMap_v2/MapServer/0"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{NumOut} customers out \u2014 {BgName}"
+  title: "{NumOut:,} customers out \u2014 {BgName}"
   area: "{BgName}"
   severity: {field: NumOut, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: NumOut, customers_served: NumServed}
-  constants: {kind: outage, utility: "New York State Electric & Gas"}
+  constants: {kind: outage, utility: "New York State Electric & Gas (NYSEG)"}
   interval: 600
   meta:
     confidence: medium
@@ -211,38 +211,38 @@
 
 - id: esri_ne_responder_outages
   type: arcgis
-  name: "Nebraska responder outages (OPPD / LES)"
+  name: "Lincoln Electric System"
   states: [NE]
   url: "https://services2.arcgis.com/knPkBS6PAixcYX73/ArcGIS/rest/services/ResponderOutages57_view/FeatureServer/1"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{CUSTOMER_COUNT} customers out \u2014 {REGION}"
+  title: "{CUSTOMER_COUNT:,} customers out \u2014 {REGION}"
   area: "{REGION}"
   severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: TIME_OUTAGE
   metrics: {customers_out: CUSTOMER_COUNT, county: LES_AREA}
-  constants: {kind: outage, utility: "Nebraska responder outages (OPPD / LES)"}
+  constants: {kind: outage, utility: "Lincoln Electric System"}
   interval: 600
   meta:
     confidence: high
     evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026); codebooker/AmericaMap (2026)"
-    notes: "One shared responder layer covering OPPD and LES; counted as one feed to avoid duplicates"
+    notes: "LES's responder layer (fields LES_AREA/REGION). codebooker labels it Lincoln Electric System and links OPPD's own outage center separately; lukesteve03 also lists the same layer as Omaha PPD. Named LES so the utility count and coverage are not overstated; OPPD has no catalog entry yet"
 
 - id: esri_ssvec_az
   type: arcgis
-  name: "Sulphur Springs Valley Electric Coop"
+  name: "Sulphur Springs Valley Electric Cooperative"
   states: [AZ]
   url: "https://services.arcgis.com/oiVF7alPNKGlpRRF/arcgis/rest/services/Active_Outages_Public/FeatureServer/0"
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{CUSTOMER_COUNT} customers out \u2014 {REGION}"
+  title: "{CUSTOMER_COUNT:,} customers out \u2014 {REGION}"
   area: "{REGION}"
   severity: {field: CUSTOMER_COUNT, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: TIME_OUTAGE
   metrics: {customers_out: CUSTOMER_COUNT}
-  constants: {kind: outage, utility: "Sulphur Springs Valley Electric Coop"}
+  constants: {kind: outage, utility: "Sulphur Springs Valley Electric Cooperative"}
   interval: 600
   meta:
     confidence: high
@@ -256,7 +256,7 @@
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{customers} customers out \u2014 {region}"
+  title: "{customers:,} customers out \u2014 {region}"
   area: "{region}"
   severity: {field: customers, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: customers, etr: etr}
@@ -275,7 +275,7 @@
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{custcnt} customers out"
+  title: "{custcnt:,} customers out"
   severity: {field: custcnt, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: custcnt, etr: etor}
   time_metrics: [etr]
@@ -293,7 +293,7 @@
   where: "1=1"
   category: power
   id_field: INCIDENT_I
-  title: "{CUSTOMER_C} customers out"
+  title: "{CUSTOMER_C:,} customers out"
   severity: {field: CUSTOMER_C, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: TIME_OUTAG
   metrics: {customers_out: CUSTOMER_C}
@@ -311,7 +311,7 @@
   where: "1=1"
   category: power
   id_field: OBJECTID
-  title: "{CustAffected} customers out"
+  title: "{CustAffected:,} customers out"
   severity: {field: CustAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: CustAffected, etr: ETR}
   time_metrics: [etr]

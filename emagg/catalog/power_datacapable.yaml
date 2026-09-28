@@ -2,21 +2,21 @@
 
 - id: datacapable_dlc_pa
   type: json
-  name: "Duquesne Light Company"
+  name: "Duquesne Light"
   states: [PA]
   url: "https://utilisocial.io/datacapable/v2/p/dlc/map/events"
   lat: latitude
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
   exclude: {type: PLANNED_OUTAGE}
   metrics: {customers_out: numPeople, etr: etrTime, status: status, cause: cause}
   time_metrics: [etr]
-  constants: {kind: outage, utility: "Duquesne Light Company"}
+  constants: {kind: outage, utility: "Duquesne Light"}
   meta:
     confidence: medium
     evidence: "lukesteve03/OpenSourcePowerOutageScraper sources_config (2026)"
@@ -30,7 +30,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -51,7 +51,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -72,7 +72,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -93,7 +93,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -114,7 +114,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -135,7 +135,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime

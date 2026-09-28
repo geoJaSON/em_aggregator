@@ -449,7 +449,7 @@
 
 - id: nisc_pieg_mi
   type: nisc_hosted
-  name: "Presque Isle Electric & Gas Co-op"
+  name: "Presque Isle Electric & Gas Cooperative"
   states: [MI]
   tenant: pieg
   meta:

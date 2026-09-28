@@ -50,6 +50,7 @@
             <option value="4">Extreme only</option>
           </select>
         </div>
+        <p id="trunc-note" class="trunc-note" role="status" hidden></p>
         <ul id="event-list" class="event-list"></ul>
         <button id="list-more" class="btn more" type="button" hidden></button>
       </section>
@@ -73,14 +74,22 @@
       </section>
 
       <section id="tab-sources" class="tab-body" hidden>
-        <p class="small muted">Each feed is polled on its own schedule. A feed that is failing or stale means its layer may be out of date.</p>
+        <p class="small muted">Each feed is polled on its own schedule. A feed that is failing or stale means its layer may be out of date.
+          With a state selected, only that state's feeds and national feeds are listed.</p>
+        <div class="filters">
+          <input id="source-search" type="search" placeholder="Filter feeds by name, state, type or error…" aria-label="Filter feeds by text">
+        </div>
+        <div id="source-summary" class="source-summary"></div>
         <ul id="source-list" class="source-list"></ul>
       </section>
     </aside>
 
     <section class="map-wrap">
       <div id="map" aria-label="Map of current events"></div>
-      <div id="place-hint" class="place-hint" hidden>Click the map to place the report · <kbd>Esc</kbd> to cancel</div>
+      <div class="map-notices">
+        <div id="place-hint" class="place-hint" hidden>Click the map to place the report · <kbd>Esc</kbd> to cancel</div>
+        <div id="map-note" class="map-note" role="status" hidden></div>
+      </div>
       <div class="legend" aria-label="Severity legend">
         <span><i class="sev-swatch" data-sev="extreme"></i>Extreme</span>
         <span><i class="sev-swatch" data-sev="severe"></i>Severe</span>

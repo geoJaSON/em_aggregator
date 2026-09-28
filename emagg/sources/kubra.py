@@ -5,6 +5,9 @@ To configure a utility, open its outage map with browser dev tools and find a re
 
     https://kubra.io/stormcenter/api/v1/stormcenters/<INSTANCE_ID>/views/<VIEW_ID>/currentState?preview=false
 
+A few utilities front that API with their own host (e.g. ``https://phi-pepco.ifactornotifi.com/bpu/sc5``);
+set it as ``api_base``. The data files are still read from kubra.io.
+
 Flow (same as the open-source ``kubra`` scraper): currentState -> summary totals -> (optionally) the
 outage cluster tiles, which are keyed by quadkey and descended until clusters split into outages.
 """
@@ -55,7 +58,8 @@ def parse_summary(summary: dict[str, Any], utility: str, customers_served: int |
 
     return utility_total_event(
         utility, out, served, outages, updated=sfd.get("date_generated"), link=link,
-        percent_out=num(totals[0].get("total_percent_cust_a")),
+        # A per-state view's first percentage is one state's; only a single-entry view's applies to the utility.
+        percent_out=num(totals[0].get("total_percent_cust_a")) if len(totals) == 1 else None,
     )
 
 
@@ -222,7 +226,8 @@ class KubraOutages(Source):
 
     @property
     def _api(self) -> str:
-        return f"{BASE}/stormcenter/api/v1/stormcenters/{self.options['instance_id']}/views/{self.options['view_id']}"
+        base = str(self.options.get("api_base") or BASE).rstrip("/")
+        return f"{base}/stormcenter/api/v1/stormcenters/{self.options['instance_id']}/views/{self.options['view_id']}"
 
     async def fetch(self) -> list[Event]:
         state = await self.get_json(f"{self._api}/currentState", params={"preview": "false"})

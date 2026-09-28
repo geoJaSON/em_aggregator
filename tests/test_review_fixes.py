@@ -139,3 +139,67 @@ def test_host_endpoint_labels():
     assert _endpoint("http://outage.example-coop.org:8008/data") == "http://outage.example-coop.org:8008"
     assert _endpoint("https://oms.coop.org:8443/x") == "oms.coop.org:8443"
     assert _endpoint("https://waze.demo.invalid/feed") is None
+
+
+def test_kubra_multistate_percent_comes_from_summed_figures():
+    from emagg.sources.kubra import parse_summary
+
+    summary = {"summaryFileData": {"totals": [
+        {"total_cust_a": {"val": 1000}, "total_cust_s": 10_000, "total_percent_cust_a": {"val": 10.0}},
+        {"total_cust_a": {"val": 5000}, "total_cust_s": 90_000, "total_percent_cust_a": {"val": 5.6}},
+    ]}}
+    e = parse_summary(summary, "Ameren")
+    assert e.metrics["customers_out"] == 6000 and "(6.0%)" in e.title
+    no_served = {"summaryFileData": {"totals": [{"total_cust_a": {"val": 1000}, "total_percent_cust_a": {"val": 10.0}},
+                                                {"total_cust_a": {"val": 5000}, "total_percent_cust_a": {"val": 5.6}}]}}
+    assert "%" not in parse_summary(no_served, "Ameren").title  # no state's percentage passed off as the utility's
+
+
+def test_kubra_api_base_serves_state_and_configuration_only():
+    import httpx
+
+    from emagg.demo import KUBRA_INSTANCE, KUBRA_VIEW, DemoTransport
+    from emagg.sources import SourceContext
+    from emagg.sources.kubra import KubraOutages
+
+    proxy = "https://proxy.example.com/bpu/sc5"
+    seen: list[str] = []
+
+    class Proxy(httpx.AsyncBaseTransport):
+        inner = DemoTransport()
+
+        async def handle_async_request(self, request):
+            url = str(request.url)
+            seen.append(url)
+            return await self.inner.handle_async_request(httpx.Request(request.method, url.replace(proxy, "https://kubra.io")))
+
+    async def run():
+        async with httpx.AsyncClient(transport=Proxy()) as http:
+            cfg = SourceConfig(id="k", type="kubra", name="Acme", instance_id=KUBRA_INSTANCE, view_id=KUBRA_VIEW,
+                               api_base=proxy + "/", outage_points=False)
+            return await KubraOutages(cfg, SourceContext(http, AreaConfig(), Store())).fetch()
+
+    events = asyncio.run(run())
+    assert events[0].metrics["customers_out"] > 0
+    api = [u for u in seen if "/stormcenter/api/" in u]
+    assert api and all(u.startswith(proxy + "/stormcenter/") for u in api)
+    assert all(u.startswith("https://kubra.io/") for u in seen if u not in api)
+
+
+def test_templates_drop_the_fraction_of_integral_floats():
+    assert render_template("{n:,} customers out", {"n": 12500.0}) == "12,500 customers out"
+    assert render_template("{n:,}", {"n": 12500.5}) == "12,500.5"
+    assert render_template("{n:.1f}%", {"n": 12.0}) == "12.0%"
+
+
+def test_config_lists_state_bounds():
+    from fastapi.testclient import TestClient
+
+    from emagg.api import create_app
+    from emagg.config import Config
+
+    with TestClient(create_app(Config(), store=Store(), start_scheduler=False)) as client:
+        cfg = client.get("/api/config").json()
+    assert set(cfg["state_bboxes"]) == set(cfg["state_names"])
+    w, s, e, n = cfg["state_bboxes"]["FL"]
+    assert -88 < w < e < -79 and 24 < s < n < 31.5

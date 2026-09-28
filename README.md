@@ -4,7 +4,7 @@ A near-real-time situational-awareness board for emergency management, national 
 data feeds, normalizes everything into one event model with a common severity scale, tags every event with its
 state and county, tracks what is **new, escalating, or cleared**, and shows it on one map with state rollups.
 
-Its catalog lists **342 public feeds**. 317 are on by default nationally, and 151 cover the Gulf & Southeast
+Its catalog lists **340 public feeds**. 311 are on by default nationally, and 149 cover the Gulf & Southeast
 coast:
 
 - Weather, flooding, tropical: NWS alerts, river gauges, NHC cones, coastal tide gauges, storm reports,
@@ -40,7 +40,7 @@ emagg catalog --state FL             # list known feeds for a state
 emagg hosts                          # hostnames your config contacts (for firewall / proxy allowlists)
 ```
 
-Network requirements (outbound HTTPS to about 225 hosts for the full catalog) are in [docs/NETWORK.md](docs/NETWORK.md).
+Network requirements (outbound HTTPS to about 170 hosts for the full catalog) are in [docs/NETWORK.md](docs/NETWORK.md).
 
 Demo mode runs the real adapters, store and UI against sample payloads in each feed's real format. It is
 labelled DEMO throughout; none of it reflects real conditions.
@@ -54,7 +54,7 @@ The full list, with evidence and confidence for each entry, is in [docs/CATALOG.
 | **Weather** | NWS alerts; NWS Local Storm Reports (trees/wires down, damage, surge); SPC Day 1 severe outlook |
 | **Flooding** | NOAA NWPS river gauges (observed + forecast flood category); NOAA CO-OPS tide gauges vs. NWS coastal flood thresholds; WPC excessive-rainfall outlook; flood reports from storm reports |
 | **Tropical** | NHC active storms, forecast cones and tracks, coastal hurricane/tropical-storm watch and warning segments |
-| **Power** | 286 feeds, about 120 of them in the Gulf/Southeast. **Investor-owned and municipal utilities:** 52 on KUBRA Storm Center, which gives utility totals plus county breakdowns (in the Southeast: Georgia, Alabama and Mississippi Power, Dominion SC/NC, Santee Cooper, JEA, OUC, Lakeland, SECO, Oncor, AEP Texas, CPS, Austin Energy, TNMP, SWEPCO and others). Also Duke Energy, FPL, Entergy LA/MS/TX/AR, CenterPoint, Cleco, Tampa Electric (TECO), Xcel, Tallahassee, Gainesville, Kissimmee, Lafayette and 20+ more utilities on ArcGIS and DataCapable. **Co-ops:** about 180, on the Milsoft Web Outage Viewer (83), NISC hosted maps (71), Sienatech and OutageEntry. **Other platforms:** PacifiCorp, Black Hills (OSI), WEC and NorthWestern |
+| **Power** | 284 feeds, about 120 of them on by default in the Gulf/Southeast. **Investor-owned and municipal utilities:** 50 on KUBRA Storm Center, which gives utility totals plus county breakdowns (in the Southeast: Georgia, Alabama and Mississippi Power, Dominion SC/NC, Santee Cooper, JEA, OUC, Lakeland, SECO, Oncor, AEP Texas, CPS, Austin Energy, TNMP, SWEPCO and others). Also Duke Energy, FPL, Entergy LA/MS/TX/AR, CenterPoint, Cleco, Tampa Electric (TECO), Xcel, Tallahassee, Gainesville, Kissimmee, Lafayette and 20+ more utilities on ArcGIS and DataCapable. **Co-ops:** about 180, on the Milsoft Web Outage Viewer (83), NISC hosted maps (71), Sienatech and OutageEntry. **Other platforms:** PacifiCorp, Black Hills (OSI), WEC and NorthWestern |
 | **Roads** | 30 DOT WZDx closure feeds nationwide (LA, MS, FL, NC, Austin, and 20+ other states); NCDOT and FDOT statewide incident layers. With a developer key (free self-service for LA, GA and NC): 511LA, 511GA, DriveNC, 511NY, NVroads. On application (for EM agencies): DriveTexas. By agreement: FL511 |
 | **Comms** | IODA state-level internet outages; IPAWS 911-outage alerts; FCC DIRS "% cell sites out" by county during disaster activations (off by default; see below); field reports |
 | **Public alerts** | FEMA IPAWS: non-NWS alerts from state/county authorities (evacuation orders, shelter-in-place, civil emergencies) |
@@ -193,7 +193,7 @@ Interactive docs at `/docs`.
 
 * One process, SQLite, no external services. Put it behind your usual reverse proxy with authentication: the
   dashboard has no login of its own. Set `app.write_token` to protect field reports and manual refresh.
-* The national default polls about 320 feeds, mostly every 5–10 minutes (1–3 requests each; one full offline
+* The national default polls about 310 feeds, mostly every 5–10 minutes (1–3 requests each; one full offline
   round takes about 30 s). Keep the default intervals and set a real contact in `app.user_agent`
   (api.weather.gov requires it). A regional preset such as `gulf_southeast` polls about half as many. FEMA asks that
   IPAWS be polled no more often than every 2 minutes; the 511 APIs allow about 10 calls per minute per key.

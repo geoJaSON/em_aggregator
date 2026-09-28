@@ -2,6 +2,8 @@
 # scrapers (evidence below); 'high' confidence = the same ID pair appears in 2+ independent projects.
 # County-level reports are pulled by default; set outage_points: true (per entry, or via your own
 # sources: override) to also pull individual outage locations for your area — many more requests.
+# One entry per KUBRA view: the adapter sums every totals[] entry of the view's summary, so a view that
+# covers several states is one multi-state entry (see kubra_ameren_il_mo), never one entry per state.
 
 - id: kubra_ga_power_ga
   type: kubra
@@ -49,7 +51,7 @@
 
 - id: kubra_firstenergy_oh
   type: kubra
-  name: "First Energy (OH)"
+  name: "FirstEnergy (OH)"
   states: [OH]
   instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
   view_id: db9c3f02-0a06-4672-a357-0f676eb75bfa
@@ -60,7 +62,7 @@
 
 - id: kubra_firstenergy_nj
   type: kubra
-  name: "First Energy (NJ)"
+  name: "FirstEnergy (NJ)"
   states: [NJ]
   instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
   view_id: fcd7c23d-de37-4471-8ca3-37c3260f94fa
@@ -71,7 +73,7 @@
 
 - id: kubra_firstenergy_pa
   type: kubra
-  name: "First Energy (PA)"
+  name: "FirstEnergy (PA)"
   states: [PA]
   instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
   view_id: 8587e451-e258-4692-b5e8-28010506d51a
@@ -79,35 +81,23 @@
   meta:
     confidence: low
     evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+    notes: "Only source for this view. lukesteve03 also reads MD/WV totals from other summary slots of the same view; this adapter reads the view's configured summary and sums all its totals, so check with `emagg poll` that the figure is PA only"
 
-- id: kubra_firstenergy_md
+- id: kubra_firstenergy_md_wv
   type: kubra
-  name: "First Energy (MD)"
-  states: [MD]
+  name: "FirstEnergy (MD/WV)"
+  states: [MD, WV]
   instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
-  view_id: 8587e451-e258-4692-b5e8-28010506d51a
+  view_id: 5ed3ddf1-3a6f-4cfd-8957-eba54b5baaad
   outage_points: false
   meta:
-    confidence: low
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
-
-- id: kubra_firstenergy_wv
-  type: kubra
-  name: "First Energy (WV)"
-  states: [WV]
-  instance_id: 6c715f0e-bbec-465f-98cc-0b81623744be
-  view_id: 8587e451-e258-4692-b5e8-28010506d51a
-  outage_points: false
-  meta:
-    confidence: low
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+    confidence: medium
+    evidence: "github.com/kodymcmonagle808-cmd/school-status-bot outages module ('pe' Potomac Edison entry, 2026); Radius app fe.ts, FirstEnergy MD/WV module for outages-mdwv.firstenergycorp.com (2026)"
+    notes: "Potomac Edison (MD, WV) and Mon Power (WV) on the outages-mdwv map; one view for both states, so one multi-state entry. Replaces separate MD and WV entries that pointed at the PA view. Both sources read the county/municipality report; the utility total is not yet checked with `emagg poll`"
 
 - id: kubra_avista_nw
   type: kubra
-  name: "Avista Corporation"
+  name: "Avista"
   states: [WA, ID, MT]
   instance_id: b9478e86-d9d9-45b2-9579-b2639f77f3fe
   view_id: 00763684-dd19-4651-b33f-51aa17a491a6
@@ -118,18 +108,20 @@
 
 - id: kubra_pec_pa
   type: kubra
-  name: "Philadelphia Electric Co."
+  name: "PECO"
   states: [PA]
+  enabled: false
   instance_id: 39e6d9f3-fdea-4539-848f-b8631945da6f
   view_id: 789577bd-d2c6-42b8-af4b-b51ae6f52b6c
   outage_points: false
   meta:
-    confidence: medium
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    confidence: low
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); a PECO integration's const.py uses view 74de8a50-3f45-4f6a-9483-fd618bb9165d on the same instance (undated)"
+    notes: "Off by default: the two sources disagree on the view and neither could be checked. Try `emagg poll` with this view (and 74de8a50-3f45-4f6a-9483-fd618bb9165d if it fails), then switch it on with catalog.enable"
 
 - id: kubra_appapower_va_wv_tn
   type: kubra
-  name: "Appalachian Power Co."
+  name: "Appalachian Power"
   states: [VA, WV, TN]
   instance_id: 6674f49e-0236-4ed8-a40a-b31747557ab7
   view_id: 8cfe790f-59f3-4ce3-a73f-a9642227411f
@@ -162,7 +154,7 @@
 
 - id: kubra_ku_ky
   type: kubra
-  name: "Kentucky Utilities and LGE"
+  name: "LG&E and KU"
   states: [KY]
   instance_id: 877fd1e9-4162-473f-b782-d8a53a85326b
   view_id: a6cee9e4-312b-4b77-9913-2ae371eb860d
@@ -204,39 +196,30 @@
     confidence: high
     evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
 
-- id: kubra_ameren_il
+- id: kubra_ameren_il_mo
   type: kubra
-  name: "Ameren (IL)"
-  states: [IL]
+  name: "Ameren"
+  states: [IL, MO]
   instance_id: 92e209c0-35c3-4ec2-9ce9-30d87a55706f
   view_id: 9b7c2416-cb0c-4845-99c7-7b31041038a2
   outage_points: false
   meta:
     confidence: high
     evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
-
-- id: kubra_ameren_mo
-  type: kubra
-  name: "Ameren (MO)"
-  states: [MO]
-  instance_id: 92e209c0-35c3-4ec2-9ce9-30d87a55706f
-  view_id: 9b7c2416-cb0c-4845-99c7-7b31041038a2
-  outage_points: false
-  meta:
-    confidence: high
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026); github.com/codebooker/AmericaMap (2026)"
+    notes: "Ameren Illinois and Ameren Missouri share one view (lukesteve03 reads IL from totals[0] and MO from totals[1]), so this is one multi-state entry: the utility total counts once and is never assigned to a single state"
 
 - id: kubra_delmarva_md_de
   type: kubra
   name: "Delmarva Power"
   states: [MD, DE]
+  api_base: https://phi-delmar.ifactornotifi.com/bpu/sc5
   instance_id: b3e5379d-7d75-4ea0-a978-b42bab577210
-  view_id: 53f06375-21b5-402f-bffe-9c6c81de478c
+  view_id: d538c2a7-4991-4b49-8b87-02012114893a
   outage_points: false
   meta:
-    confidence: low
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+    confidence: medium
+    evidence: "github.com/codebooker/AmericaMap proxy.py (2026-09); older view 53f06375-21b5-402f-bffe-9c6c81de478c in github.com/lukesteve03/OpenSourcePowerOutageScraper (2026-06)"
+    notes: "Reads currentState and configuration through Delmarva's proxy (api_base), as AmericaMap does; the Pepco entry uses the same pattern, confirmed by a second author. One current source for this view, so check with `emagg poll`"
 
 - id: kubra_cps_tx
   type: kubra
@@ -251,7 +234,7 @@
 
 - id: kubra_oge_ok_ar
   type: kubra
-  name: "OG&E Energy Corporation"
+  name: "OG&E"
   states: [OK, AR]
   instance_id: dc85f79f-59f9-4e9e-9557-b3a9bee7e0ce
   view_id: 8fe9d356-96bc-41f1-b353-6720eb408936
@@ -273,7 +256,7 @@
 
 - id: kubra_chgec_ny
   type: kubra
-  name: "Central Hudson Gas and Electric Corp"
+  name: "Central Hudson Gas & Electric"
   states: [NY]
   instance_id: d19170d4-3357-4f67-bc30-e88f85fc85c8
   view_id: 7e22d4b2-8c3d-4625-adc1-ffcdd2944de0
@@ -284,15 +267,15 @@
 
 - id: kubra_cec_il
   type: kubra
-  name: "Commonwealth Edison Co."
+  name: "ComEd"
   states: [IL]
   instance_id: 0f46457f-e3ee-473c-8040-d7da9e776ccb
-  view_id: 2e108172-d24f-4c2b-ad49-23a3b1589688
+  view_id: a7f6692c-38f6-4bef-8681-989b2bcba5da
   outage_points: false
   meta:
     confidence: low
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+    evidence: "github.com/codebooker/AmericaMap proxy.py (2026-09, same kubra.io currentState/configuration flow as this adapter); older view 2e108172-d24f-4c2b-ad49-23a3b1589688 in github.com/lukesteve03/OpenSourcePowerOutageScraper (2026-06)"
+    notes: "Switched to the view in the newer source; single source for it, not yet checked with `emagg poll`"
 
 - id: kubra_pseg_ny
   type: kubra
@@ -307,7 +290,7 @@
 
 - id: kubra_pseag_nj
   type: kubra
-  name: "Public Service Electric and Gas"
+  name: "PSE&G"
   states: [NJ]
   instance_id: 79d82478-c10a-4956-a045-89de3cda618c
   view_id: bdb7f5be-1c1a-46fa-862e-ebdf21851d2e
@@ -329,7 +312,7 @@
 
 - id: kubra_sepc_la_ar_tx
   type: kubra
-  name: "Southwestern Electric Power Co"
+  name: "SWEPCO"
   states: [LA, AR, TX]
   instance_id: 9632df6e-a385-400a-b822-b68d268e8e7c
   view_id: e51304d0-7052-458d-a5ac-0e1980cca976
@@ -351,7 +334,7 @@
 
 - id: kubra_aep_oh
   type: kubra
-  name: "American Electric Power Ohio"
+  name: "AEP Ohio"
   states: [OH]
   instance_id: 9c0735d8-b721-4dce-b80b-558e98ce1083
   view_id: 9b2feb80-69f8-4035-925e-f2acbcf1728e
@@ -362,7 +345,7 @@
 
 - id: kubra_aep_tx
   type: kubra
-  name: "American Electric Power Texas"
+  name: "AEP Texas"
   states: [TX]
   instance_id: 3ff6812b-90d8-40cd-97a6-76633226f27b
   view_id: 6022fe09-5259-4763-892f-5f57463fa6a5
@@ -375,17 +358,18 @@
   type: kubra
   name: "Pepco"
   states: [MD, DC]
+  api_base: https://phi-pepco.ifactornotifi.com/bpu/sc5
   instance_id: bac68083-1c42-44ee-bb3c-6d1c1c026f52
-  view_id: 8300abbf-e4dc-4d99-8453-821fd49e2e32
+  view_id: ebc719f2-1185-46c2-8bf6-d0a2876c537f
   outage_points: false
   meta:
-    confidence: low
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
-    notes: "view_id differs between open-source projects; verify with `emagg poll`"
+    confidence: medium
+    evidence: "github.com/codebooker/AmericaMap proxy.py (2026-09); github.com/kodymcmonagle808-cmd/school-status-bot outages module (2026); older view 8300abbf-e4dc-4d99-8453-821fd49e2e32 in github.com/lukesteve03/OpenSourcePowerOutageScraper (2026-06)"
+    notes: "Both current sources read currentState through Pepco's proxy (api_base); the data files stay on kubra.io. Not yet polled live, so medium until `emagg poll` confirms it"
 
 - id: kubra_pnm_nm
   type: kubra
-  name: "Public Service Co. of New Mexico"
+  name: "PNM"
   states: [NM]
   instance_id: b6fe87bc-3c82-4afe-b7f0-7eee93a32dfa
   view_id: 92a8c818-17ed-401d-89be-73e5ae60ee5b
@@ -418,7 +402,7 @@
 
 - id: kubra_psc_ok
   type: kubra
-  name: "Public Service Co. of Oklahoma"
+  name: "Public Service Company of Oklahoma"
   states: [OK]
   instance_id: 4bb3b3bc-e1c4-448b-b806-e4fc85c3b640
   view_id: e2356e43-c76f-4772-bf85-31240a2cc504
@@ -451,7 +435,7 @@
 
 - id: kubra_pec_tx
   type: kubra
-  name: "Pedernales Electric Coop"
+  name: "Pedernales Electric Cooperative"
   states: [TX]
   instance_id: bac8eaf4-d343-4760-9a76-9c7beb6456a0
   view_id: a6e670a6-58f1-40e9-9e67-64f7ac846cef
@@ -473,7 +457,7 @@
 
 - id: kubra_tnmp_tx
   type: kubra
-  name: "Texas New Mexico Power"
+  name: "Texas-New Mexico Power"
   states: [TX]
   instance_id: 6f00c909-0ab9-46c1-94c5-c07435d5baf6
   view_id: 5bb75bf1-56fa-4d46-ac74-dd9b2106611a
@@ -528,7 +512,7 @@
 
 - id: kubra_rec_va
   type: kubra
-  name: "Rappahannock Electric Coop"
+  name: "Rappahannock Electric Cooperative"
   states: [VA]
   instance_id: 3c15ff3f-f850-4a3e-8b49-e5cad018020f
   view_id: 3813996e-0d1b-4ae5-a99d-143bd984c0c5
@@ -539,7 +523,7 @@
 
 - id: kubra_smec_md
   type: kubra
-  name: "Southern Maryland Electric Coop"
+  name: "Southern Maryland Electric Cooperative"
   states: [MD]
   instance_id: 8f8e2a37-51ea-4029-a609-bf8bc3c384b3
   view_id: c00241ad-5a2f-4236-9be9-e4bc6f518449

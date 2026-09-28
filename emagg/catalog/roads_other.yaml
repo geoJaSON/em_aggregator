@@ -69,7 +69,7 @@
   states: [GA]
   base_url: https://511ga.org
   api_key: ${GA511_KEY}
-  meta: {confidence: high, evidence: "KFergusonUK/StreetWorks-SDK na511 (live key, 2026-08)", signup: "https://511ga.org/developers/doc"}
+  meta: {confidence: high, evidence: "KFergusonUK/StreetWorks-SDK na511 (live key, 2026-08); johngcarlsson-usc/511-scraper feeds.json ibi511-ga-events (keyed 511ga.org event API, 2026); sAnct1x/Arelis traffic_fetch.py 511ga.org/api/v2/get/event (2026)", signup: "https://511ga.org/developers/doc"}
 
 - id: nc_drivenc
   type: ibi511

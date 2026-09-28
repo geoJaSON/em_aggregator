@@ -87,12 +87,17 @@ class _SafeDict(dict):
         return ""
 
 
+_FLOAT_SPEC = re.compile(r"[.eEfFgG%]")
+
+
 class _LenientFormatter(string.Formatter):
     """Numeric format specs such as ``{customers:,}`` also work on numeric strings ("1234" -> "1,234"); a value
     that can't take the spec is shown as-is instead of breaking the whole template."""
 
     def format_field(self, value: Any, format_spec: str) -> str:
         if format_spec:
+            if isinstance(value, float) and value.is_integer() and not _FLOAT_SPEC.search(format_spec):
+                value = int(value)  # Esri JSON doubles: 12500.0 -> "12,500", not "12,500.0"
             try:
                 return super().format_field(value, format_spec)
             except (ValueError, TypeError):

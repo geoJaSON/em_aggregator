@@ -91,7 +91,7 @@
 
 - id: outageentry_svec_va
   type: outageentry
-  name: Shenandoah Valley Electric Coop
+  name: Shenandoah Valley Electric Cooperative
   states: [VA]
   client: SVEC
   customers_served: 102312

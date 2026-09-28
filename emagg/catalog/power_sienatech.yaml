@@ -19,7 +19,7 @@
 
 - id: sienatech_mvec_tx
   type: sienatech
-  name: Magic Valley Electric Coop
+  name: Magic Valley Electric Cooperative
   states: [TX]
   code: MVEC
   timezone: America/Chicago
@@ -50,7 +50,7 @@
 
 - id: sienatech_preco_fl
   type: sienatech
-  name: Peace River Electric Coop
+  name: Peace River Electric Cooperative
   states: [FL]
   code: PRECO
   timezone: America/New_York

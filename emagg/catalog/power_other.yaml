@@ -7,7 +7,7 @@
   url: https://services3.arcgis.com/oX5r75R7mapdoI2F/ArcGIS/rest/services/Duke_Energy_Distribution_Outages_Public/FeatureServer/0
   category: power
   id_field: OBJECTID
-  title: "{AFFECTED_CUSTOMERS} customers out — {CAUSE}"
+  title: "{AFFECTED_CUSTOMERS:,} customers out — {CAUSE}"
   area: "Duke Energy ({JURISDICTION})"
   severity: {field: AFFECTED_CUSTOMERS, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: START_TIME
@@ -32,7 +32,7 @@
   link: https://www.fplmaps.com/
   meta:
     confidence: high
-    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper (2026)"
+    evidence: "github.com/lukesteve03/OpenSourcePowerOutageScraper collectors/fpl.py (2026); github.com/simonw/irma-scrapers irma.py FplCountyOutages (2022); github.com/GateHouseMedia/power-outages fplreport2.py (2020)"
 
 - id: fpl_points
   type: json
@@ -44,13 +44,14 @@
   lon: lng
   category: power
   id_field: ticketNum
-  title: "{customersAffected} customers out — {Cause}"
+  title: "{customersAffected:,} customers out — {Cause}"
   severity: {field: customersAffected, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: customersAffected, etr: etr, status: status, cause: Cause}
   constants: {kind: outage, utility: FPL}
   meta:
-    confidence: high
+    confidence: medium
     evidence: "github.com/simonw/scrape-florida-outages (working 2026-09)"
+    notes: "One source (simonw's other FPL scraper reads CountyOutages.json, not this file)"
 
 - id: entergy_louisiana
   type: county_outages
@@ -126,7 +127,7 @@
   lon: longitude
   category: power
   id_field: id
-  title: "{numPeople} customers out — {cause}"
+  title: "{numPeople:,} customers out — {cause}"
   severity: {field: numPeople, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   starts_field: startTime
   updated_field: lastUpdatedTime
@@ -147,7 +148,7 @@
   lon: lon
   category: power
   id_field: incidentId
-  title: "{affectedCount} customers out — {location}"
+  title: "{affectedCount:,} customers out — {location}"
   severity: {field: affectedCount, thresholds: [[5000, severe], [1000, moderate]], default: minor}
   metrics: {customers_out: affectedCount, status: status}
   constants: {kind: outage, utility: Cleco}

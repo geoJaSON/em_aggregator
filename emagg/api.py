@@ -24,7 +24,7 @@ from emagg.config import Config
 from emagg.geo import point
 from emagg.http import make_http_client
 from emagg.models import SEVERITY_ORDER, Category, Event, Severity, utcnow
-from emagg.regions import state_codes, state_name
+from emagg.regions import state_bbox, state_codes, state_name
 from emagg.scheduler import Notifier, Scheduler, attribute, build_sources
 from emagg.sources import REGISTRY, SourceContext
 from emagg.store import Store, ts
@@ -114,6 +114,7 @@ def create_app(
                 "states": config.area.states,
             },
             "state_names": dict(sorted(((s, state_name(s)) for s in state_codes()), key=lambda kv: kv[1] or kv[0])),
+            "state_bboxes": {s: state_bbox(s) for s in state_codes()},
             "categories": [{"id": c.value, "label": LABELS[c]} for c in Category],
             "severities": [s.value for s in SEVERITY_ORDER],
             "write_token_required": bool(config.app.write_token),

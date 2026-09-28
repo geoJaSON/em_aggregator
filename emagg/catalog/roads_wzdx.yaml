@@ -13,7 +13,7 @@
 
 - id: wzdx_ca_mtc
   type: wzdx
-  name: "Metropolitan Transportation Commission San Francisco work zones"
+  name: "San Francisco Bay Area (MTC 511) work zones"
   states: [CA]
   url: "https://api.511.org/traffic/wzdx?api_key={api_key}"
   api_key: ${WZDX_CA_MTC_KEY}
@@ -175,7 +175,7 @@
 
 - id: wzdx_nj_njdot
   type: wzdx
-  name: "New Jersey Institute of Technology work zones"
+  name: "New Jersey DOT work zones"
   states: [NJ]
   url: "https://smartworkzones.njit.edu/nj/wzdx"
   meta:
@@ -255,13 +255,14 @@
   type: wzdx
   name: "Texas DOT work zones"
   states: [TX]
+  enabled: false
   url: "https://api.drivetexas.org/api/conditions.wzdx.geojson?key={api_key}"
   api_key: ${DRIVETEXAS_KEY}
   meta:
     confidence: high
     evidence: "USDOT WZDx Feed Registry (version 4.2, updates 5m)"
     signup: "https://api.drivetexas.org/"
-    notes: "Needs an API key: set DRIVETEXAS_KEY"
+    notes: "Off by default: the WZDx view of the same DriveTexas conditions data that drivetexas_conditions reads with the same DRIVETEXAS_KEY, so one key must not switch on both copies. To use it instead, add it to catalog.enable and drivetexas_conditions to catalog.exclude"
 
 - id: wzdx_ut_udot
   type: wzdx
